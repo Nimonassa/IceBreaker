@@ -97,3 +97,9 @@ InitTestScene*.unity*
 
 # Auto-generated scenes by play mode tests
 /[Aa]ssets/[Ii]nit[Tt]est[Ss]cene*.unity*
+/[Aa]ssets/[Ss]treamingAssets/[Ss]aves/_PlayModeTransfer.bin
+/[Aa]ssets/[Ss]treamingAssets/[Ss]aves/_PlayModeTransfer.bin.meta
+/[Aa]ssets/[Ss]treamingAssets/[Ss]aves/_PlayModeTransfer.json
+/[Aa]ssets/[Ss]treamingAssets/[Ss]aves/_PlayModeTransfer.json.meta
+/[Aa]ssets/[Ss]treamingAssets/[Ss]aves/_EditorState.bin
+/[Aa]ssets/[Ss]treamingAssets/[Ss]aves/_EditorState.bin.meta
