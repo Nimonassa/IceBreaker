@@ -1,11 +1,25 @@
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.Attachment;
+using UnityEngine.XR.Interaction.Toolkit.Interactors;
 
 
 public enum InteractionHand { Left, Right, Both, None }
 
 public class PlayerGrabbing : MonoBehaviour
 {
+    [System.Serializable]
+    public class GrabbingEvents
+    {
+        public UnityEvent<GameObject> onObjectGrabbed = new();
+        public UnityEvent<GameObject> onObjectReleased = new();
+        public UnityEvent onHoverEnter = new();
+    }
+
+    [Header("Grabbing Events")]
+    public GrabbingEvents events = new GrabbingEvents();
+
     [Header("Global Settings")]
     [SerializeField] private InteractionHand grabHand = InteractionHand.Both;
     [SerializeField] private InteractorFarAttachMode attachMode = InteractorFarAttachMode.Far;
@@ -15,7 +29,30 @@ public class PlayerGrabbing : MonoBehaviour
     {
         UpdateSettings();
     }
+    private void OnEnable()
+    {
+        // Automatically find all interactors in the player rig and subscribe to them
+        foreach (var interactor in GetComponentsInChildren<XRBaseInteractor>(true))
+        {
+            interactor.selectEntered.AddListener(HandleGrab);
+            interactor.selectExited.AddListener(HandleRelease);
+            interactor.hoverEntered.AddListener(HandleHover);
+        }
+    }
 
+    private void OnDisable()
+    {
+        foreach (var interactor in GetComponentsInChildren<XRBaseInteractor>(true))
+        {
+            interactor.selectEntered.RemoveListener(HandleGrab);
+            interactor.selectExited.RemoveListener(HandleRelease);
+            interactor.hoverEntered.RemoveListener(HandleHover);
+        }
+    }
+
+    private void HandleGrab(SelectEnterEventArgs args) => events.onObjectGrabbed?.Invoke(args.interactableObject.transform.gameObject);
+    private void HandleRelease(SelectExitEventArgs args) => events.onObjectReleased?.Invoke(args.interactableObject.transform.gameObject);
+    private void HandleHover(HoverEnterEventArgs args) => events.onHoverEnter?.Invoke();
 
 #if UNITY_EDITOR
     private void OnValidate()

@@ -1,18 +1,30 @@
 using UnityEngine;
-using UnityEngine.XR.Interaction.Toolkit.Locomotion.Movement;
-using UnityEngine.XR.Interaction.Toolkit.Locomotion.Turning;
-using UnityEngine.XR.Interaction.Toolkit.Locomotion.Teleportation;
+using UnityEngine.Events;
+using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.Inputs.Readers;
+using UnityEngine.XR.Interaction.Toolkit.Locomotion; // Added for LocomotionProvider
+using UnityEngine.XR.Interaction.Toolkit.Locomotion.Movement;
+using UnityEngine.XR.Interaction.Toolkit.Locomotion.Teleportation;
+using UnityEngine.XR.Interaction.Toolkit.Locomotion.Turning;
+
+
 
 public enum TurnType { Continuous, Snap, None }
 public enum MoveType { Continuous, Teleport, None }
 public enum LocomotionHand { Left, Right, Both }
 
-
-
-
 public class PlayerMovement : MonoBehaviour
 {
+    [System.Serializable]
+    public class MovementEvents
+    {
+        public UnityEvent onTeleport = new();
+        public UnityEvent onSnapTurn = new();
+    }
+
+    [Header("Movement Events")]
+    public MovementEvents events = new MovementEvents();
+
     [Header("Dependencies")]
     [SerializeField] private ContinuousMoveProvider continuousMove;
     [SerializeField] private TeleportationProvider teleportProvider;
@@ -25,17 +37,14 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float moveSpeed = 3f;
     [SerializeField] private float teleportDistance = 1.5f;
 
-
     [Header("Turning Settings")]
     [SerializeField] private TurnType turnMode = TurnType.Snap;
     [SerializeField] private LocomotionHand turnHand = LocomotionHand.Right;
     [SerializeField] private float continuousTurnSpeed = 60f;
     [SerializeField] private float snapTurnAmount = 45f;
 
-
     public float CurrentMoveSpeed => moveSpeed;
     public MoveType CurrentLocomotion => moveMode;
-
 
     private void Awake()
     {
@@ -46,6 +55,23 @@ public class PlayerMovement : MonoBehaviour
     {
         UpdateSettings();
     }
+
+    private void OnEnable()
+    {
+        // Replaced endLocomotion with locomotionEnded
+        if (teleportProvider != null) teleportProvider.locomotionEnded += OnTeleportEnd;
+        if (snapTurn != null) snapTurn.locomotionEnded += OnSnapTurnEnd;
+    }
+
+    private void OnDisable()
+    {
+        if (teleportProvider != null) teleportProvider.locomotionEnded -= OnTeleportEnd;
+        if (snapTurn != null) snapTurn.locomotionEnded -= OnSnapTurnEnd;
+    }
+
+    // XRI 3.0+ passes LocomotionProvider instead of LocomotionSystem
+    private void OnTeleportEnd(LocomotionProvider _) => events.onTeleport?.Invoke();
+    private void OnSnapTurnEnd(LocomotionProvider _) => events.onSnapTurn?.Invoke();
 
 #if UNITY_EDITOR
     private void OnValidate()
@@ -69,7 +95,6 @@ public class PlayerMovement : MonoBehaviour
 
     public void UpdateSettings()
     {
-
         SetMoveMode(moveMode);
         SetMoveSpeed(moveSpeed);
         SetTeleportDistance(teleportDistance);
@@ -196,4 +221,3 @@ public class PlayerMovement : MonoBehaviour
         player.RightHand.SetTeleportActive(enableRightRay);
     }
 }
-
