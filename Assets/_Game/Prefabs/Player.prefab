@@ -214,6 +214,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 657184242539281764, guid: d6878e1999eb4b44a9f5a263af86c185, type: 3}
+      propertyPath: m_Parameters.widthMultiplier
+      value: 0.01
+      objectReference: {fileID: 0}
     - target: {fileID: 657184242539281767, guid: d6878e1999eb4b44a9f5a263af86c185, type: 3}
       propertyPath: m_TagString
       value: TeleportInteractor
@@ -224,7 +228,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 810019319561094050, guid: d6878e1999eb4b44a9f5a263af86c185, type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 810019319561094050, guid: d6878e1999eb4b44a9f5a263af86c185, type: 3}
       propertyPath: m_MoveSpeed
@@ -240,7 +244,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1250917948334917516, guid: d6878e1999eb4b44a9f5a263af86c185, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1800725127586568702, guid: d6878e1999eb4b44a9f5a263af86c185, type: 3}
       propertyPath: m_IsActive
@@ -289,6 +293,10 @@ PrefabInstance:
     - target: {fileID: 2218496723442559054, guid: d6878e1999eb4b44a9f5a263af86c185, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 2945826935290517885, guid: d6878e1999eb4b44a9f5a263af86c185, type: 3}
+      propertyPath: m_Parameters.widthMultiplier
+      value: 0.01
       objectReference: {fileID: 0}
     - target: {fileID: 2945826935290517886, guid: d6878e1999eb4b44a9f5a263af86c185, type: 3}
       propertyPath: m_TagString
@@ -398,7 +406,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 1464948731929041043}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 01f69dc1cb084aa42b2f2f8cd87bc770, type: 3}
   m_Name: 
@@ -447,11 +455,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8426ba40e9cce7b47b768682671032fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onTeleport:
+    m_PersistentCalls:
+      m_Calls: []
+  onSnapTurn:
+    m_PersistentCalls:
+      m_Calls: []
   continuousMove: {fileID: 2263427542800046897}
   teleportProvider: {fileID: 362729037357113119}
   continuousTurn: {fileID: 4952444059312626407}
   snapTurn: {fileID: 8697304732584359163}
-  moveMode: 0
+  moveMode: 1
   moveHand: 0
   moveSpeed: 1.5
   teleportDistance: 1
@@ -471,6 +485,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d9d37520608dfa489e6eb24790048b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onObjectGrabbed:
+    m_PersistentCalls:
+      m_Calls: []
+  onObjectReleased:
+    m_PersistentCalls:
+      m_Calls: []
+  onHoverEnter:
+    m_PersistentCalls:
+      m_Calls: []
   grabHand: 1
   attachMode: 1
   grabRayDistance: 4
@@ -565,7 +588,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 1464948731929041043}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9b1e8c997df241c1a67045eeac79b41b, type: 3}
   m_Name: 
