@@ -19,7 +19,7 @@ public static class AudioPresetCreator
 
         if (lastCreated != null)
         {
-            // Automatically select the last created preset so you can edit volume/pitch immediately
+            // Automatically select the last created preset so you can edit immediately
             Selection.activeObject = lastCreated;
         }
 
@@ -40,7 +40,12 @@ public static class AudioPresetCreator
     private static Object CreateAsset(AudioClip clip)
     {
         AudioPreset newPreset = ScriptableObject.CreateInstance<AudioPreset>();
-        newPreset.clip = clip;
+
+        // --- UPDATED ASSIGNMENTS ---
+        newPreset.clipMode = ClipMode.Single;
+        newPreset.singleClip = clip;
+        // ---------------------------
+
         newPreset.volume = 1.0f;
         newPreset.pitch = 1.0f;
         newPreset.pitchRandomness = 0.05f;
@@ -49,7 +54,6 @@ public static class AudioPresetCreator
         string directory = Path.GetDirectoryName(clipPath);
         string clipName = Path.GetFileNameWithoutExtension(clipPath);
 
-        // Removed "_Preset" so the filename matches the clip exactly
         string newPath = Path.Combine(directory, $"{clipName}.asset");
         newPath = AssetDatabase.GenerateUniqueAssetPath(newPath);
 

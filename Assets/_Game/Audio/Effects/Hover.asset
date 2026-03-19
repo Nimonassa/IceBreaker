@@ -10,12 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: eb90da0f3c04339449315ac0620bef4a, type: 3}
-  m_Name: SnapTurn
+  m_Name: Hover
   m_EditorClassIdentifier: Assembly-CSharp::AudioPreset
   clipMode: 0
-  singleClip: {fileID: 8300000, guid: e566b477d6fcb6140a92fda5e1ba895e, type: 3}
-  multipleClips: []
+  singleClip: {fileID: 8300000, guid: 5c2b0901693fc6e478d7224ceb32ba0c, type: 3}
+  multipleClips:
+  - {fileID: 8300000, guid: 5c2b0901693fc6e478d7224ceb32ba0c, type: 3}
   playMode: 0
-  volume: 0.585
+  volume: 1
   pitch: 1
-  pitchRandomness: 0.0246
+  pitchRandomness: 0.05

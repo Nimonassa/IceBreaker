@@ -7,25 +7,50 @@ public class AudioData
     [Range(0f, 1f)] public float volume = 1.0f;
 }
 
-
 public class PlayerAudio : MonoBehaviour
 {
     [Header("Dependencies")]
     [SerializeField] private PlayerMovement movement;
     [SerializeField] private PlayerGrabbing grabbing;
 
-    [Header("Audio Source")]
-    [SerializeField] private AudioSource source;
 
-    [Space(20)]
+    [Header("Audio Source")]
+    [SerializeField] private AudioSource earSource;
+    [SerializeField] private AudioSource footSource;
+
+
     [Header("Movement Audio")]
     [SerializeField] private AudioPreset teleport;
     [SerializeField] private AudioPreset snapTurn;
+    [SerializeField] private AudioPreset footstep;
+    [SerializeField] private float stepDistance = 1.6f; // Average distance between steps
+    [SerializeField, Range(0f, 1f)] private float stepDistanceVariance = 0.2f; // Random variance added/subtracted per step
+
 
     [Header("Interaction Audio")]
     [SerializeField] private AudioPreset grab;
     [SerializeField] private AudioPreset drop;
     [SerializeField] private AudioPreset hover;
+
+    private Vector3 _lastPosition;
+    private float _distanceAccumulator;
+    private float _currentTargetDistance; // The actual distance required for the *next* step
+
+    private void Start()
+    {
+        if (movement != null)
+        {
+            _lastPosition = movement.transform.position;
+        }
+
+        // Initialize the very first step target
+        CalculateNextStepTarget();
+    }
+
+    private void Update()
+    {
+        HandleContinuousFootsteps();
+    }
 
     private void Reset()
     {
@@ -65,26 +90,56 @@ public class PlayerAudio : MonoBehaviour
         }
     }
 
+    private void HandleContinuousFootsteps()
+    {
+        if (movement.CurrentLocomotion != MoveType.Continuous)
+            return;
+
+        float distanceMoved = Vector3.Distance(movement.transform.position, _lastPosition);
+        _lastPosition = movement.transform.position;
+        _distanceAccumulator += distanceMoved;
+
+        if (_distanceAccumulator >= _currentTargetDistance)
+        {
+            _distanceAccumulator = 0f;
+            CalculateNextStepTarget(); 
+            footstep?.Play(earSource);
+        }
+    }
+
+    private void CalculateNextStepTarget()
+    {
+        _currentTargetDistance = stepDistance + Random.Range(-stepDistanceVariance, stepDistanceVariance);
+        _currentTargetDistance = Mathf.Max(0.1f, _currentTargetDistance);
+    }
+
     private void PlayTeleport()
     {
-        teleport?.Play(source);
+        Debug.Log("Play Teleport!");
+        teleport?.Play(earSource);
     }
+
     private void PlaySnapTurn()
     {
-        snapTurn?.Play(source);
+        Debug.Log("Play Snap Turn!");
+        snapTurn?.Play(earSource);
     }
 
     private void PlayGrab(GameObject target)
     {
-        grab?.Play(source);
+        Debug.Log("Play Grab!");
+        grab?.Play(earSource);
     }
+
     private void PlayDrop(GameObject target)
     {
-        drop?.Play(source);
+        Debug.Log("Play Drop!");
+        drop?.Play(earSource);
     }
 
     private void PlayHover()
     {
-        hover?.Play(source);
+        Debug.Log("Play Hover!");
+        hover?.Play(earSource);
     }
 }

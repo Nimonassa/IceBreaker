@@ -12,7 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb90da0f3c04339449315ac0620bef4a, type: 3}
   m_Name: Teleport
   m_EditorClassIdentifier: Assembly-CSharp::AudioPreset
-  clip: {fileID: 8300000, guid: 4155d24e927b3f74e9f871290de209a0, type: 3}
+  clipMode: 0
+  singleClip: {fileID: 8300000, guid: 4155d24e927b3f74e9f871290de209a0, type: 3}
+  multipleClips: []
+  playMode: 0
   volume: 0.105
   pitch: 1
   pitchRandomness: 0.0253
