@@ -53,4 +53,10 @@ public class AudioPreset : ScriptableObject
     {
         advanced = new AdvancedFilterSettings();
     }
+
+    public void LoadFromTemplate(AdvancedFilterSettings templateSettings)
+    {
+        string json = JsonUtility.ToJson(templateSettings);
+        advanced = JsonUtility.FromJson<AdvancedFilterSettings>(json);
+    }
 }
