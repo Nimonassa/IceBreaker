@@ -1,111 +1,118 @@
+
 using UnityEngine;
 
-[RequireComponent(typeof(AudioSource))]
 public class AudioPlayer : MonoBehaviour
 {
-    private AudioSource source;
-    private AudioLowPassFilter lowPass;
-    private AudioHighPassFilter highPass;
-    private AudioDistortionFilter distortion;
-    private AudioEchoFilter echo;
-    
-    private AudioPreset currentPreset;
-    private int currentIndex = 0;
+    [SerializeField, HideInInspector] private AudioRolloffMode lastRolloffMode = AudioRolloffMode.Logarithmic;
+    private AudioPreset _currentPreset;
+    private int _currentIndex = 0;
 
-    private void Awake()
-    {
-        source = GetComponent<AudioSource>();
-        source.playOnAwake = false;
+    [Header("Settings")]
+    public float volume = 1.0f;
+    public float pitch = 1.0f;
+    public float spatialBlend = 1.0f;
 
-        lowPass = GetOrAddFilter<AudioLowPassFilter>();
-        highPass = GetOrAddFilter<AudioHighPassFilter>();
-        distortion = GetOrAddFilter<AudioDistortionFilter>();
-        echo = GetOrAddFilter<AudioEchoFilter>();
-        
-        echo.decayRatio = 0f; 
-    }
+    [Header("3D Sound Settings")]
+    public AudioRolloffMode rolloffMode = AudioRolloffMode.Logarithmic;
+    public float minDistance = 1.0f;
+    public float maxDistance = 50.0f;
 
-    private T GetOrAddFilter<T>() where T : Component
-    {
-        T filter = GetComponent<T>();
-        if (filter == null) filter = gameObject.AddComponent<T>();
-        return filter;
-    }
+    [Header("Volume Rolloff Graph")]
+    public AnimationCurve rolloffCurve = new AnimationCurve();
 
     public void Play(AudioPreset preset)
     {
         if (preset == null || preset.clips.Length == 0) return;
 
-        if (preset != currentPreset)
+        if (preset != _currentPreset)
         {
-            currentPreset = preset;
-            currentIndex = 0;
+            _currentPreset = preset;
+            _currentIndex = 0;
         }
 
         AudioClip clipToPlay = (preset.playMode == PlayMode.Random)
             ? preset.clips[Random.Range(0, preset.clips.Length)]
-            : preset.clips[currentIndex];
+            : preset.clips[_currentIndex];
 
         if (preset.playMode == PlayMode.Sequential)
-            currentIndex = (currentIndex + 1) % preset.clips.Length;
+            _currentIndex = (_currentIndex + 1) % preset.clips.Length;
 
-        PlaySingleStrike(clipToPlay, preset);
+        AudioPool.Get().Play(clipToPlay, this, preset);
     }
 
 
-    private void PlaySingleStrike(AudioClip clip, AudioPreset preset)
+    private void OnValidate()
     {
-        // Base modifications
-        source.pitch = preset.pitch + Random.Range(-preset.pitchRandomness, preset.pitchRandomness);
+        if (rolloffMode != lastRolloffMode)
+        {
+            switch (rolloffMode)
+            {
+                case AudioRolloffMode.Custom: GenerateCustomCurve(); break;
+                case AudioRolloffMode.Logarithmic: GenerateLogarithmicCurve(); break;
+                case AudioRolloffMode.Linear: GenerateLinearCurve(); break;
+            }
+            lastRolloffMode = rolloffMode;
+        }
+
+        if (rolloffMode == AudioRolloffMode.Custom) minDistance = 0f;
+        else if (minDistance < 0.001f) minDistance = 0.001f;
+
+        if (maxDistance <= minDistance) maxDistance = minDistance + 0.1f;
         
-        float finalVolume = preset.volume + Random.Range(-preset.volumeRandomness, preset.volumeRandomness);
-        finalVolume = Mathf.Clamp01(finalVolume);
-
-        // 1. Panning 
-        if (preset.advanced.enablePanRandomness)
+        if (rolloffMode != AudioRolloffMode.Custom)
         {
-            source.panStereo = Random.Range(-preset.advanced.panRandomness, preset.advanced.panRandomness);
+            if (rolloffMode == AudioRolloffMode.Logarithmic) GenerateLogarithmicCurve();
+            else GenerateLinearCurve();
         }
-        else 
-        {
-            source.panStereo = 0f; // Reset to center if disabled
-        }
-
-        // 2. Low Pass Filter
-        if (preset.advanced.enableLowPass)
-        {
-            lowPass.enabled = true;
-            lowPass.cutoffFrequency = Mathf.Clamp(preset.advanced.lowPassCutoff + Random.Range(-preset.advanced.lowPassRandomness, preset.advanced.lowPassRandomness), 10f, 22000f);
-        }
-        else lowPass.enabled = false;
-
-        // 3. High Pass Filter
-        if (preset.advanced.enableHighPass)
-        {
-            highPass.enabled = true;
-            highPass.cutoffFrequency = Mathf.Clamp(preset.advanced.highPassCutoff + Random.Range(-preset.advanced.highPassRandomness, preset.advanced.highPassRandomness), 10f, 22000f);
-        }
-        else highPass.enabled = false;
-
-        // 4. Distortion Filter
-        if (preset.advanced.enableDistortion)
-        {
-            distortion.enabled = true;
-            distortion.distortionLevel = Mathf.Clamp01(preset.advanced.distortionLevel + Random.Range(-preset.advanced.distortionRandomness, preset.advanced.distortionRandomness));
-        }
-        else distortion.enabled = false;
-
-        // 5. Echo Filter
-        if (preset.advanced.enableEcho)
-        {
-            echo.enabled = true;
-            echo.delay = Mathf.Clamp(preset.advanced.microEchoDelay + Random.Range(-preset.advanced.microEchoRandomness, preset.advanced.microEchoRandomness), 1f, 300f);
-            echo.wetMix = preset.advanced.microEchoMix;
-        }
-        else echo.enabled = false;
-
-
-        source.clip = clip; 
-        source.PlayOneShot(clip, finalVolume);
     }
+
+    private void GenerateCustomCurve()
+    {
+        rolloffCurve.keys = new Keyframe[0];
+        rolloffCurve.AddKey(new Keyframe(0f, 1f));
+        rolloffCurve.AddKey(new Keyframe(1f, 0f));
+    }
+
+    private void GenerateLinearCurve()
+    {
+        rolloffCurve.keys = new Keyframe[0];
+        float normMin = minDistance / maxDistance;
+        float slope = -1f / (1f - normMin); // Normalized slope
+        rolloffCurve.AddKey(new Keyframe(normMin, 1f, 0f, slope));
+        rolloffCurve.AddKey(new Keyframe(1f, 0f, slope, 0f));
+    }
+
+    private void GenerateLogarithmicCurve()
+    {
+        rolloffCurve.keys = new Keyframe[0];
+        float safeMin = Mathf.Max(minDistance, 0.001f);
+        float ratio = maxDistance / safeMin;
+        int steps = Mathf.CeilToInt(Mathf.Log(ratio, 2f));
+        float multiplier = Mathf.Pow(ratio, 1f / steps);
+
+        for (int i = 0; i <= steps; i++)
+        {
+            float dist = safeMin * Mathf.Pow(multiplier, i);
+            if (i == steps) dist = maxDistance;
+
+            float vol = safeMin / dist;
+            float t = dist / maxDistance; // Normalized time
+
+            // Calculate normalized tangent: f'(t) = -min / (t^2 * max)
+            float slope = -safeMin / (t * t * maxDistance);
+            
+            rolloffCurve.AddKey(new Keyframe(t, vol, slope, slope));
+        }
+    }
+
+
+#if UNITY_EDITOR
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = new Color(1f, 0.92f, 0.016f, 0.5f);
+        Gizmos.DrawWireSphere(transform.position, minDistance);
+        Gizmos.color = new Color(1f, 0.92f, 0.016f, 0.2f);
+        Gizmos.DrawWireSphere(transform.position, maxDistance);
+    }
+#endif
 }

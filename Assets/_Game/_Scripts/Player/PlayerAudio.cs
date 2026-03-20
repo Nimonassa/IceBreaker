@@ -23,7 +23,7 @@ public class PlayerAudio : MonoBehaviour
     [SerializeField] private AudioPreset teleport;
     [SerializeField] private AudioPreset snapTurn;
     [SerializeField] private AudioPreset footstep;
-    [SerializeField] private float stepDistance = 0.75f; 
+    [SerializeField] private float stepDistance = 0.75f;
     [SerializeField, Range(0f, 1f)] private float stepDistanceVariance = 0.05f;
 
 
@@ -97,18 +97,17 @@ public class PlayerAudio : MonoBehaviour
 
         if (!movement.IsGrounded())
         {
-            Debug.Log("player is not grounded!");
             _lastPosition = movement.transform.position;
             return;
         }
-        
+
 
         Vector3 currentPos = movement.transform.position;
         Vector3 flatCurrent = new Vector3(currentPos.x, 0, currentPos.z);
         Vector3 flatLast = new Vector3(_lastPosition.x, 0, _lastPosition.z);
-        
+
         float distanceMoved = Vector3.Distance(flatCurrent, flatLast);
-        
+
         _lastPosition = currentPos;
         _distanceAccumulator += distanceMoved;
 
@@ -128,31 +127,38 @@ public class PlayerAudio : MonoBehaviour
 
     private void PlayFootSteps()
     {
+        Debug.Log("Play footstep!");
         feet?.Play(footstep);
     }
 
     private void PlayTeleport()
     {
+        Debug.Log("Play teleport!");
         ears?.Play(teleport);
     }
 
     private void PlaySnapTurn()
     {
+        Debug.Log("Play snapturn!");
         ears?.Play(snapTurn);
     }
 
     private void PlayGrab(GameObject target)
     {
+        Debug.Log("Play grab!");
         ears?.Play(grab);
     }
 
     private void PlayDrop(GameObject target)
     {
+        Debug.Log("Play drop!");
         ears?.Play(drop);
     }
 
     private void PlayHover()
     {
+        Debug.Log("Play hover!");
         ears?.Play(hover);
     }
 }
+
