@@ -10,115 +10,139 @@ public class AdvancedFilterSettingsDrawer : PropertyDrawer
     private List<AdvancedFilterPreset> availablePresets;
     private bool isInitialized = false;
 
-    private void Initialize(string[] guids)
+    private void Initialize()
     {
+        if (!AssetDatabase.IsValidFolder(searchFolder)) return;
+
+        string[] guids = AssetDatabase.FindAssets("t:AdvancedFilterPreset", new[] { searchFolder });
         availablePresets = new List<AdvancedFilterPreset>();
+
         foreach (string guid in guids)
         {
             string path = AssetDatabase.GUIDToAssetPath(guid);
             var preset = AssetDatabase.LoadAssetAtPath<AdvancedFilterPreset>(path);
+            // Only add if the asset is valid and NOT destroyed
             if (preset != null) availablePresets.Add(preset);
         }
 
         // Sorting: "Default" first, then alphabetical
         availablePresets.Sort((a, b) =>
         {
+            if (a == null || b == null) return 0;
             string nameA = a.name.ToLower();
             string nameB = b.name.ToLower();
             if (nameA == "default") return -1;
             if (nameB == "default") return 1;
             return string.Compare(nameA, nameB);
         });
+
         isInitialized = true;
     }
 
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
+        // 1. REFRESH CHECK: Detect destroyed or added/removed templates
         string[] currentGuids = AssetDatabase.FindAssets("t:AdvancedFilterPreset", new[] { searchFolder });
         bool needsRefresh = !isInitialized || availablePresets == null || currentGuids.Length != availablePresets.Count;
 
         if (!needsRefresh)
         {
             for (int i = 0; i < availablePresets.Count; i++)
+            {
+                // Check for "Fake Nulls" (Assets destroyed by overwriting files)
                 if (availablePresets[i] == null) { needsRefresh = true; break; }
+            }
         }
 
-        if (needsRefresh) Initialize(currentGuids);
+        if (needsRefresh) Initialize();
 
+        // 2. THE STACK FIX: Use BeginProperty at the start
         EditorGUI.BeginProperty(position, label, property);
 
-        Rect foldoutRect = new Rect(position.x, position.y, position.width, EditorGUIUtility.singleLineHeight);
-        property.isExpanded = EditorGUI.Foldout(foldoutRect, property.isExpanded, label, true);
-
-        if (property.isExpanded)
+        // Wrap everything in try...finally to ensure EndProperty is ALWAYS called, 
+        // preventing the "Stack empty" error even if a crash occurs.
+        try
         {
-            EditorGUI.indentLevel++;
+            Rect foldoutRect = new Rect(position.x, position.y, position.width, EditorGUIUtility.singleLineHeight);
+            property.isExpanded = EditorGUI.Foldout(foldoutRect, property.isExpanded, label, true);
 
-            int currentIndex = GetMatchingTemplateIndex(property);
-
-            // --- THE CLEAN BUTTON FIX ---
-            // On the main button, we only show the name (no number, no checkmark)
-            string displayLabel = "Custom (Modified)";
-            if (currentIndex != -1 && availablePresets[currentIndex] != null)
+            if (property.isExpanded)
             {
-                displayLabel = GetHumanReadableName(availablePresets[currentIndex].name);
-            }
+                EditorGUI.indentLevel++;
 
-            Rect dropdownRect = new Rect(position.x, position.y + EditorGUIUtility.singleLineHeight + 2, position.width, EditorGUIUtility.singleLineHeight);
-            EditorGUI.LabelField(new Rect(dropdownRect.x, dropdownRect.y, EditorGUIUtility.labelWidth, dropdownRect.height), "Active Template");
+                int currentIndex = GetMatchingTemplateIndex(property);
 
-            Rect buttonRect = new Rect(dropdownRect.x + EditorGUIUtility.labelWidth, dropdownRect.y, dropdownRect.width - EditorGUIUtility.labelWidth, dropdownRect.height);
-
-            if (EditorGUI.DropdownButton(buttonRect, new GUIContent(displayLabel), FocusType.Keyboard))
-            {
-                GenericMenu menu = new GenericMenu();
-                if (availablePresets.Count == 0) menu.AddDisabledItem(new GUIContent("No templates found"));
-                else
+                // Button label: Clean name (No numbers/checkmarks)
+                string displayLabel = "Custom (Modified)";
+                if (currentIndex != -1 && currentIndex < availablePresets.Count && availablePresets[currentIndex] != null)
                 {
-                    SerializedObject so = property.serializedObject;
-                    string propPath = property.propertyPath;
-
-                    for (int i = 0; i < availablePresets.Count; i++)
-                    {
-                        if (availablePresets[i] == null) continue;
-
-                        // --- THE LAYERED MENU FIX ---
-                        // We keep the numbering and checkmarks ONLY inside this menu block
-                        string menuLabel = $"{i + 1}: {GetHumanReadableName(availablePresets[i].name)}";
-                        int index = i;
-
-                        menu.AddItem(new GUIContent(menuLabel), currentIndex == i, () =>
-                        {
-                            ApplyTemplateFromMenu(so, propPath, availablePresets[index]);
-                        });
-                    }
+                    displayLabel = GetHumanReadableName(availablePresets[currentIndex].name);
                 }
-                menu.DropDown(buttonRect);
+
+                Rect dropdownRect = new Rect(position.x, position.y + EditorGUIUtility.singleLineHeight + 2, position.width, EditorGUIUtility.singleLineHeight);
+                EditorGUI.LabelField(new Rect(dropdownRect.x, dropdownRect.y, EditorGUIUtility.labelWidth, dropdownRect.height), "Active Template");
+
+                Rect buttonRect = new Rect(dropdownRect.x + EditorGUIUtility.labelWidth, dropdownRect.y, dropdownRect.width - EditorGUIUtility.labelWidth, dropdownRect.height);
+
+                if (EditorGUI.DropdownButton(buttonRect, new GUIContent(displayLabel), FocusType.Keyboard))
+                {
+                    GenericMenu menu = new GenericMenu();
+                    if (availablePresets == null || availablePresets.Count == 0)
+                    {
+                        menu.AddDisabledItem(new GUIContent("No templates found"));
+                    }
+                    else
+                    {
+                        SerializedObject so = property.serializedObject;
+                        string propPath = property.propertyPath;
+
+                        for (int i = 0; i < availablePresets.Count; i++)
+                        {
+                            if (availablePresets[i] == null) continue;
+
+                            // Menu labels: Numbered and Checkmarked
+                            string menuLabel = $"{i + 1}: {GetHumanReadableName(availablePresets[i].name)}";
+                            int index = i;
+
+                            menu.AddItem(new GUIContent(menuLabel), currentIndex == i, () =>
+                            {
+                                ApplyTemplateFromMenu(so, propPath, availablePresets[index]);
+                            });
+                        }
+                    }
+                    menu.DropDown(buttonRect);
+                }
+
+                // Draw children properties (sliders/bools)
+                float currentY = dropdownRect.y + EditorGUIUtility.singleLineHeight + 6;
+                SerializedProperty iterator = property.Copy();
+                SerializedProperty endProperty = property.GetEndProperty();
+                bool enterChildren = true;
+
+                while (iterator.NextVisible(enterChildren) && !SerializedProperty.EqualContents(iterator, endProperty))
+                {
+                    enterChildren = false;
+                    float propHeight = EditorGUI.GetPropertyHeight(iterator, true);
+                    EditorGUI.PropertyField(new Rect(position.x, currentY, position.width, propHeight), iterator, true);
+                    currentY += propHeight + EditorGUIUtility.standardVerticalSpacing;
+                }
+
+                // Save Button
+                Rect saveBtnRect = new Rect(position.x, currentY, position.width, EditorGUIUtility.singleLineHeight);
+                if (GUI.Button(saveBtnRect, "Save As New Template..."))
+                {
+                    SaveCurrentAsTemplate(property);
+                }
+
+                EditorGUI.indentLevel--;
             }
-
-            // Draw Children
-            float currentY = dropdownRect.y + EditorGUIUtility.singleLineHeight + 6;
-            SerializedProperty iterator = property.Copy();
-            SerializedProperty endProperty = property.GetEndProperty();
-            bool enterChildren = true;
-
-            while (iterator.NextVisible(enterChildren) && !SerializedProperty.EqualContents(iterator, endProperty))
-            {
-                enterChildren = false;
-                float propHeight = EditorGUI.GetPropertyHeight(iterator, true);
-                EditorGUI.PropertyField(new Rect(position.x, currentY, position.width, propHeight), iterator, true);
-                currentY += propHeight + EditorGUIUtility.standardVerticalSpacing;
-            }
-
-            if (GUI.Button(new Rect(position.x, currentY, position.width, EditorGUIUtility.singleLineHeight), "Save As New Template..."))
-                SaveCurrentAsTemplate(property);
-
-            EditorGUI.indentLevel--;
         }
-        EditorGUI.EndProperty();
+        finally
+        {
+            // 3. THE STACK FIX: EndProperty is now guaranteed to run
+            EditorGUI.EndProperty();
+        }
     }
-
-    // [Rest of helper methods stay the same: GetPropertyHeight, SaveCurrentAsTemplate, etc.]
 
     public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
     {
@@ -141,15 +165,26 @@ public class AdvancedFilterSettingsDrawer : PropertyDrawer
         for (int i = 0; i < availablePresets.Count; i++)
         {
             if (availablePresets[i] == null) continue;
-            if (DynamicCompareProperties(property, new SerializedObject(availablePresets[i]).FindProperty("settings"))) return i;
+
+            // Re-wrap in SerializedObject safely
+            using (SerializedObject templateSO = new SerializedObject(availablePresets[i]))
+            {
+                if (DynamicCompareProperties(property, templateSO.FindProperty("settings"))) return i;
+            }
         }
         return -1;
     }
 
     private void ApplyTemplateFromMenu(SerializedObject activeTargetSO, string propPath, AdvancedFilterPreset templateAsset)
     {
+        if (templateAsset == null) return;
         activeTargetSO.Update();
-        DynamicCopyProperties(new SerializedObject(templateAsset).FindProperty("settings"), activeTargetSO.FindProperty(propPath));
+
+        using (SerializedObject templateSO = new SerializedObject(templateAsset))
+        {
+            DynamicCopyProperties(templateSO.FindProperty("settings"), activeTargetSO.FindProperty(propPath));
+        }
+
         activeTargetSO.ApplyModifiedProperties();
     }
 
@@ -157,15 +192,26 @@ public class AdvancedFilterSettingsDrawer : PropertyDrawer
     {
         string path = EditorUtility.SaveFilePanelInProject("Save Filter Template", "NewFilterTemplate", "asset", "", searchFolder);
         if (string.IsNullOrEmpty(path)) return;
-        var newPreset = ScriptableObject.CreateInstance<AdvancedFilterPreset>();
+
+        AdvancedFilterPreset newPreset = ScriptableObject.CreateInstance<AdvancedFilterPreset>();
         newPreset.settings = new AdvancedFilterSettings();
+
+        // This overwrites the existing asset, destroying the old one
         AssetDatabase.CreateAsset(newPreset, path);
-        var so = new SerializedObject(newPreset);
-        DynamicCopyProperties(property, so.FindProperty("settings"));
-        so.ApplyModifiedProperties();
+
+        using (SerializedObject so = new SerializedObject(newPreset))
+        {
+            DynamicCopyProperties(property, so.FindProperty("settings"));
+            so.ApplyModifiedProperties();
+        }
+
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
+
+        // Force an immediate reload next frame
         isInitialized = false;
+
+        Debug.Log($"Template saved to: {path}");
     }
 
     private string GetHumanReadableName(string rawName)
