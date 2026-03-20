@@ -23,15 +23,15 @@ MonoBehaviour:
     enablePanRandomness: 0
     panRandomness: 0.05
     enableLowPass: 0
-    lowPassCutoff: 20000
+    lowPassCutoff: 4950
     lowPassRandomness: 1500
     enableHighPass: 0
-    highPassCutoff: 50
+    highPassCutoff: 18335
     highPassRandomness: 30
     enableDistortion: 0
-    distortionLevel: 0.02
-    distortionRandomness: 0.02
+    distortionLevel: 0.659
+    distortionRandomness: 0.0341
     enableEcho: 0
-    microEchoDelay: 12
+    microEchoDelay: 214
     microEchoRandomness: 5
     microEchoMix: 0.15

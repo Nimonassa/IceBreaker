@@ -16,9 +16,9 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 4155d24e927b3f74e9f871290de209a0, type: 3}
   playMode: 0
   volume: 0.105
-  volumeRandomness: 0.0043
-  pitch: 1
-  pitchRandomness: 0.007
+  volumeRandomness: 0.008
+  pitch: 1.08
+  pitchRandomness: 0.016
   advanced:
     enablePanRandomness: 0
     panRandomness: 0.05

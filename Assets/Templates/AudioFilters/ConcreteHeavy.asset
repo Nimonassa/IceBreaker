@@ -16,7 +16,7 @@ MonoBehaviour:
     enablePanRandomness: 1
     panRandomness: 0.05
     enableLowPass: 0
-    lowPassCutoff: 18000
+    lowPassCutoff: 18654
     lowPassRandomness: 2000
     enableHighPass: 1
     highPassCutoff: 30
