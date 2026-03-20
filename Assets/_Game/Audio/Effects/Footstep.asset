@@ -15,23 +15,23 @@ MonoBehaviour:
   clips:
   - {fileID: 8300000, guid: 3f686e58f2d413546a6501bb283cc2e3, type: 3}
   playMode: 0
-  volume: 0.208
+  volume: 0.027
   volumeRandomness: 0.009
-  pitch: 1.37
-  pitchRandomness: 0.073
+  pitch: 1.58
+  pitchRandomness: 0.115
   advanced:
     enablePanRandomness: 1
     panRandomness: 0.05
-    enableLowPass: 1
-    lowPassCutoff: 12000
+    enableLowPass: 0
+    lowPassCutoff: 18654
     lowPassRandomness: 2000
     enableHighPass: 1
-    highPassCutoff: 150
-    highPassRandomness: 40
+    highPassCutoff: 30
+    highPassRandomness: 15
     enableDistortion: 1
-    distortionLevel: 0.08
-    distortionRandomness: 0.03
-    enableEcho: 0
-    microEchoDelay: 12
-    microEchoRandomness: 5
-    microEchoMix: 0.15
+    distortionLevel: 0.015
+    distortionRandomness: 0.01
+    enableEcho: 1
+    microEchoDelay: 7
+    microEchoRandomness: 2
+    microEchoMix: 0.1

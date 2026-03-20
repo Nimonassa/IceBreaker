@@ -4,6 +4,7 @@ using UnityEditor;
 [CustomEditor(typeof(AudioPreset))]
 public class AudioPresetEditor : Editor
 {
+    private int previewIndex = 0;
     private GameObject previewObject;
     private AudioSource cachedSource;
     private AudioLowPassFilter cachedLP;
@@ -139,8 +140,18 @@ public class AudioPresetEditor : Editor
 
         if (preset.clips == null || preset.clips.Length == 0) return;
 
-        cachedSource.clip = preset.clips[Random.Range(0, preset.clips.Length)];
+        if (preset.playMode == PlayMode.Sequential)
+        {
+            if (previewIndex >= preset.clips.Length) previewIndex = 0;
 
+            cachedSource.clip = preset.clips[previewIndex];
+            previewIndex = (previewIndex + 1) % preset.clips.Length;
+        }
+        else
+        {
+            cachedSource.clip = preset.clips[Random.Range(0, preset.clips.Length)];
+        }
+        
         // Roll new randomness
         curPitch = Random.Range(-preset.pitchRandomness, preset.pitchRandomness);
         curVol = Random.Range(-preset.volumeRandomness, preset.volumeRandomness);
