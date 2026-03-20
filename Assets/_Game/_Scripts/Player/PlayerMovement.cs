@@ -30,6 +30,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private TeleportationProvider teleportProvider;
     [SerializeField] private ContinuousTurnProvider continuousTurn;
     [SerializeField] private SnapTurnProvider snapTurn;
+    [SerializeField] private CharacterController characterController;
 
     [Header("Movement Settings")]
     [SerializeField] private MoveType moveMode = MoveType.Continuous;
@@ -45,6 +46,7 @@ public class PlayerMovement : MonoBehaviour
 
     public float CurrentMoveSpeed => moveSpeed;
     public MoveType CurrentLocomotion => moveMode;
+
 
     private void Awake()
     {
@@ -83,6 +85,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void InitComponents()
     {
+        if (characterController == null)
+            characterController = GetComponent<CharacterController>();
         if (continuousMove == null)
             continuousMove = GetComponentInChildren<ContinuousMoveProvider>(true);
         if (teleportProvider == null)
@@ -105,6 +109,22 @@ public class PlayerMovement : MonoBehaviour
         SetTurnHand(turnHand);
     }
 
+    public bool IsGrounded()
+    {
+        if (characterController == null)
+            return false;
+            
+        int ignoreRaycastLayer = LayerMask.NameToLayer("Ignore Raycast");
+        int layerMask = ~(1 << ignoreRaycastLayer);
+
+        Vector3 capsuleCenter = characterController.transform.TransformPoint(characterController.center);
+        Vector3 capsuleBottom = capsuleCenter + Vector3.down * (characterController.height * 0.5f);
+
+        float checkRadius = characterController.radius * 0.8f;
+        Vector3 sphereOrigin = capsuleBottom + Vector3.down * 0.05f;
+        return Physics.CheckSphere(sphereOrigin, checkRadius, layerMask, QueryTriggerInteraction.Ignore);
+    }
+    
     public void SetMoveSpeed(float speed)
     {
         moveSpeed = speed;

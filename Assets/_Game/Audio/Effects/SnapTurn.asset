@@ -12,10 +12,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb90da0f3c04339449315ac0620bef4a, type: 3}
   m_Name: SnapTurn
   m_EditorClassIdentifier: Assembly-CSharp::AudioPreset
-  clipMode: 0
-  singleClip: {fileID: 8300000, guid: e566b477d6fcb6140a92fda5e1ba895e, type: 3}
-  multipleClips: []
+  clips:
+  - {fileID: 8300000, guid: e566b477d6fcb6140a92fda5e1ba895e, type: 3}
   playMode: 0
   volume: 0.585
+  volumeRandomness: 0.0043
   pitch: 1
-  pitchRandomness: 0.0246
+  pitchRandomness: 0.007
+  advanced:
+    enablePanRandomness: 0
+    panRandomness: 0.05
+    enableLowPass: 0
+    lowPassCutoff: 20000
+    lowPassRandomness: 1500
+    enableHighPass: 0
+    highPassCutoff: 50
+    highPassRandomness: 30
+    enableDistortion: 0
+    distortionLevel: 0.02
+    distortionRandomness: 0.02
+    enableEcho: 0
+    microEchoDelay: 12
+    microEchoRandomness: 5
+    microEchoMix: 0.15

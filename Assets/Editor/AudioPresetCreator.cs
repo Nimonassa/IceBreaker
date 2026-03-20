@@ -19,13 +19,13 @@ public static class AudioPresetCreator
 
         if (lastCreated != null)
         {
-            // Automatically select the last created preset so you can edit immediately
             Selection.activeObject = lastCreated;
         }
 
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
     }
+
 
     [MenuItem("Assets/Create/Audio/Preset From Clip", true)]
     public static bool CreatePresetFromClipValidation()
@@ -41,10 +41,8 @@ public static class AudioPresetCreator
     {
         AudioPreset newPreset = ScriptableObject.CreateInstance<AudioPreset>();
 
-        // --- UPDATED ASSIGNMENTS ---
-        newPreset.clipMode = ClipMode.Single;
-        newPreset.singleClip = clip;
-        // ---------------------------
+        newPreset.clips = new AudioClip[] { clip };
+        newPreset.playMode = PlayMode.Sequential; 
 
         newPreset.volume = 1.0f;
         newPreset.pitch = 1.0f;

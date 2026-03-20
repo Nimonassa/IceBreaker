@@ -165,8 +165,8 @@ MonoBehaviour:
   teleport: {fileID: 11400000, guid: a0fe0622aa834644c94d3ab33741cbbf, type: 2}
   snapTurn: {fileID: 11400000, guid: e2d400bd3fc84fe4a8ed01bca46273be, type: 2}
   footstep: {fileID: 11400000, guid: 632a2f311c2d310469152b06608f8e73, type: 2}
-  stepDistance: 0.75
-  stepDistanceVariance: 0.05
+  stepDistance: 1
+  stepDistanceVariance: 0.289
   grab: {fileID: 0}
   drop: {fileID: 0}
   hover: {fileID: 11400000, guid: 936e97354e069c5458abdaaffeee18cd, type: 2}
@@ -472,7 +472,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 764807198242205918, guid: a2888cf8c7a57ef419cb9bb9fba08037, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.51
+      value: 1.567
       objectReference: {fileID: 0}
     - target: {fileID: 764807198242205918, guid: a2888cf8c7a57ef419cb9bb9fba08037, type: 3}
       propertyPath: m_LocalPosition.z
@@ -532,7 +532,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4952444059312626407, guid: a2888cf8c7a57ef419cb9bb9fba08037, type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5157134938022969255, guid: a2888cf8c7a57ef419cb9bb9fba08037, type: 3}
       propertyPath: m_SizeDelta.x
@@ -660,7 +660,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8436142590039981123, guid: a2888cf8c7a57ef419cb9bb9fba08037, type: 3}
       propertyPath: turnMode
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8436142590039981123, guid: a2888cf8c7a57ef419cb9bb9fba08037, type: 3}
       propertyPath: continuousTurnSpeed
@@ -668,7 +668,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8697304732584359163, guid: a2888cf8c7a57ef419cb9bb9fba08037, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -830,7 +830,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1207960410}
-  - component: {fileID: 1207960414}
+  - component: {fileID: 1207960412}
   - component: {fileID: 1207960411}
   m_Layer: 2
   m_Name: Audio Player (Feet)
@@ -866,7 +866,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb6ef1ebedcd85546b2d76f2197d2fad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AudioPlayer
---- !u!82 &1207960414
+--- !u!82 &1207960412
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -923,7 +923,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0.5
+      value: 0
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -972,7 +972,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1360472892}
-  - component: {fileID: 1360472896}
+  - component: {fileID: 1360472894}
   - component: {fileID: 1360472893}
   m_Layer: 2
   m_Name: Audio Player (Ears)
@@ -1008,7 +1008,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb6ef1ebedcd85546b2d76f2197d2fad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AudioPlayer
---- !u!82 &1360472896
+--- !u!82 &1360472894
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1065,7 +1065,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0.5
+      value: 0
       inSlope: 0
       outSlope: 0
       tangentMode: 0

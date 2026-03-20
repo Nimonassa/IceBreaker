@@ -14,17 +14,17 @@ public class PlayerAudio : MonoBehaviour
     [SerializeField] private PlayerGrabbing grabbing;
 
 
-    [Header("Audio Source")]
-    [SerializeField] private AudioSource earSource;
-    [SerializeField] private AudioSource footSource;
+    [Header("Audio Players")]
+    [SerializeField] private AudioPlayer ears;
+    [SerializeField] private AudioPlayer feet;
 
 
     [Header("Movement Audio")]
     [SerializeField] private AudioPreset teleport;
     [SerializeField] private AudioPreset snapTurn;
     [SerializeField] private AudioPreset footstep;
-    [SerializeField] private float stepDistance = 1.6f; // Average distance between steps
-    [SerializeField, Range(0f, 1f)] private float stepDistanceVariance = 0.2f; // Random variance added/subtracted per step
+    [SerializeField] private float stepDistance = 0.75f; 
+    [SerializeField, Range(0f, 1f)] private float stepDistanceVariance = 0.05f;
 
 
     [Header("Interaction Audio")]
@@ -34,7 +34,8 @@ public class PlayerAudio : MonoBehaviour
 
     private Vector3 _lastPosition;
     private float _distanceAccumulator;
-    private float _currentTargetDistance; // The actual distance required for the *next* step
+    private float _currentTargetDistance;
+
 
     private void Start()
     {
@@ -43,7 +44,6 @@ public class PlayerAudio : MonoBehaviour
             _lastPosition = movement.transform.position;
         }
 
-        // Initialize the very first step target
         CalculateNextStepTarget();
     }
 
@@ -95,15 +95,28 @@ public class PlayerAudio : MonoBehaviour
         if (movement.CurrentLocomotion != MoveType.Continuous)
             return;
 
-        float distanceMoved = Vector3.Distance(movement.transform.position, _lastPosition);
-        _lastPosition = movement.transform.position;
+        if (!movement.IsGrounded())
+        {
+            Debug.Log("player is not grounded!");
+            _lastPosition = movement.transform.position;
+            return;
+        }
+        
+
+        Vector3 currentPos = movement.transform.position;
+        Vector3 flatCurrent = new Vector3(currentPos.x, 0, currentPos.z);
+        Vector3 flatLast = new Vector3(_lastPosition.x, 0, _lastPosition.z);
+        
+        float distanceMoved = Vector3.Distance(flatCurrent, flatLast);
+        
+        _lastPosition = currentPos;
         _distanceAccumulator += distanceMoved;
 
         if (_distanceAccumulator >= _currentTargetDistance)
         {
             _distanceAccumulator = 0f;
-            CalculateNextStepTarget(); 
-            footstep?.Play(earSource);
+            CalculateNextStepTarget();
+            PlayFootSteps();
         }
     }
 
@@ -113,33 +126,33 @@ public class PlayerAudio : MonoBehaviour
         _currentTargetDistance = Mathf.Max(0.1f, _currentTargetDistance);
     }
 
+    private void PlayFootSteps()
+    {
+        feet?.Play(footstep);
+    }
+
     private void PlayTeleport()
     {
-        Debug.Log("Play Teleport!");
-        teleport?.Play(earSource);
+        ears?.Play(teleport);
     }
 
     private void PlaySnapTurn()
     {
-        Debug.Log("Play Snap Turn!");
-        snapTurn?.Play(earSource);
+        ears?.Play(snapTurn);
     }
 
     private void PlayGrab(GameObject target)
     {
-        Debug.Log("Play Grab!");
-        grab?.Play(earSource);
+        ears?.Play(grab);
     }
 
     private void PlayDrop(GameObject target)
     {
-        Debug.Log("Play Drop!");
-        drop?.Play(earSource);
+        ears?.Play(drop);
     }
 
     private void PlayHover()
     {
-        Debug.Log("Play Hover!");
-        hover?.Play(earSource);
+        ears?.Play(hover);
     }
 }
