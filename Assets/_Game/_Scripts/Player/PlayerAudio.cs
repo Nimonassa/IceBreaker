@@ -10,120 +10,74 @@ public class AudioData
 public class PlayerAudio : MonoBehaviour
 {
     [Header("Dependencies")]
-    [SerializeField] private PlayerMovement movement;
-    [SerializeField] private PlayerGrabbing grabbing;
-
+    [SerializeField] private PlayerMovement playerMovement;
+    [SerializeField] private PlayerGrabbing playerGrabbing;
+    [SerializeField] private PlayerFeet playerFeet;
 
     [Header("Audio Players")]
-    [SerializeField] private AudioPlayer ears;
+    [SerializeField] private AudioPlayer head;
     [SerializeField] private AudioPlayer feet;
-
 
     [Header("Movement Audio")]
     [SerializeField] private AudioPreset teleport;
     [SerializeField] private AudioPreset snapTurn;
     [SerializeField] private AudioPreset footstep;
-    [SerializeField] private float stepDistance = 0.75f;
-    [SerializeField, Range(0f, 1f)] private float stepDistanceVariance = 0.05f;
-
 
     [Header("Interaction Audio")]
     [SerializeField] private AudioPreset grab;
     [SerializeField] private AudioPreset drop;
     [SerializeField] private AudioPreset hover;
 
-    private Vector3 _lastPosition;
-    private float _distanceAccumulator;
-    private float _currentTargetDistance;
-
-
-    private void Start()
-    {
-        if (movement != null)
-        {
-            _lastPosition = movement.transform.position;
-        }
-
-        CalculateNextStepTarget();
-    }
-
-    private void Update()
-    {
-        HandleContinuousFootsteps();
-    }
-
     private void Reset()
     {
-        movement = GetComponentInParent<PlayerMovement>();
-        grabbing = GetComponentInParent<PlayerGrabbing>();
+        playerMovement = GetComponentInParent<PlayerMovement>();
+        playerGrabbing = GetComponentInParent<PlayerGrabbing>();
+        playerFeet = GetComponentInChildren<PlayerFeet>();
     }
+
 
     private void OnEnable()
     {
-        if (movement != null)
+        if (playerMovement != null)
         {
-            movement.events.onTeleport.AddListener(PlayTeleport);
-            movement.events.onSnapTurn.AddListener(PlaySnapTurn);
+            playerMovement.events.onTeleport.AddListener(PlayTeleport);
+            playerMovement.events.onSnapTurn.AddListener(PlaySnapTurn);
         }
 
-        if (grabbing != null)
+        if (playerGrabbing != null)
         {
-            grabbing.events.onObjectGrabbed.AddListener(PlayGrab);
-            grabbing.events.onObjectReleased.AddListener(PlayDrop);
-            grabbing.events.onHoverEnter.AddListener(PlayHover);
+            playerGrabbing.events.onObjectGrabbed.AddListener(PlayGrab);
+            playerGrabbing.events.onObjectReleased.AddListener(PlayDrop);
+            playerGrabbing.events.onHoverEnter.AddListener(PlayHover);
+        }
+        
+        if (playerFeet != null)
+        {
+            playerFeet.events.onStepTaken.AddListener(PlayFootSteps);
         }
     }
 
     private void OnDisable()
     {
-        if (movement != null)
+        if (playerMovement != null)
         {
-            movement.events.onTeleport.RemoveListener(PlayTeleport);
-            movement.events.onSnapTurn.RemoveListener(PlaySnapTurn);
+            playerMovement.events.onTeleport.RemoveListener(PlayTeleport);
+            playerMovement.events.onSnapTurn.RemoveListener(PlaySnapTurn);
         }
 
-        if (grabbing != null)
+        if (playerGrabbing != null)
         {
-            grabbing.events.onObjectGrabbed.RemoveListener(PlayGrab);
-            grabbing.events.onObjectReleased.RemoveListener(PlayDrop);
-            grabbing.events.onHoverEnter.RemoveListener(PlayHover);
+            playerGrabbing.events.onObjectGrabbed.RemoveListener(PlayGrab);
+            playerGrabbing.events.onObjectReleased.RemoveListener(PlayDrop);
+            playerGrabbing.events.onHoverEnter.RemoveListener(PlayHover);
         }
-    }
-
-    private void HandleContinuousFootsteps()
-    {
-        if (movement.CurrentLocomotion != MoveType.Continuous)
-            return;
-
-        if (!movement.IsGrounded())
+        
+        if (playerFeet != null)
         {
-            _lastPosition = movement.transform.position;
-            return;
-        }
-
-
-        Vector3 currentPos = movement.transform.position;
-        Vector3 flatCurrent = new Vector3(currentPos.x, 0, currentPos.z);
-        Vector3 flatLast = new Vector3(_lastPosition.x, 0, _lastPosition.z);
-
-        float distanceMoved = Vector3.Distance(flatCurrent, flatLast);
-
-        _lastPosition = currentPos;
-        _distanceAccumulator += distanceMoved;
-
-        if (_distanceAccumulator >= _currentTargetDistance)
-        {
-            _distanceAccumulator = 0f;
-            CalculateNextStepTarget();
-            PlayFootSteps();
+            playerFeet.events.onStepTaken.RemoveListener(PlayFootSteps);
         }
     }
 
-    private void CalculateNextStepTarget()
-    {
-        _currentTargetDistance = stepDistance + Random.Range(-stepDistanceVariance, stepDistanceVariance);
-        _currentTargetDistance = Mathf.Max(0.1f, _currentTargetDistance);
-    }
 
     private void PlayFootSteps()
     {
@@ -134,31 +88,30 @@ public class PlayerAudio : MonoBehaviour
     private void PlayTeleport()
     {
         Debug.Log("Play teleport!");
-        ears?.Play(teleport);
+        head?.Play(teleport);
     }
 
     private void PlaySnapTurn()
     {
         Debug.Log("Play snapturn!");
-        ears?.Play(snapTurn);
+        head?.Play(snapTurn);
     }
 
     private void PlayGrab(GameObject target)
     {
         Debug.Log("Play grab!");
-        ears?.Play(grab);
+        head?.Play(grab);
     }
 
     private void PlayDrop(GameObject target)
     {
         Debug.Log("Play drop!");
-        ears?.Play(drop);
+        head?.Play(drop);
     }
 
     private void PlayHover()
     {
         Debug.Log("Play hover!");
-        ears?.Play(hover);
+        head?.Play(hover);
     }
 }
-

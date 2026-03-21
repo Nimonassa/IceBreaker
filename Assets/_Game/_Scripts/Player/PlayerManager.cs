@@ -7,11 +7,11 @@ public class PlayerManager : Singleton<PlayerManager>
     [SerializeField] private PlayerGrabbing grabbing;
 
 
+
+
     [Header("Hands")]
     [SerializeField] private PlayerHand leftHand;
     [SerializeField] private PlayerHand rightHand;
-
-
     public PlayerGrabbing Grabbing => grabbing;
     public PlayerMovement Movement => movement;
     public PlayerHand LeftHand => leftHand;
