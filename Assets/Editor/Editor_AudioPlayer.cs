@@ -29,17 +29,19 @@ public class AudioPlayerEditor : Editor
 
         if (player.rolloffMode != AudioRolloffMode.Custom) selectedKeyIndex = -1;
 
+        // Start listening for changes in the inspector
+        EditorGUI.BeginChangeCheck();
+
         // --- DYNAMIC PROPERTY ITERATOR ---
         SerializedProperty prop = serializedObject.GetIterator();
         bool enterChildren = true;
 
         while (prop.NextVisible(enterChildren))
         {
-            enterChildren = false; // Only enter children for the root object
+            enterChildren = false;
 
             if (prop.name == "m_Script") continue;
 
-            // 1. Intercept Min Distance for graying out
             if (prop.name == "minDistance")
             {
                 if (player.rolloffMode == AudioRolloffMode.Custom)
@@ -55,11 +57,9 @@ public class AudioPlayerEditor : Editor
                 continue;
             }
 
-            // 2. Intercept Rolloff Curve to draw the interactive Graph
             if (prop.name == "rolloffCurve")
             {
                 EditorGUILayout.Space(10);
-                // We draw a Label to represent the Header/Title of the graph
                 EditorGUILayout.LabelField(prop.displayName, EditorStyles.boldLabel);
 
                 if (player.rolloffMode == AudioRolloffMode.Custom)
@@ -71,13 +71,89 @@ public class AudioPlayerEditor : Editor
                 continue;
             }
 
-            // 3. Draw everything else normally (Volume, Pitch, SpatialBlend, and any NEW fields)
             EditorGUILayout.PropertyField(prop, true);
         }
 
-        serializedObject.ApplyModifiedProperties();
+        // If any properties changed in the inspector, apply them and regenerate the curves
+        if (EditorGUI.EndChangeCheck())
+        {
+            serializedObject.ApplyModifiedProperties();
+            ValidateAndGenerateCurves(player);
+            EditorUtility.SetDirty(player); // Flag the object to be saved
+        }
+        else
+        {
+            serializedObject.ApplyModifiedProperties();
+        }
     }
 
+    // --- NEW: Validation and Curve Generation Logic Moved Here ---
+    private void ValidateAndGenerateCurves(AudioPlayer player)
+    {
+        Undo.RecordObject(player, "Update Audio Curves");
+
+        if (player.rolloffMode != player.lastRolloffMode)
+        {
+            switch (player.rolloffMode)
+            {
+                case AudioRolloffMode.Custom: GenerateCustomCurve(player); break;
+                case AudioRolloffMode.Logarithmic: GenerateLogarithmicCurve(player); break;
+                case AudioRolloffMode.Linear: GenerateLinearCurve(player); break;
+            }
+            player.lastRolloffMode = player.rolloffMode;
+        }
+
+        if (player.rolloffMode == AudioRolloffMode.Custom) player.minDistance = 0f;
+        else if (player.minDistance < 0.001f) player.minDistance = 0.001f;
+
+        if (player.maxDistance <= player.minDistance) player.maxDistance = player.minDistance + 0.1f;
+
+        if (player.rolloffMode != AudioRolloffMode.Custom)
+        {
+            if (player.rolloffMode == AudioRolloffMode.Logarithmic) GenerateLogarithmicCurve(player);
+            else GenerateLinearCurve(player);
+        }
+    }
+
+    private void GenerateCustomCurve(AudioPlayer player)
+    {
+        player.rolloffCurve.keys = new Keyframe[0];
+        player.rolloffCurve.AddKey(new Keyframe(0f, 1f));
+        player.rolloffCurve.AddKey(new Keyframe(1f, 0f));
+    }
+
+    private void GenerateLinearCurve(AudioPlayer player)
+    {
+        player.rolloffCurve.keys = new Keyframe[0];
+        float normMin = player.minDistance / player.maxDistance;
+        float slope = -1f / (1f - normMin);
+        player.rolloffCurve.AddKey(new Keyframe(normMin, 1f, 0f, slope));
+        player.rolloffCurve.AddKey(new Keyframe(1f, 0f, slope, 0f));
+    }
+
+    private void GenerateLogarithmicCurve(AudioPlayer player)
+    {
+        player.rolloffCurve.keys = new Keyframe[0];
+        float safeMin = Mathf.Max(player.minDistance, 0.001f);
+        float ratio = player.maxDistance / safeMin;
+        int steps = Mathf.CeilToInt(Mathf.Log(ratio, 2f));
+        float multiplier = Mathf.Pow(ratio, 1f / steps);
+
+        for (int i = 0; i <= steps; i++)
+        {
+            float dist = safeMin * Mathf.Pow(multiplier, i);
+            if (i == steps) dist = player.maxDistance;
+
+            float vol = safeMin / dist;
+            float t = dist / player.maxDistance;
+
+            float slope = -safeMin / (t * t * player.maxDistance);
+
+            player.rolloffCurve.AddKey(new Keyframe(t, vol, slope, slope));
+        }
+    }
+
+    // --- EXISTING GRAPH UI LOGIC (Unchanged, just uses 'player' correctly) ---
     private void DrawGraphUI(AudioPlayer player, Color marginBG, Color marginBorder, Color graphBG, Color graphBorder, Color curveColor, Color majorGrid, Color minorGrid)
     {
         Rect fullRect = GUILayoutUtility.GetRect(GUIContent.none, GUIStyle.none, GUILayout.Height(170));
@@ -266,11 +342,19 @@ public class AudioPlayerEditor : Editor
 
     private float GetEval(AudioPlayer player, float t)
     {
-        // No mapping needed; the curve keys are already 0 to 1
         return player.rolloffCurve.Evaluate(t);
     }
-    
 
     private Vector2 ToPx(float t, float v) => new Vector2(_currentGraphRect.x + (t / _xMaxView) * _currentGraphRect.width, _currentGraphRect.yMax - (v / _yMaxView) * _currentGraphRect.height);
     private Vector2 ToVal(Vector2 px) => new Vector2(((px.x - _currentGraphRect.x) / _currentGraphRect.width) * _xMaxView, ((_currentGraphRect.yMax - px.y) / _currentGraphRect.height) * _yMaxView);
+
+    // --- NEW: Gizmo drawing moved out of runtime using Unity's built-in attribute ---
+    [DrawGizmo(GizmoType.Selected | GizmoType.Active)]
+    static void DrawGizmoForAudioPlayer(AudioPlayer player, GizmoType gizmoType)
+    {
+        Gizmos.color = new Color(1f, 0.92f, 0.016f, 0.5f);
+        Gizmos.DrawWireSphere(player.transform.position, player.minDistance);
+        Gizmos.color = new Color(1f, 0.92f, 0.016f, 0.2f);
+        Gizmos.DrawWireSphere(player.transform.position, player.maxDistance);
+    }
 }

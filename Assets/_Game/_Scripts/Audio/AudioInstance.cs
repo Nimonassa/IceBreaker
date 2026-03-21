@@ -8,12 +8,9 @@ public class AudioInstance : MonoBehaviour
     private AudioDistortionFilter distortion;
     private AudioEchoFilter echo;
 
-    // Lightweight timer variables to replace heavy Coroutines
-    private float _timer;
-    private bool _isPlaying;
-
-    // NEW: A cached reference to the transform we want to follow
-    private Transform _followTarget;
+    private float timer;
+    private bool isPlaying;
+    private Transform followTarget;
 
     private void Awake()
     {
@@ -30,11 +27,9 @@ public class AudioInstance : MonoBehaviour
 
     public void Play(AudioClip clip, AudioPlayer settings, AudioPreset preset)
     {
-        // NEW: Store the target and set the initial position
-        _followTarget = settings.transform;
-        transform.position = _followTarget.position;
+        followTarget = settings.transform;
+        transform.position = followTarget.position;
 
-        // Native 3D Audio Settings
         source.spatialBlend = settings.spatialBlend;
         source.rolloffMode = settings.rolloffMode;
         source.minDistance = settings.minDistance;
@@ -78,28 +73,28 @@ public class AudioInstance : MonoBehaviour
         source.clip = clip;
         source.Play();
 
-        _timer = clip.length / Mathf.Max(0.1f, Mathf.Abs(source.pitch));
-        _isPlaying = true;
+        timer = clip.length / Mathf.Max(0.1f, Mathf.Abs(source.pitch));
+        isPlaying = true;
     }
 
     private void Update()
     {
-        if (!_isPlaying) return;
+        if (!isPlaying) return;
 
-        // NEW: Fast, garbage-free position tracking
-        if (_followTarget != null)
+        if (followTarget != null)
         {
-            transform.position = _followTarget.position;
+            transform.position = followTarget.position;
         }
 
-        _timer -= Time.deltaTime;
-        if (_timer <= 0f)
+        timer -= Time.deltaTime;
+        if (timer <= 0f)
         {
-            _isPlaying = false;
+            isPlaying = false;
             source.clip = null;
-            _followTarget = null; // NEW: Clear the reference so the garbage collector can clean up the target if needed
+            followTarget = null;
             AudioPool.Return(this);
         }
     }
+    
 }
 

@@ -18,16 +18,16 @@ public class AudioPreset : ScriptableObject
 
     [Header("Advanced Settings")]
     [ContextMenuItem("Reset Advanced Settings to Defaults", "ResetAdvancedSettings")]
-    public AdvancedFilterSettings advanced;
+    public AudioFilter advanced;
 
     private void ResetAdvancedSettings()
     {
-        advanced = new AdvancedFilterSettings();
+        advanced = new AudioFilter();
     }
 
-    public void LoadFromTemplate(AdvancedFilterSettings templateSettings)
+    public void LoadFromTemplate(AudioFilter templateSettings)
     {
         string json = JsonUtility.ToJson(templateSettings);
-        advanced = JsonUtility.FromJson<AdvancedFilterSettings>(json);
+        advanced = JsonUtility.FromJson<AudioFilter>(json);
     }
 }

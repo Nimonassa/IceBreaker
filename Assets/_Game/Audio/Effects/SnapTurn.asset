@@ -20,18 +20,18 @@ MonoBehaviour:
   pitch: 1
   pitchRandomness: 0.007
   advanced:
-    enablePanRandomness: 1
+    enablePanRandomness: 0
     panRandomness: 0.05
     enableLowPass: 0
-    lowPassCutoff: 18654
-    lowPassRandomness: 2000
-    enableHighPass: 1
-    highPassCutoff: 30
-    highPassRandomness: 15
-    enableDistortion: 1
-    distortionLevel: 0.015
-    distortionRandomness: 0.01
-    enableEcho: 1
-    microEchoDelay: 7
-    microEchoRandomness: 2
-    microEchoMix: 0.1
+    lowPassCutoff: 20000
+    lowPassRandomness: 1500
+    enableHighPass: 0
+    highPassCutoff: 50
+    highPassRandomness: 30
+    enableDistortion: 0
+    distortionLevel: 0.02
+    distortionRandomness: 0.02
+    enableEcho: 0
+    microEchoDelay: 12
+    microEchoRandomness: 5
+    microEchoMix: 0.15

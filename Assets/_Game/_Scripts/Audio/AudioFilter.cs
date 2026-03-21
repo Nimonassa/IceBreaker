@@ -1,14 +1,7 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "NewFilterTemplate", menuName = "Audio/Filter Template")]
-public class AdvancedFilterPreset : ScriptableObject
-{
-    public AdvancedFilterSettings settings;
-}
-
-
 [System.Serializable]
-public class AdvancedFilterSettings
+public class AudioFilter
 {
     [Header("Stereo Panning")]
     public bool enablePanRandomness = false;

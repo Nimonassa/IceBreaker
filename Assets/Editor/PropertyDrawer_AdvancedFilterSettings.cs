@@ -3,24 +3,24 @@ using UnityEditor;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
-[CustomPropertyDrawer(typeof(AdvancedFilterSettings))]
+[CustomPropertyDrawer(typeof(AudioFilter))]
 public class AdvancedFilterSettingsDrawer : PropertyDrawer
 {
     private const string searchFolder = "Assets/Templates/AudioFilters";
-    private List<AdvancedFilterPreset> availablePresets;
+    private List<AudioFilterPreset> availablePresets;
     private bool isInitialized = false;
 
     private void Initialize()
     {
         if (!AssetDatabase.IsValidFolder(searchFolder)) return;
 
-        string[] guids = AssetDatabase.FindAssets("t:AdvancedFilterPreset", new[] { searchFolder });
-        availablePresets = new List<AdvancedFilterPreset>();
+        string[] guids = AssetDatabase.FindAssets("t:AudioFilterPreset", new[] { searchFolder });
+        availablePresets = new List<AudioFilterPreset>();
 
         foreach (string guid in guids)
         {
             string path = AssetDatabase.GUIDToAssetPath(guid);
-            var preset = AssetDatabase.LoadAssetAtPath<AdvancedFilterPreset>(path);
+            var preset = AssetDatabase.LoadAssetAtPath<AudioFilterPreset>(path);
             // Only add if the asset is valid and NOT destroyed
             if (preset != null) availablePresets.Add(preset);
         }
@@ -42,7 +42,7 @@ public class AdvancedFilterSettingsDrawer : PropertyDrawer
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
         // 1. REFRESH CHECK: Detect destroyed or added/removed templates
-        string[] currentGuids = AssetDatabase.FindAssets("t:AdvancedFilterPreset", new[] { searchFolder });
+        string[] currentGuids = AssetDatabase.FindAssets("t:AudioFilterPreset", new[] { searchFolder });
         bool needsRefresh = !isInitialized || availablePresets == null || currentGuids.Length != availablePresets.Count;
 
         if (!needsRefresh)
@@ -56,11 +56,7 @@ public class AdvancedFilterSettingsDrawer : PropertyDrawer
 
         if (needsRefresh) Initialize();
 
-        // 2. THE STACK FIX: Use BeginProperty at the start
         EditorGUI.BeginProperty(position, label, property);
-
-        // Wrap everything in try...finally to ensure EndProperty is ALWAYS called, 
-        // preventing the "Stack empty" error even if a crash occurs.
         try
         {
             Rect foldoutRect = new Rect(position.x, position.y, position.width, EditorGUIUtility.singleLineHeight);
@@ -139,7 +135,6 @@ public class AdvancedFilterSettingsDrawer : PropertyDrawer
         }
         finally
         {
-            // 3. THE STACK FIX: EndProperty is now guaranteed to run
             EditorGUI.EndProperty();
         }
     }
@@ -175,7 +170,7 @@ public class AdvancedFilterSettingsDrawer : PropertyDrawer
         return -1;
     }
 
-    private void ApplyTemplateFromMenu(SerializedObject activeTargetSO, string propPath, AdvancedFilterPreset templateAsset)
+    private void ApplyTemplateFromMenu(SerializedObject activeTargetSO, string propPath, AudioFilterPreset templateAsset)
     {
         if (templateAsset == null) return;
         activeTargetSO.Update();
@@ -188,13 +183,14 @@ public class AdvancedFilterSettingsDrawer : PropertyDrawer
         activeTargetSO.ApplyModifiedProperties();
     }
 
+
     private void SaveCurrentAsTemplate(SerializedProperty property)
     {
         string path = EditorUtility.SaveFilePanelInProject("Save Filter Template", "NewFilterTemplate", "asset", "", searchFolder);
         if (string.IsNullOrEmpty(path)) return;
 
-        AdvancedFilterPreset newPreset = ScriptableObject.CreateInstance<AdvancedFilterPreset>();
-        newPreset.settings = new AdvancedFilterSettings();
+        AudioFilterPreset newPreset = ScriptableObject.CreateInstance<AudioFilterPreset>();
+        newPreset.settings = new AudioFilter();
 
         // This overwrites the existing asset, destroying the old one
         AssetDatabase.CreateAsset(newPreset, path);
