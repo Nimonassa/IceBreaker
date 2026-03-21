@@ -31,7 +31,6 @@ public class PlayerGrabbing : MonoBehaviour
     }
     private void OnEnable()
     {
-        // Automatically find all interactors in the player rig and subscribe to them
         foreach (var interactor in GetComponentsInChildren<XRBaseInteractor>(true))
         {
             interactor.selectEntered.AddListener(HandleGrab);
@@ -50,16 +49,27 @@ public class PlayerGrabbing : MonoBehaviour
         }
     }
 
-    private void HandleGrab(SelectEnterEventArgs args) => events.onObjectGrabbed?.Invoke(args.interactableObject.transform.gameObject);
-    private void HandleRelease(SelectExitEventArgs args) => events.onObjectReleased?.Invoke(args.interactableObject.transform.gameObject);
-    private void HandleHover(HoverEnterEventArgs args) => events.onHoverEnter?.Invoke();
-
 #if UNITY_EDITOR
     private void OnValidate()
     {
         UpdateSettings();
     }
 #endif
+
+    private void HandleGrab(SelectEnterEventArgs args)
+    {
+        events.onObjectGrabbed?.Invoke(args.interactableObject.transform.gameObject);
+    }
+    
+    private void HandleRelease(SelectExitEventArgs args)
+    {
+        events.onObjectReleased?.Invoke(args.interactableObject.transform.gameObject);
+    }
+
+    private void HandleHover(HoverEnterEventArgs args)
+    {
+        events.onHoverEnter?.Invoke();
+    }
 
     public void UpdateSettings()
     {
