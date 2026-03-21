@@ -42,12 +42,7 @@ public static class AudioPresetCreator
         AudioPreset newPreset = ScriptableObject.CreateInstance<AudioPreset>();
 
         newPreset.clips = new AudioClip[] { clip };
-        newPreset.playMode = PlayMode.Sequential; 
-
-        newPreset.volume = 1.0f;
-        newPreset.pitch = 1.0f;
-        newPreset.pitchRandomness = 0.05f;
-
+        
         string clipPath = AssetDatabase.GetAssetPath(clip);
         string directory = Path.GetDirectoryName(clipPath);
         string clipName = Path.GetFileNameWithoutExtension(clipPath);

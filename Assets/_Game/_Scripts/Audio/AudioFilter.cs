@@ -27,4 +27,25 @@ public class AudioFilter
     [Range(1f, 300f)] public float microEchoDelay = 12f; 
     [Range(0f, 50f)] public float microEchoRandomness = 5f;
     [Range(0f, 1f)] public float microEchoMix = 0.15f; 
+
+    public void CopyFrom(AudioFilter template)
+    {
+        if (template == null) return;
+
+        enablePanRandomness   = template.enablePanRandomness;
+        panRandomness         = template.panRandomness;
+        enableLowPass         = template.enableLowPass;
+        lowPassCutoff         = template.lowPassCutoff;
+        lowPassRandomness     = template.lowPassRandomness;
+        enableHighPass        = template.enableHighPass;
+        highPassCutoff        = template.highPassCutoff;
+        highPassRandomness    = template.highPassRandomness;
+        enableDistortion      = template.enableDistortion;
+        distortionLevel       = template.distortionLevel;
+        distortionRandomness  = template.distortionRandomness;
+        enableEcho            = template.enableEcho;
+        microEchoDelay        = template.microEchoDelay;
+        microEchoRandomness   = template.microEchoRandomness;
+        microEchoMix          = template.microEchoMix;
+    }
 }

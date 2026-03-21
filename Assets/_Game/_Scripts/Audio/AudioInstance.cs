@@ -50,7 +50,6 @@ public class AudioInstance : MonoBehaviour
         else
             source.panStereo = 0f;
 
-        // --- DIRECT FILTER APPLICATION (Eliminates Type-Casting Overhead) ---
         lowPass.enabled = preset.advanced.enableLowPass;
         if (lowPass.enabled)
             lowPass.cutoffFrequency = Mathf.Clamp(preset.advanced.lowPassCutoff + Random.Range(-preset.advanced.lowPassRandomness, preset.advanced.lowPassRandomness), 10f, 22000f);
