@@ -8,9 +8,10 @@ public class AudioInstance : MonoBehaviour
     private AudioDistortionFilter distortion;
     private AudioEchoFilter echo;
 
+
     private float timer;
     private bool isPlaying;
-    private Transform followTarget;
+    private AudioPlayer currentEmitter;
 
     private void Awake()
     {
@@ -27,9 +28,12 @@ public class AudioInstance : MonoBehaviour
 
     public void Play(AudioClip clip, AudioPlayer settings, AudioPreset preset)
     {
-        followTarget = settings.transform;
-        transform.position = followTarget.position;
+        currentEmitter = settings;
+        transform.position = currentEmitter.transform.position;
 
+        source.outputAudioMixerGroup = settings.mixerGroup;
+        source.mute = currentEmitter.mute;
+        
         source.spatialBlend = settings.spatialBlend;
         source.rolloffMode = settings.rolloffMode;
         source.minDistance = settings.minDistance;
@@ -44,7 +48,7 @@ public class AudioInstance : MonoBehaviour
         source.pitch = preset.pitch + Random.Range(-preset.pitchRandomness, preset.pitchRandomness);
         float baseVol = preset.volume + Random.Range(-preset.volumeRandomness, preset.volumeRandomness);
         source.volume = Mathf.Clamp01(baseVol * settings.volume);
-
+        
         if (preset.advanced.enablePanRandomness)
             source.panStereo = Random.Range(-preset.advanced.panRandomness, preset.advanced.panRandomness);
         else
@@ -80,9 +84,10 @@ public class AudioInstance : MonoBehaviour
     {
         if (!isPlaying) return;
 
-        if (followTarget != null)
+        if (currentEmitter != null)
         {
-            transform.position = followTarget.position;
+            transform.position = currentEmitter.transform.position;
+            source.mute = currentEmitter.mute;
         }
 
         timer -= Time.deltaTime;
@@ -90,7 +95,7 @@ public class AudioInstance : MonoBehaviour
         {
             isPlaying = false;
             source.clip = null;
-            followTarget = null;
+            currentEmitter = null;
             AudioPool.Return(this);
         }
     }

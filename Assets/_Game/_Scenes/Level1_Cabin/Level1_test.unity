@@ -456,6 +456,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1614965754877514373, guid: a2888cf8c7a57ef419cb9bb9fba08037, type: 3}
+      propertyPath: mixerGroup
+      value: 
+      objectReference: {fileID: 311520132319833250, guid: 4f82f3fc0102c1341bc904733f005ad3, type: 2}
+    - target: {fileID: 1614965754877514373, guid: a2888cf8c7a57ef419cb9bb9fba08037, type: 3}
       propertyPath: maxDistance
       value: 2
       objectReference: {fileID: 0}
@@ -493,7 +497,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1614965754877514373, guid: a2888cf8c7a57ef419cb9bb9fba08037, type: 3}
       propertyPath: rolloffCurve.m_Curve.Array.data[4].time
-      value: 0.25176063
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1614965754877514373, guid: a2888cf8c7a57ef419cb9bb9fba08037, type: 3}
       propertyPath: rolloffCurve.m_Curve.Array.data[5].time
@@ -537,7 +541,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1614965754877514373, guid: a2888cf8c7a57ef419cb9bb9fba08037, type: 3}
       propertyPath: rolloffCurve.m_Curve.Array.data[4].value
-      value: 0.06338341
+      value: 0.11
       objectReference: {fileID: 0}
     - target: {fileID: 1614965754877514373, guid: a2888cf8c7a57ef419cb9bb9fba08037, type: 3}
       propertyPath: rolloffCurve.m_Curve.Array.data[5].value
@@ -585,7 +589,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1614965754877514373, guid: a2888cf8c7a57ef419cb9bb9fba08037, type: 3}
       propertyPath: rolloffCurve.m_Curve.Array.data[4].inSlope
-      value: -0.2517606
+      value: -0.11
       objectReference: {fileID: 0}
     - target: {fileID: 1614965754877514373, guid: a2888cf8c7a57ef419cb9bb9fba08037, type: 3}
       propertyPath: rolloffCurve.m_Curve.Array.data[5].inSlope
@@ -633,7 +637,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1614965754877514373, guid: a2888cf8c7a57ef419cb9bb9fba08037, type: 3}
       propertyPath: rolloffCurve.m_Curve.Array.data[4].outSlope
-      value: -0.2517606
+      value: -0.11
       objectReference: {fileID: 0}
     - target: {fileID: 1614965754877514373, guid: a2888cf8c7a57ef419cb9bb9fba08037, type: 3}
       propertyPath: rolloffCurve.m_Curve.Array.data[5].outSlope
@@ -665,7 +669,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2110572536323614196, guid: a2888cf8c7a57ef419cb9bb9fba08037, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2110572536323614200, guid: a2888cf8c7a57ef419cb9bb9fba08037, type: 3}
       propertyPath: m_Velocity
@@ -679,6 +683,10 @@ PrefabInstance:
       propertyPath: m_CastDistance
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 4278451295510033127, guid: a2888cf8c7a57ef419cb9bb9fba08037, type: 3}
+      propertyPath: mixerGroup
+      value: 
+      objectReference: {fileID: 311520132319833250, guid: 4f82f3fc0102c1341bc904733f005ad3, type: 2}
     - target: {fileID: 4278451295510033127, guid: a2888cf8c7a57ef419cb9bb9fba08037, type: 3}
       propertyPath: maxDistance
       value: 4

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class AudioPlayer : MonoBehaviour
 {
@@ -6,7 +7,11 @@ public class AudioPlayer : MonoBehaviour
     private AudioPreset currentPreset;
     private int currentIndex = 0;
 
+    [Header("Routing")]
+    public AudioMixerGroup mixerGroup;
+
     [Header("Settings")]
+    public bool mute = false;
     public float volume = 1.0f;
     public float pitch = 1.0f;
     public float spatialBlend = 1.0f;
