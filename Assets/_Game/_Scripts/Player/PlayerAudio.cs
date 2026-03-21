@@ -35,47 +35,24 @@ public class PlayerAudio : MonoBehaviour
         playerFeet = GetComponentInChildren<PlayerFeet>();
     }
 
-
     private void OnEnable()
     {
-        if (playerMovement != null)
-        {
-            playerMovement.events.onTeleport.AddListener(PlayTeleport);
-            playerMovement.events.onSnapTurn.AddListener(PlaySnapTurn);
-        }
-
-        if (playerGrabbing != null)
-        {
-            playerGrabbing.events.onObjectGrabbed.AddListener(PlayGrab);
-            playerGrabbing.events.onObjectReleased.AddListener(PlayDrop);
-            playerGrabbing.events.onHoverEnter.AddListener(PlayHover);
-        }
-        
-        if (playerFeet != null)
-        {
-            playerFeet.events.onStepTaken.AddListener(PlayFootSteps);
-        }
+        playerMovement?.events?.onTeleport?.AddListener(PlayTeleport);
+        playerMovement?.events?.onSnapTurn?.AddListener(PlaySnapTurn);
+        playerGrabbing?.events?.onObjectGrabbed?.AddListener(PlayGrab);
+        playerGrabbing?.events?.onObjectReleased?.AddListener(PlayDrop);
+        playerGrabbing?.events?.onHoverEnter?.AddListener(PlayHover);
+        playerFeet?.events?.onStepTaken?.AddListener(PlayFootSteps);
     }
 
     private void OnDisable()
     {
-        if (playerMovement != null)
-        {
-            playerMovement.events.onTeleport.RemoveListener(PlayTeleport);
-            playerMovement.events.onSnapTurn.RemoveListener(PlaySnapTurn);
-        }
-
-        if (playerGrabbing != null)
-        {
-            playerGrabbing.events.onObjectGrabbed.RemoveListener(PlayGrab);
-            playerGrabbing.events.onObjectReleased.RemoveListener(PlayDrop);
-            playerGrabbing.events.onHoverEnter.RemoveListener(PlayHover);
-        }
-        
-        if (playerFeet != null)
-        {
-            playerFeet.events.onStepTaken.RemoveListener(PlayFootSteps);
-        }
+        playerMovement?.events?.onTeleport?.RemoveListener(PlayTeleport);
+        playerMovement?.events?.onSnapTurn?.RemoveListener(PlaySnapTurn);
+        playerGrabbing?.events?.onObjectGrabbed?.RemoveListener(PlayGrab);
+        playerGrabbing?.events?.onObjectReleased?.RemoveListener(PlayDrop);
+        playerGrabbing?.events?.onHoverEnter?.RemoveListener(PlayHover);
+        playerFeet?.events?.onStepTaken?.RemoveListener(PlayFootSteps);
     }
 
 
