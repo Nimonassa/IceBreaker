@@ -36,6 +36,7 @@ public class AudioPlayer : MonoBehaviour
         if (preset.playMode == PlayMode.Sequential)
             currentIndex = (currentIndex + 1) % preset.clips.Length;
 
-        AudioPool.Get().Play(clipToPlay, this, preset);
+        AudioInstance instance = AudioPool.Get();
+        instance.Play(clipToPlay, this, preset);
     }
 }
