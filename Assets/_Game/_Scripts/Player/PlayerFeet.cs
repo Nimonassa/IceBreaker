@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 
+// probably useful abstraction for the future
 public class PlayerFeet : MonoBehaviour
 {
     [System.Serializable]
@@ -19,9 +20,9 @@ public class PlayerFeet : MonoBehaviour
     [SerializeField] private float stepDistance = 0.75f;
     [SerializeField, Range(0f, 1f)] private float stepDistanceVariance = 0.05f;
 
-    private Vector3 _lastPosition;
-    private float _distanceAccumulator;
-    private float _currentTargetDistance;
+    private Vector3 lastPosition;
+    private float distanceAccumulator;
+    private float currentTargetDistance;
 
     private void Reset()
     {
@@ -32,7 +33,7 @@ public class PlayerFeet : MonoBehaviour
     {
         if (movement != null)
         {
-            _lastPosition = movement.transform.position;
+            lastPosition = movement.transform.position;
         }
         CalculateNextStepTarget();
     }
@@ -49,22 +50,22 @@ public class PlayerFeet : MonoBehaviour
 
         if (!movement.IsGrounded())
         {
-            _lastPosition = movement.transform.position;
+            lastPosition = movement.transform.position;
             return;
         }
 
         Vector3 currentPos = movement.transform.position;
         Vector3 flatCurrent = new Vector3(currentPos.x, 0, currentPos.z);
-        Vector3 flatLast = new Vector3(_lastPosition.x, 0, _lastPosition.z);
+        Vector3 flatLast = new Vector3(lastPosition.x, 0, lastPosition.z);
 
         float distanceMoved = Vector3.Distance(flatCurrent, flatLast);
 
-        _lastPosition = currentPos;
-        _distanceAccumulator += distanceMoved;
+        lastPosition = currentPos;
+        distanceAccumulator += distanceMoved;
 
-        if (_distanceAccumulator >= _currentTargetDistance)
+        if (distanceAccumulator >= currentTargetDistance)
         {
-            _distanceAccumulator = 0f;
+            distanceAccumulator = 0f;
             CalculateNextStepTarget();
             events.onStepTaken?.Invoke();
         }
@@ -72,7 +73,7 @@ public class PlayerFeet : MonoBehaviour
 
     private void CalculateNextStepTarget()
     {
-        _currentTargetDistance = stepDistance + Random.Range(-stepDistanceVariance, stepDistanceVariance);
-        _currentTargetDistance = Mathf.Max(0.1f, _currentTargetDistance);
+        currentTargetDistance = stepDistance + Random.Range(-stepDistanceVariance, stepDistanceVariance);
+        currentTargetDistance = Mathf.Max(0.1f, currentTargetDistance);
     }
 }

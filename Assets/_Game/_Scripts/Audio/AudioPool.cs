@@ -2,9 +2,8 @@ using UnityEngine;
 
 public static class AudioPool
 {
-    // Strict hard limit. No memory allocations after the game starts.
     private const int POOL_SIZE = 32;
-    private static AudioInstance[] pool;
+    private static AudioInstance[] audioPool;
     private static int currentIndex = 0;
     private static GameObject poolRoot;
 
@@ -13,27 +12,27 @@ public static class AudioPool
     {
         if (poolRoot == null)
         {
-            poolRoot = new GameObject("AudioPool_Global");
+            poolRoot = new GameObject("AudioPool");
             Object.DontDestroyOnLoad(poolRoot);
         }
 
-        pool = new AudioInstance[POOL_SIZE];
+        audioPool = new AudioInstance[POOL_SIZE];
 
         for (int i = 0; i < POOL_SIZE; i++)
         {
-            pool[i] = CreateNewInstance();
-            pool[i].gameObject.SetActive(false);
+            audioPool[i] = CreateNewInstance();
+            audioPool[i].gameObject.SetActive(false);
         }
     }
 
     public static AudioInstance Get()
     {
-        if (pool == null || poolRoot == null) AutoWarmup();
+        if (audioPool == null || poolRoot == null) AutoWarmup();
 
         for (int i = 0; i < POOL_SIZE; i++)
         {
             currentIndex = (currentIndex + 1) % POOL_SIZE;
-            AudioInstance instance = pool[currentIndex];
+            AudioInstance instance = audioPool[currentIndex];
 
             if (!instance.gameObject.activeInHierarchy)
             {
@@ -47,7 +46,7 @@ public static class AudioPool
         // Instead of breaking the game by instantiating a 33rd object, we advance 
         // the cursor one more time to steal the "oldest" voice we checked, 
         currentIndex = (currentIndex + 1) % POOL_SIZE;
-        AudioInstance stolenInstance = pool[currentIndex];
+        AudioInstance stolenInstance = audioPool[currentIndex];
 
         return stolenInstance;
     }

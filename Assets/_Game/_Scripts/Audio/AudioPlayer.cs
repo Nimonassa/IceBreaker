@@ -4,8 +4,8 @@ using UnityEngine;
 public class AudioPlayer : MonoBehaviour
 {
     [SerializeField, HideInInspector] private AudioRolloffMode lastRolloffMode = AudioRolloffMode.Logarithmic;
-    private AudioPreset _currentPreset;
-    private int _currentIndex = 0;
+    private AudioPreset currentPreset;
+    private int currentIndex = 0;
 
     [Header("Settings")]
     public float volume = 1.0f;
@@ -24,18 +24,18 @@ public class AudioPlayer : MonoBehaviour
     {
         if (preset == null || preset.clips.Length == 0) return;
 
-        if (preset != _currentPreset)
+        if (preset != currentPreset)
         {
-            _currentPreset = preset;
-            _currentIndex = 0;
+            currentPreset = preset;
+            currentIndex = 0;
         }
 
         AudioClip clipToPlay = (preset.playMode == PlayMode.Random)
             ? preset.clips[Random.Range(0, preset.clips.Length)]
-            : preset.clips[_currentIndex];
+            : preset.clips[currentIndex];
 
         if (preset.playMode == PlayMode.Sequential)
-            _currentIndex = (_currentIndex + 1) % preset.clips.Length;
+            currentIndex = (currentIndex + 1) % preset.clips.Length;
 
         AudioPool.Get().Play(clipToPlay, this, preset);
     }

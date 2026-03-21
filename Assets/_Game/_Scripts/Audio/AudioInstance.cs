@@ -12,6 +12,9 @@ public class AudioInstance : MonoBehaviour
     private float _timer;
     private bool _isPlaying;
 
+    // NEW: A cached reference to the transform we want to follow
+    private Transform _followTarget;
+
     private void Awake()
     {
         source = gameObject.AddComponent<AudioSource>();
@@ -27,7 +30,9 @@ public class AudioInstance : MonoBehaviour
 
     public void Play(AudioClip clip, AudioPlayer settings, AudioPreset preset)
     {
-        transform.position = settings.transform.position;
+        // NEW: Store the target and set the initial position
+        _followTarget = settings.transform;
+        transform.position = _followTarget.position;
 
         // Native 3D Audio Settings
         source.spatialBlend = settings.spatialBlend;
@@ -51,7 +56,6 @@ public class AudioInstance : MonoBehaviour
             source.panStereo = 0f;
 
         // --- DIRECT FILTER APPLICATION (Eliminates Type-Casting Overhead) ---
-
         lowPass.enabled = preset.advanced.enableLowPass;
         if (lowPass.enabled)
             lowPass.cutoffFrequency = Mathf.Clamp(preset.advanced.lowPassCutoff + Random.Range(-preset.advanced.lowPassRandomness, preset.advanced.lowPassRandomness), 10f, 22000f);
@@ -82,12 +86,20 @@ public class AudioInstance : MonoBehaviour
     {
         if (!_isPlaying) return;
 
+        // NEW: Fast, garbage-free position tracking
+        if (_followTarget != null)
+        {
+            transform.position = _followTarget.position;
+        }
+
         _timer -= Time.deltaTime;
         if (_timer <= 0f)
         {
             _isPlaying = false;
             source.clip = null;
+            _followTarget = null; // NEW: Clear the reference so the garbage collector can clean up the target if needed
             AudioPool.Return(this);
         }
     }
 }
+
