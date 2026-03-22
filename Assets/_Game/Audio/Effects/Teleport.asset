@@ -18,7 +18,7 @@ MonoBehaviour:
   isPausable: 1
   isLooping: 0
   playToCompletion: 0
-  volume: 0.105
+  volume: 0.093
   volumeRandomness: 0.008
   pitch: 1
   pitchRandomness: 0.016
@@ -29,7 +29,7 @@ MonoBehaviour:
     lowPassCutoff: 20000
     lowPassRandomness: 1500
     enableHighPass: 0
-    highPassCutoff: 50
+    highPassCutoff: 10
     highPassRandomness: 30
     enableDistortion: 0
     distortionLevel: 0.02

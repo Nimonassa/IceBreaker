@@ -10,14 +10,14 @@ public static class AudioPool
     public static AudioInstance[] RawPool => audioPool;
     public static int PoolSize => POOL_SIZE;
 
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-    private static void AutoWarmup()
+    
+
+    public static void Warmup()
     {
-        if (poolRoot == null)
-        {
-            poolRoot = new GameObject("AudioPool");
-            Object.DontDestroyOnLoad(poolRoot);
-        }
+        if (audioPool != null && poolRoot != null) return;
+
+        poolRoot = new GameObject("AudioPool");
+        Object.DontDestroyOnLoad(poolRoot);
 
         audioPool = new AudioInstance[POOL_SIZE];
 
@@ -27,10 +27,9 @@ public static class AudioPool
             audioPool[i].gameObject.SetActive(false);
         }
     }
-
     public static AudioInstance Get()
     {
-        if (audioPool == null || poolRoot == null) AutoWarmup();
+        if (audioPool == null || poolRoot == null) Warmup();
 
         for (int i = 0; i < POOL_SIZE; i++)
         {

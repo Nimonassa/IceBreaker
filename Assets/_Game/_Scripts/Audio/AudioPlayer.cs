@@ -12,10 +12,10 @@ public class AudioPlayer : MonoBehaviour
     private HashSet<AudioInstance> activeInstances = new HashSet<AudioInstance>();
 
 
-    [Header("Routing")]
+    [Header("Settings")]
     public AudioMixerGroup mixerGroup;
 
-    [Header("Settings")]
+    
     [field: SerializeField] public bool mute { get; private set; } = false;
     [field: SerializeField] public float volume { get; private set; }= 1.0f;
     [field: SerializeField] public float pitch { get; private set; }= 1.0f;
@@ -38,6 +38,10 @@ public class AudioPlayer : MonoBehaviour
     public void UnregisterInstance(AudioInstance instance)
     {
         activeInstances.Remove(instance);
+    }
+    public void Awake()
+    {
+        AudioPool.Warmup();
     }
 
     public AudioHandle Play(AudioPreset preset)
@@ -102,7 +106,7 @@ public class AudioPlayer : MonoBehaviour
 
     public void StopSound(AudioHandle handle)
     {
-        if (!handle.IsValid) 
+        if (!handle.IsValid)
             return;
 
         foreach (var instance in activeInstances)
@@ -110,11 +114,41 @@ public class AudioPlayer : MonoBehaviour
             if (instance != null && instance.PlaybackID == handle.ID)
             {
                 instance.Stop();
-                break; 
+                break;
             }
         }
     }
 
+    public void PauseSound(AudioHandle handle)
+    {
+        if (!handle.IsValid)
+            return;
+
+        foreach (var instance in activeInstances)
+        {
+            if (instance != null && instance.PlaybackID == handle.ID
+            ){
+                instance.Pause();
+                break;
+            }
+        }
+    }
+
+    public void UnpauseSound(AudioHandle handle)
+    {
+        if (!handle.IsValid)
+            return;
+
+        foreach (var instance in activeInstances)
+        {
+            if (instance != null && instance.PlaybackID == handle.ID)
+            {
+                instance.Unpause();
+                break;
+            }
+        }
+    }
+    
     public void SetVolume(float newVolume)
     {
         volume = newVolume;

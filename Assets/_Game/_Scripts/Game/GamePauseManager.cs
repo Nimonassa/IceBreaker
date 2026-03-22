@@ -32,12 +32,12 @@ public class GamePauseManager : MonoBehaviour
     private void PauseGame()
     {
         Time.timeScale = 0f;
-        AudioManager.Pause();
+        AudioListener.pause = true;
     }
 
     private void ResumeGame()
     {
         Time.timeScale = 1f;
-        AudioManager.Unpause();
+        AudioListener.pause = false;
     }
 }

@@ -38,7 +38,7 @@ public class AudioInstance : MonoBehaviour
     {
         if (!isPlaying || isPaused) return;
 
-        if (AudioManager.IsGloballyPaused && IsPausable)
+        if (AudioListener.pause && IsPausable)
             return;
 
         if (followTarget != null)
@@ -143,7 +143,8 @@ public class AudioInstance : MonoBehaviour
 
     public void Stop()
     {
-        if (!isPlaying) return;
+        if (!isPlaying) 
+            return;
 
         if (source == null)
             return;

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public enum AudioTriggerType
 {
@@ -24,7 +25,28 @@ public class AudioTrigger : MonoBehaviour
     public bool triggerOnce = false;
     public string filterTag = "Player";
     private bool hasPlayed = false;
+    AudioHandle handle;
+    bool isPaused = false;
+    private void Update()
+    {
+        Keyboard keyboard = Keyboard.current;
+        if (keyboard != null)
+        {
+            if (keyboard.eKey.wasPressedThisFrame)
+            {
+                isPaused = !isPaused;
+                if (isPaused)
+                    audioPlayer.Pause();
+                else if (!isPaused){
+                    audioPlayer.Unpause();
+                }
+            }
+            
+       
+        }
+    }
 
+    
     private void Awake()
     {
         if (audioPlayer == null)
@@ -68,7 +90,7 @@ public class AudioTrigger : MonoBehaviour
         if (triggerOnce && hasPlayed) return;
         if (audioPlayer == null || audioPreset == null) return;
 
-        audioPlayer.Play(audioPreset); // Triggers the pooled AudioInstance
+        handle = audioPlayer.Play(audioPreset); 
         hasPlayed = true;
     }
 

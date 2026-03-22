@@ -1085,7 +1085,7 @@ MonoBehaviour:
   lastRolloffMode: 0
   mixerGroup: {fileID: -9157371908972287375, guid: 4f82f3fc0102c1341bc904733f005ad3, type: 2}
   <mute>k__BackingField: 0
-  <volume>k__BackingField: 1
+  <volume>k__BackingField: 0.2
   <pitch>k__BackingField: 1
   <spatialBlend>k__BackingField: 1
   rolloffMode: 0
@@ -1154,10 +1154,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0072030bbf701d8478b2481ed4f40dbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AudioTrigger
-  player: {fileID: 665939480}
-  preset: {fileID: 11400000, guid: 3e1057045b73cf1418d8bb0a663e59fe, type: 2}
+  audioPlayer: {fileID: 665939480}
+  audioPreset: {fileID: 11400000, guid: 3e1057045b73cf1418d8bb0a663e59fe, type: 2}
   triggerType: 1
-  playOnce: 0
+  triggerOnce: 1
   filterTag: Player
 --- !u!4 &665939482
 Transform:
