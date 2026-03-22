@@ -7,6 +7,9 @@ public static class AudioPool
     private static int currentIndex = 0;
     private static GameObject poolRoot;
 
+    public static AudioInstance[] RawPool => audioPool;
+    public static int PoolSize => POOL_SIZE;
+
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     private static void AutoWarmup()
     {
@@ -41,13 +44,15 @@ public static class AudioPool
             }
         }
 
-        // 2. VOICE STEALING (Fallback):
-        // If we reach here, it means ALL 32 VOICES are actively playing right now.
-        // Instead of breaking the game by instantiating a 33rd object, we advance 
-        // the cursor one more time to steal the "oldest" voice we checked, 
         currentIndex = (currentIndex + 1) % POOL_SIZE;
         AudioInstance stolenInstance = audioPool[currentIndex];
-
+        
+        if (stolenInstance.gameObject.activeInHierarchy)
+        {
+            stolenInstance.Stop();
+            stolenInstance.gameObject.SetActive(true);
+        }
+        
         return stolenInstance;
     }
 

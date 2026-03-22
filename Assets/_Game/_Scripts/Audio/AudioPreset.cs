@@ -1,14 +1,20 @@
 using UnityEngine;
 
-public enum PlayMode { Random, Sequential }
+public enum PlayOrder { Random, Sequential }
 
 [CreateAssetMenu(fileName = "NewAudioPreset", menuName = "Audio/Audio Preset")]
 public class AudioPreset : ScriptableObject
 {
     public AudioClip[] clips;
-    public PlayMode playMode = PlayMode.Random;
+    public PlayOrder playOrder = PlayOrder.Random;
 
     [Header("Base Settings")]
+    public bool isPausable = true;
+    public bool isLooping = false;
+    [Tooltip("If true, this sound will finish playing even if the object that started it is destroyed.")]
+    public bool playToCompletion = false;
+    [Space(10)]
+
     [Range(0f, 1f)] public float volume = 1.0f;
     [Range(0f, 0.5f)] public float volumeRandomness = 0.05f;
 

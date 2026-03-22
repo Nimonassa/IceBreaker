@@ -45,6 +45,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AudioPlayer
   lastRolloffMode: 0
+  mixerGroup: {fileID: 0}
+  mute: 0
   volume: 1
   pitch: 1
   spatialBlend: 1
@@ -129,6 +131,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AudioPlayer
   lastRolloffMode: 0
+  mixerGroup: {fileID: 0}
+  mute: 0
   volume: 1
   pitch: 1
   spatialBlend: 1

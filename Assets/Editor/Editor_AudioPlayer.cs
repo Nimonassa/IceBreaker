@@ -5,6 +5,8 @@ using System.Collections.Generic;
 [CustomEditor(typeof(AudioPlayer))]
 public class AudioPlayerEditor : Editor
 {
+    private GUIStyle upperCenterLabelStyle;
+    private GUIStyle middleRightLabelStyle;
     private int selectedKeyIndex = -1;
     private int draggingKeyIndex = -1;
     private int draggingTangentType = -1;
@@ -262,6 +264,12 @@ public class AudioPlayerEditor : Editor
 
     private void DrawGrid(AudioPlayer player, Color majorGrid, Color minorGrid, float marginLeft, Rect fullRect)
     {
+        // Cache styles to prevent memory leaks
+        if (upperCenterLabelStyle == null)
+            upperCenterLabelStyle = new GUIStyle(EditorStyles.miniLabel) { alignment = TextAnchor.UpperCenter };
+        if (middleRightLabelStyle == null)
+            middleRightLabelStyle = new GUIStyle(EditorStyles.miniLabel) { alignment = TextAnchor.MiddleRight };
+
         float roughStep = player.maxDistance / 5f;
         float mag = Mathf.Pow(10f, Mathf.Floor(Mathf.Log10(Mathf.Max(roughStep, 0.01f))));
         float norm = roughStep / mag;
@@ -275,7 +283,9 @@ public class AudioPlayerEditor : Editor
             if (px > _currentGraphRect.xMax) continue;
             Handles.color = isMajor ? majorGrid : minorGrid;
             Handles.DrawLine(new Vector2(px, _currentGraphRect.y), new Vector2(px, _currentGraphRect.yMax));
-            if (isMajor) GUI.Label(new Rect(px - 25, _currentGraphRect.yMax + 2, 50, 20), val.ToString("F1"), new GUIStyle(EditorStyles.miniLabel) { alignment = TextAnchor.UpperCenter });
+
+            // USE CACHED STYLE HERE
+            if (isMajor) GUI.Label(new Rect(px - 25, _currentGraphRect.yMax + 2, 50, 20), val.ToString("F1"), upperCenterLabelStyle);
         }
 
         for (float y = 0; y <= 1.01f; y += 0.5f)
@@ -283,7 +293,7 @@ public class AudioPlayerEditor : Editor
             float py = _currentGraphRect.yMax - (y / _yMaxView) * _currentGraphRect.height;
             Handles.color = majorGrid;
             Handles.DrawLine(new Vector2(_currentGraphRect.x, py), new Vector2(_currentGraphRect.xMax, py));
-            GUI.Label(new Rect(fullRect.x, py - 10, marginLeft - 5, 20), y.ToString("F1"), new GUIStyle(EditorStyles.miniLabel) { alignment = TextAnchor.MiddleRight });
+            GUI.Label(new Rect(fullRect.x, py - 10, marginLeft - 5, 20), y.ToString("F1"), middleRightLabelStyle);
         }
     }
 

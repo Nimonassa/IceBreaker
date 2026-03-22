@@ -140,7 +140,7 @@ public class AudioPresetEditor : Editor
 
         if (preset.clips == null || preset.clips.Length == 0) return;
 
-        if (preset.playMode == PlayMode.Sequential)
+        if (preset.playOrder == PlayOrder.Sequential)
         {
             if (previewIndex >= preset.clips.Length) previewIndex = 0;
 
