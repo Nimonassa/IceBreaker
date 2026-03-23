@@ -11,11 +11,16 @@ public class AudioTriggerEditor : Editor
         // Find the playOn property
         SerializedProperty playOnProp = serializedObject.FindProperty("playOn");
 
-        // Check if we are currently using a physics-based trigger
+        // Check conditions
         AudioTrigger.TriggerType triggerType = (AudioTrigger.TriggerType)playOnProp.intValue;
+        
         bool isPhysicsTrigger = triggerType == AudioTrigger.TriggerType.OnTriggerEnter ||
                                 triggerType == AudioTrigger.TriggerType.OnTriggerExit ||
                                 triggerType == AudioTrigger.TriggerType.OnCollisionEnter;
+
+        // Only show Exit Action if we are ENTERING a physics trigger
+        bool showExitAction = triggerType == AudioTrigger.TriggerType.OnTriggerEnter || 
+                              triggerType == AudioTrigger.TriggerType.OnCollisionEnter;
 
         // Start looping through all variables
         SerializedProperty iterator = serializedObject.GetIterator();
@@ -31,7 +36,13 @@ public class AudioTriggerEditor : Editor
                 continue;
             }
 
-            // 2. Draw the fields
+            // 2. Skip drawing the Exit Action if we didn't select an "Enter" trigger type
+            if (!showExitAction && iterator.name == "onExit")
+            {
+                continue;
+            }
+
+            // 3. Draw the fields
             using (new EditorGUI.DisabledScope(iterator.name == "m_Script"))
             {
                 if (iterator.name == "filterTag")
@@ -91,5 +102,4 @@ public class AudioTriggerEditor : Editor
             }
         }
     }
-    
 }

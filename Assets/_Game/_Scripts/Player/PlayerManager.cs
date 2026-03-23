@@ -3,20 +3,12 @@ using UnityEngine;
 public class PlayerManager : Singleton<PlayerManager>
 {
     [Header("Systems")]
-    [SerializeField] private PlayerMovement movement;
-    [SerializeField] private PlayerGrabbing grabbing;
-
-
-
+    [field: SerializeField] public PlayerMovement Movement { get; private set; }
+    [field: SerializeField] public PlayerGrabbing Grabbing { get; private set; }
 
     [Header("Hands")]
-    [SerializeField] private PlayerHand leftHand;
-    [SerializeField] private PlayerHand rightHand;
-    public PlayerGrabbing Grabbing => grabbing;
-    public PlayerMovement Movement => movement;
-    public PlayerHand LeftHand => leftHand;
-    public PlayerHand RightHand => rightHand;
-
+    [field: SerializeField] public PlayerHand LeftHand { get; private set; }
+    [field: SerializeField] public PlayerHand RightHand { get; private set; }
 
     protected override void Awake()
     {
@@ -33,15 +25,18 @@ public class PlayerManager : Singleton<PlayerManager>
 
     private void InitComponents()
     {
-        if (movement == null) movement = GetComponentInChildren<PlayerMovement>(true);
-
-        if (leftHand == null || rightHand == null)
+        if (Movement == null) 
+            Movement = GetComponentInChildren<PlayerMovement>(true);
+        if (Grabbing == null)
+            Grabbing = GetComponentInChildren<PlayerGrabbing>(true);
+            
+        if (LeftHand == null || RightHand == null)
         {
             PlayerHand[] hands = GetComponentsInChildren<PlayerHand>(true);
             foreach (var hand in hands)
             {
-                if (hand.side == HandSide.Left) leftHand = hand;
-                if (hand.side == HandSide.Right) rightHand = hand;
+                if (hand.side == HandSide.Left) LeftHand = hand;
+                if (hand.side == HandSide.Right) RightHand = hand;
             }
         }
     }

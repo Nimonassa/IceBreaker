@@ -35,7 +35,8 @@ public class PlayerFeet : MonoBehaviour
         {
             lastPosition = movement.transform.position;
         }
-        CalculateNextStepTarget();
+        currentTargetDistance = stepDistance + Random.Range(-stepDistanceVariance, stepDistanceVariance);
+        currentTargetDistance = Mathf.Max(0.1f, currentTargetDistance);
     }
 
     private void Update()
@@ -66,14 +67,10 @@ public class PlayerFeet : MonoBehaviour
         if (distanceAccumulator >= currentTargetDistance)
         {
             distanceAccumulator = 0f;
-            CalculateNextStepTarget();
+            currentTargetDistance = stepDistance + Random.Range(-stepDistanceVariance, stepDistanceVariance);
+            currentTargetDistance = Mathf.Max(0.1f, currentTargetDistance);
             events.onStepTaken?.Invoke();
         }
     }
 
-    private void CalculateNextStepTarget()
-    {
-        currentTargetDistance = stepDistance + Random.Range(-stepDistanceVariance, stepDistanceVariance);
-        currentTargetDistance = Mathf.Max(0.1f, currentTargetDistance);
-    }
 }

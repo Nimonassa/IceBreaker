@@ -740,10 +740,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e36ef0cbd5a30e5429b435b2a62dc121, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movement: {fileID: 8436142590039981123}
-  grabbing: {fileID: 8625741112099043767}
-  leftHand: {fileID: 3869042182710803708}
-  rightHand: {fileID: 6943419790521927465}
+  <Movement>k__BackingField: {fileID: 8436142590039981123}
+  <Grabbing>k__BackingField: {fileID: 8625741112099043767}
+  <LeftHand>k__BackingField: {fileID: 3869042182710803708}
+  <RightHand>k__BackingField: {fileID: 6943419790521927465}
 --- !u!114 &8436142590039981123
 MonoBehaviour:
   m_ObjectHideFlags: 0

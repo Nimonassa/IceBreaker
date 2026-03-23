@@ -21,6 +21,9 @@ public class AudioInstance : MonoBehaviour
     public AudioPlayer CurrentPlayer;
     public AudioPreset CurrentPreset;
 
+    private Coroutine fadeRoutine;
+    private float currentFadeMultiplier = 1f;
+
     private void Awake()
     {
         source = gameObject.AddComponent<AudioSource>();
@@ -149,11 +152,17 @@ public class AudioInstance : MonoBehaviour
         if (source == null)
             return;
 
+        if (fadeRoutine != null) 
+        {
+            StopCoroutine(fadeRoutine);
+            fadeRoutine = null;
+        }
+
         if (CurrentPlayer != null)
         {
             CurrentPlayer.UnregisterInstance(this);
         }
-
+        currentFadeMultiplier = 1f;
         source.Stop();
         isPlaying = false;
         isPaused = false;
@@ -187,7 +196,7 @@ public class AudioInstance : MonoBehaviour
     public void SetVolume(float playerVolume)
     {
         if (source != null)
-            source.volume = Mathf.Clamp01(baseVolume * playerVolume);
+            source.volume = Mathf.Clamp01(baseVolume * playerVolume * currentFadeMultiplier);
     }
 
     public void SetPitch(float playerPitch)
@@ -230,5 +239,30 @@ public class AudioInstance : MonoBehaviour
     {
         if (source != null)
             source.SetCustomCurve(AudioSourceCurveType.CustomRolloff, curve);
+    }
+
+    public void FadeTo(float targetMultiplier, float duration, System.Action onComplete = null)
+    {
+        if (fadeRoutine != null) StopCoroutine(fadeRoutine);
+        if (gameObject.activeInHierarchy)
+            fadeRoutine = StartCoroutine(FadeRoutine(targetMultiplier, duration, onComplete));
+    }
+
+    private System.Collections.IEnumerator FadeRoutine(float targetMult, float duration, System.Action onComplete)
+    {
+        float startMult = currentFadeMultiplier;
+        float time = 0;
+
+        while (time < duration)
+        {
+            time += Time.deltaTime;
+            currentFadeMultiplier = Mathf.Lerp(startMult, targetMult, time / duration);
+            SetVolume(CurrentPlayer != null ? CurrentPlayer.volume : 1f); // Update volume dynamically
+            yield return null;
+        }
+
+        currentFadeMultiplier = targetMult;
+        SetVolume(CurrentPlayer != null ? CurrentPlayer.volume : 1f);
+        onComplete?.Invoke();
     }
 }

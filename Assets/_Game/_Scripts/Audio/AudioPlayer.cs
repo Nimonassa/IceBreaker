@@ -46,10 +46,10 @@ public class AudioPlayer : MonoBehaviour
 
     public AudioHandle Play(AudioPreset preset)
     {
-        if (IsPaused) 
+        if (IsPaused)
             return AudioHandle.Invalid;
 
-        if (preset == null || preset.clips.Length == 0) 
+        if (preset == null || preset.clips.Length == 0)
             return AudioHandle.Invalid;
 
         if (preset != currentPreset)
@@ -69,6 +69,10 @@ public class AudioPlayer : MonoBehaviour
         instance.Play(clipToPlay, this, preset);
 
         return new AudioHandle(instance.PlaybackID);
+    }
+    public void PlayEvent(AudioPreset preset)
+    {
+        Play(preset);
     }
 
     public void Stop()
@@ -220,6 +224,28 @@ public class AudioPlayer : MonoBehaviour
             instance?.SetRolloffCurve(rolloffCurve);
         }
     }
+
+    public bool IsSoundActive(AudioHandle handle)
+    {
+        if (!handle.IsValid) return false;
+        foreach (var instance in activeInstances)
+            if (instance != null && instance.PlaybackID == handle.ID) return true;
+        return false;
+    }
+
+    public void FadeTo(AudioHandle handle, float targetMultiplier, float duration, System.Action onComplete = null)
+    {
+        if (!handle.IsValid) return;
+        foreach (var instance in activeInstances)
+        {
+            if (instance != null && instance.PlaybackID == handle.ID)
+            {
+                instance.FadeTo(targetMultiplier, duration, onComplete);
+                break;
+            }
+        }
+    }
+
 
 #if UNITY_EDITOR
     private void OnValidate()
