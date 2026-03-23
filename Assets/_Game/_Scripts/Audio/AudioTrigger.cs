@@ -1,102 +1,113 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
-
-public enum AudioTriggerType
-{
-    Manual,
-    OnAwake,
-    OnStart,
-    OnEnable,
-    OnTriggerEnter,
-    OnTriggerExit,
-    OnCollisionEnter
-}
 
 public class AudioTrigger : MonoBehaviour
 {
-    [Header("Dependencies")]
-    [SerializeField] private AudioPlayer audioPlayer;
-    [SerializeField] private AudioPreset audioPreset;
-
-    [Header("Trigger Settings")]
-    public AudioTriggerType triggerType = AudioTriggerType.Manual;
-
-    [Tooltip("If true, the sound will only ever play once per scene load.")]
-    public bool triggerOnce = false;
-    public string filterTag = "Player";
-    private bool hasPlayed = false;
-    AudioHandle handle;
-    bool isPaused = false;
-    private void Update()
+    public enum TriggerType
     {
-        Keyboard keyboard = Keyboard.current;
-        if (keyboard != null)
-        {
-            if (keyboard.eKey.wasPressedThisFrame)
-            {
-                isPaused = !isPaused;
-                if (isPaused)
-                    audioPlayer.Pause();
-                else if (!isPaused){
-                    audioPlayer.Unpause();
-                }
-            }
-            
-       
-        }
+        Manual, OnAwake, OnStart, OnEnable, OnTriggerEnter, OnTriggerExit, OnCollisionEnter
     }
 
-    
+    [Header("Dependencies")]
+    [Tooltip("If left blank, it will look for an AudioPlayer on this object.")]
+    public AudioPlayer audioPlayer;
+    public AudioPreset audioPreset;
+
+    [Header("Trigger Conditions")]
+    public TriggerType playOn = TriggerType.Manual;
+    public bool playOnce = false;
+
+    [Header("Filters")]
+    public string filterTag = "Player";
+    public LayerMask filterLayer = ~0;
+
+    private AudioHandle currentHandle;
+    private bool hasPlayed = false;
+    private bool isOccupied = false;
+
+    public void ExecuteTrigger()
+    {
+        if (playOnce && hasPlayed) return;
+        if (audioPlayer == null || audioPreset == null) return;
+
+        currentHandle = audioPlayer.Play(audioPreset);
+        hasPlayed = true;
+    }
+
     private void Awake()
     {
         if (audioPlayer == null)
+        {
             audioPlayer = GetComponent<AudioPlayer>();
-        if (triggerType == AudioTriggerType.OnAwake)
+        }
+
+        if (playOn == TriggerType.OnAwake) 
             ExecuteTrigger();
     }
 
     private void Start()
     {
-        if (triggerType == AudioTriggerType.OnStart)
+        if (playOn == TriggerType.OnStart) 
             ExecuteTrigger();
     }
 
     private void OnEnable()
     {
-        if (triggerType == AudioTriggerType.OnEnable)
+        if (playOn == TriggerType.OnEnable) 
             ExecuteTrigger();
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (triggerType == AudioTriggerType.OnTriggerEnter && CheckTag(other.gameObject))
-            ExecuteTrigger();
+        if (CheckTag(other.gameObject) && CheckLayer(other.gameObject))
+        {
+            if (!isOccupied)
+            {
+                isOccupied = true;
+                if (playOn == TriggerType.OnTriggerEnter) 
+                    ExecuteTrigger();
+            }
+        }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (triggerType == AudioTriggerType.OnTriggerExit && CheckTag(other.gameObject))
-            ExecuteTrigger();
+        if (CheckTag(other.gameObject) && CheckLayer(other.gameObject))
+        {
+            isOccupied = false;
+            if (playOn == TriggerType.OnTriggerExit) 
+                ExecuteTrigger();
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (triggerType == AudioTriggerType.OnCollisionEnter && CheckTag(collision.gameObject))
-            ExecuteTrigger();
+        if (CheckTag(collision.gameObject) && CheckLayer(collision.gameObject))
+        {
+            if (!isOccupied)
+            {
+                isOccupied = true;
+                if (playOn == TriggerType.OnCollisionEnter) 
+                    ExecuteTrigger();
+            }
+        }
     }
 
-    public void ExecuteTrigger()
+    private void OnCollisionExit(Collision collision)
     {
-        if (triggerOnce && hasPlayed) return;
-        if (audioPlayer == null || audioPreset == null) return;
-
-        handle = audioPlayer.Play(audioPreset); 
-        hasPlayed = true;
+        if (CheckTag(collision.gameObject) && CheckLayer(collision.gameObject))
+        {
+            isOccupied = false;
+        }
     }
 
     private bool CheckTag(GameObject go)
     {
         if (string.IsNullOrEmpty(filterTag)) return true;
         return go.CompareTag(filterTag);
+    }
+
+    private bool CheckLayer(GameObject go)
+    {
+        return (filterLayer.value & (1 << go.layer)) != 0;
     }
 }

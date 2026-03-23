@@ -14,9 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AudioPreset
   clips:
   - {fileID: 8300000, guid: 3f686e58f2d413546a6501bb283cc2e3, type: 3}
-  playMode: 0
-  volume: 0.027
-  volumeRandomness: 0.009
+  playOrder: 0
+  isPausable: 1
+  isLooping: 0
+  playToCompletion: 0
+  volume: 0.065
+  volumeRandomness: 0.014
   pitch: 1.58
   pitchRandomness: 0.115
   advanced:

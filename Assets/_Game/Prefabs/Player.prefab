@@ -46,10 +46,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AudioPlayer
   lastRolloffMode: 0
   mixerGroup: {fileID: 0}
-  mute: 0
-  volume: 1
-  pitch: 1
-  spatialBlend: 1
+  <mute>k__BackingField: 0
+  <volume>k__BackingField: 1
+  <pitch>k__BackingField: 1
+  <spatialBlend>k__BackingField: 1
   rolloffMode: 0
   minDistance: 0.5
   maxDistance: 2
@@ -132,10 +132,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AudioPlayer
   lastRolloffMode: 0
   mixerGroup: {fileID: 0}
-  mute: 0
-  volume: 1
-  pitch: 1
-  spatialBlend: 1
+  <mute>k__BackingField: 0
+  <volume>k__BackingField: 1
+  <pitch>k__BackingField: 1
+  <spatialBlend>k__BackingField: 1
   rolloffMode: 0
   minDistance: 0.4
   maxDistance: 3

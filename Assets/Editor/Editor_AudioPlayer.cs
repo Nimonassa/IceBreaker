@@ -293,6 +293,7 @@ public class AudioPlayerEditor : Editor
             float py = _currentGraphRect.yMax - (y / _yMaxView) * _currentGraphRect.height;
             Handles.color = majorGrid;
             Handles.DrawLine(new Vector2(_currentGraphRect.x, py), new Vector2(_currentGraphRect.xMax, py));
+
             GUI.Label(new Rect(fullRect.x, py - 10, marginLeft - 5, 20), y.ToString("F1"), middleRightLabelStyle);
         }
     }
@@ -362,9 +363,13 @@ public class AudioPlayerEditor : Editor
     [DrawGizmo(GizmoType.Selected | GizmoType.Active)]
     static void DrawGizmoForAudioPlayer(AudioPlayer player, GizmoType gizmoType)
     {
+        Gizmos.DrawIcon(player.transform.position, "AudioSource Gizmo", true);
+
         Gizmos.color = new Color(1f, 0.92f, 0.016f, 0.5f);
         Gizmos.DrawWireSphere(player.transform.position, player.minDistance);
+        
         Gizmos.color = new Color(1f, 0.92f, 0.016f, 0.2f);
         Gizmos.DrawWireSphere(player.transform.position, player.maxDistance);
     }
 }
+
