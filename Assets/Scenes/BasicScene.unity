@@ -119,6 +119,135 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1001 &19889460
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: a9075b441f63d9f4faac69697a457af6, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 9.381141
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: a9075b441f63d9f4faac69697a457af6, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.11
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: a9075b441f63d9f4faac69697a457af6, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -7.7614555
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: a9075b441f63d9f4faac69697a457af6, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: a9075b441f63d9f4faac69697a457af6, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: a9075b441f63d9f4faac69697a457af6, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: a9075b441f63d9f4faac69697a457af6, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: a9075b441f63d9f4faac69697a457af6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: a9075b441f63d9f4faac69697a457af6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: a9075b441f63d9f4faac69697a457af6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8620724837782847436, guid: a9075b441f63d9f4faac69697a457af6, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: eadd81dd53419c0458e3643043e43dc6, type: 2}
+    - target: {fileID: 919132149155446097, guid: a9075b441f63d9f4faac69697a457af6, type: 3}
+      propertyPath: m_Name
+      value: 'Cabin '
+      objectReference: {fileID: 0}
+    - target: {fileID: 2698895488618873727, guid: a9075b441f63d9f4faac69697a457af6, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: eadd81dd53419c0458e3643043e43dc6, type: 2}
+    - target: {fileID: 6428028152542648752, guid: a9075b441f63d9f4faac69697a457af6, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: eadd81dd53419c0458e3643043e43dc6, type: 2}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2550463727306718371, guid: a9075b441f63d9f4faac69697a457af6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 19889464}
+    - targetCorrespondingSourceObject: {fileID: 3594243245622329198, guid: a9075b441f63d9f4faac69697a457af6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 19889463}
+  m_SourcePrefab: {fileID: 100100000, guid: a9075b441f63d9f4faac69697a457af6, type: 3}
+--- !u!1 &19889461 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3594243245622329198, guid: a9075b441f63d9f4faac69697a457af6, type: 3}
+  m_PrefabInstance: {fileID: 19889460}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &19889462 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2550463727306718371, guid: a9075b441f63d9f4faac69697a457af6, type: 3}
+  m_PrefabInstance: {fileID: 19889460}
+  m_PrefabAsset: {fileID: 0}
+--- !u!64 &19889463
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 19889461}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 2186430941476567602, guid: a9075b441f63d9f4faac69697a457af6, type: 3}
+--- !u!64 &19889464
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 19889462}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -629719859055844128, guid: a9075b441f63d9f4faac69697a457af6, type: 3}
 --- !u!1 &79163191
 GameObject:
   m_ObjectHideFlags: 0
@@ -2068,63 +2197,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 807697390}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1001 &815705412
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: -8679921383154817045, guid: a9075b441f63d9f4faac69697a457af6, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 11.3092
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: a9075b441f63d9f4faac69697a457af6, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 1.7720611
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: a9075b441f63d9f4faac69697a457af6, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -14.452665
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: a9075b441f63d9f4faac69697a457af6, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: a9075b441f63d9f4faac69697a457af6, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: a9075b441f63d9f4faac69697a457af6, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0.49999997
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: a9075b441f63d9f4faac69697a457af6, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: a9075b441f63d9f4faac69697a457af6, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: a9075b441f63d9f4faac69697a457af6, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: a9075b441f63d9f4faac69697a457af6, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 919132149155446097, guid: a9075b441f63d9f4faac69697a457af6, type: 3}
-      propertyPath: m_Name
-      value: Cabin (1)
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: a9075b441f63d9f4faac69697a457af6, type: 3}
 --- !u!1 &876626703
 GameObject:
   m_ObjectHideFlags: 0
@@ -3928,7 +4000,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1472347543}
   m_Layer: 0
-  m_Name: Cabin
+  m_Name: CabinBlockOut
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4609,4 +4681,4 @@ SceneRoots:
   - {fileID: 2092139010}
   - {fileID: 1249617921}
   - {fileID: 1472347543}
-  - {fileID: 815705412}
+  - {fileID: 19889460}
