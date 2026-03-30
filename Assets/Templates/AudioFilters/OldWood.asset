@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dab3029926d6e96469f010cce5437963, type: 3}
+  m_Name: OldWood
+  m_EditorClassIdentifier: Assembly-CSharp::AdvancedFilterPreset
+  settings:
+    enablePanRandomness: 1
+    panRandomness: 0.05
+    enableLowPass: 1
+    lowPassCutoff: 15000
+    lowPassRandomness: 1500
+    enableHighPass: 1
+    highPassCutoff: 60
+    highPassRandomness: 20
+    enableDistortion: 1
+    distortionLevel: 0.03
+    distortionRandomness: 0.02
+    enableEcho: 1
+    microEchoDelay: 14
+    microEchoRandomness: 3
+    microEchoMix: 0.15
