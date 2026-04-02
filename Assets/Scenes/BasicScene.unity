@@ -907,51 +907,42 @@ MonoBehaviour:
   <spatialBlend>k__BackingField: 1
   rolloffMode: 0
   minDistance: 1
-  maxDistance: 10.34
+  maxDistance: 4.31
   rolloffCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: 0.0967118
+      time: 0.23201856
       value: 1
-      inSlope: -10.34
-      outSlope: -10.34
+      inSlope: -4.31
+      outSlope: -4.31
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 0.17342415
-      value: 0.55766046
-      inSlope: -3.2155871
-      outSlope: -3.2155871
+      time: 0.37758535
+      value: 0.6144798
+      inSlope: -1.627393
+      outSlope: -1.627393
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 0.3109852
-      value: 0.3109852
-      inSlope: -1
-      outSlope: -1
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 0.5576605
-      value: 0.17342414
-      inSlope: -0.31098515
-      outSlope: -0.31098515
+      time: 0.6144798
+      value: 0.37758538
+      inSlope: -0.6144797
+      outSlope: -0.6144797
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
       time: 1
-      value: 0.0967118
-      inSlope: -0.0967118
-      outSlope: -0.0967118
+      value: 0.23201856
+      inSlope: -0.23201856
+      outSlope: -0.23201856
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
@@ -3233,33 +3224,33 @@ MonoBehaviour:
   <spatialBlend>k__BackingField: 1
   rolloffMode: 0
   minDistance: 1
-  maxDistance: 2.34
+  maxDistance: 2.07
   rolloffCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: 0.42735043
+      time: 0.4830918
       value: 1
-      inSlope: -2.3400002
-      outSlope: -2.3400002
+      inSlope: -2.07
+      outSlope: -2.07
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 0.6537205
-      value: 0.65372044
-      inSlope: -0.9999999
-      outSlope: -0.9999999
+      time: 0.69504803
+      value: 0.69504803
+      inSlope: -1.0000001
+      outSlope: -1.0000001
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
       time: 1
-      value: 0.42735043
-      inSlope: -0.42735043
-      outSlope: -0.42735043
+      value: 0.4830918
+      inSlope: -0.4830918
+      outSlope: -0.4830918
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
