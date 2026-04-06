@@ -7,10 +7,12 @@ public class ScenarioManager : MonoBehaviour
 
     public GameStage CurrentStage => currentStage;
 
-    [Header("Debug Status")]
-    [SerializeField, HideInInspector] private GameStage currentStage;
-    [SerializeField, HideInInspector] private GameStage lastCheckpoint;
+    [Header("Configuration")]
+    [SerializeField] private GameStage defaultStage = GameStage.None;
 
+    [Header("Debug Status")]
+    [SerializeField, HideInInspector] private GameStage currentStage = GameStage.None;
+    [SerializeField, HideInInspector] private GameStage lastCheckpoint = GameStage.None;
 
     private Dictionary<GameStage, BaseScenario> scenarios = new Dictionary<GameStage, BaseScenario>();
     private BaseScenario activeScenario;
@@ -22,6 +24,11 @@ public class ScenarioManager : MonoBehaviour
 
         foreach (BaseScenario scenario in foundScenarios)
         {
+            if (scenario.Stage == GameStage.None)
+            {
+                continue;
+            }
+
             if (scenarios.ContainsKey(scenario.Stage))
             {
                 Debug.LogError($"You have two scenarios trying to be the {scenario.Stage} stage!");
@@ -30,16 +37,31 @@ public class ScenarioManager : MonoBehaviour
 
             scenarios.Add(scenario.Stage, scenario);
         }
+    }
 
+    private void Start()
+    {
+        if (defaultStage != GameStage.None)
+        {
+            ChangeStage(defaultStage);
+        }
     }
 
     public void SetCheckpoint(GameStage checkpoint)
     {
-        lastCheckpoint = checkpoint;
+        if (checkpoint != GameStage.None)
+        {
+            lastCheckpoint = checkpoint;
+        }
     }
 
     public void ChangeStage(GameStage nextStage)
     {
+        if (nextStage == GameStage.None)
+        {
+            return;
+        }
+
         if (!scenarios.TryGetValue(nextStage, out BaseScenario target))
         {
             Debug.LogError($"Stage {nextStage} not found in the scene! Did you forget to create the GameObject?");
@@ -58,6 +80,9 @@ public class ScenarioManager : MonoBehaviour
 
     public void FailToCheckpoint()
     {
-        ChangeStage(lastCheckpoint);
+        if (lastCheckpoint != GameStage.None)
+        {
+            ChangeStage(lastCheckpoint);
+        }
     }
 }

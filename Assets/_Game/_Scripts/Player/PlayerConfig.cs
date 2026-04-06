@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit.Attachment;
 
-[CreateAssetMenu(fileName = "PlayerConfig", menuName = "IceSafety/Player Config")]
+[CreateAssetMenu(fileName = "PlayerConfig", menuName = "Player/Player Config")]
 public class PlayerConfig : ScriptableObject
 {
     [Header("Movement Settings")]
