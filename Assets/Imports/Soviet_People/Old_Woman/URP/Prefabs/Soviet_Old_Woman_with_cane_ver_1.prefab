@@ -50,7 +50,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 677324cee0b581445ac966fa911862ce, type: 3}
       propertyPath: m_Name
-      value: Soviet_Old_Woman_ver_with_cane
+      value: Soviet_Old_Woman_with_cane_ver_1
       objectReference: {fileID: 0}
     - target: {fileID: 5866666021909216657, guid: 677324cee0b581445ac966fa911862ce, type: 3}
       propertyPath: m_Controller
@@ -63,9 +63,6 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 3190105444290110264}
     m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 677324cee0b581445ac966fa911862ce, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 6328062968713679828}
     - targetCorrespondingSourceObject: {fileID: -7215681922668628214, guid: 677324cee0b581445ac966fa911862ce, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4347775538711944807}
@@ -114,34 +111,6 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.085
   m_Center: {x: -0.07, y: 0.05, z: 0}
---- !u!1 &3181831527804059650 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 677324cee0b581445ac966fa911862ce, type: 3}
-  m_PrefabInstance: {fileID: 2371509397607906643}
-  m_PrefabAsset: {fileID: 0}
---- !u!136 &6328062968713679828
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3181831527804059650}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.45
-  m_Height: 1.6
-  m_Direction: 1
-  m_Center: {x: 0, y: 0.8, z: 0}
 --- !u!4 &3580165726185081178 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1244690013860475913, guid: 677324cee0b581445ac966fa911862ce, type: 3}
