@@ -25,11 +25,11 @@ public class PlayerManager : Singleton<PlayerManager>
 
     private void InitComponents()
     {
-        if (Movement == null) 
+        if (Movement == null)
             Movement = GetComponentInChildren<PlayerMovement>(true);
         if (Grabbing == null)
             Grabbing = GetComponentInChildren<PlayerGrabbing>(true);
-            
+
         if (LeftHand == null || RightHand == null)
         {
             PlayerHand[] hands = GetComponentsInChildren<PlayerHand>(true);
@@ -38,6 +38,43 @@ public class PlayerManager : Singleton<PlayerManager>
                 if (hand.side == HandSide.Left) LeftHand = hand;
                 if (hand.side == HandSide.Right) RightHand = hand;
             }
+        }
+    }
+    public void Teleport(Transform point)
+    {
+        if (point != null)
+        {
+            this.transform.position = point.position;
+            this.transform.rotation = point.rotation;
+        }
+    }
+    
+    
+    public void Load(PlayerConfig config)
+    {
+        if (config == null)
+        {
+            return;
+        }
+
+        if (Movement != null)
+        {
+            Movement.SetMoveMode(config.moveMode);
+            Movement.SetMoveHand(config.moveHand);
+            Movement.SetMoveSpeed(config.moveSpeed);
+            Movement.SetTeleportDistance(config.teleportDistance);
+            
+            Movement.SetTurnMode(config.turnMode);
+            Movement.SetTurnHand(config.turnHand);
+            Movement.SetContinuousTurnSpeed(config.continuousTurnSpeed);
+            Movement.SetSnapTurnAmount(config.snapTurnAmount);
+        }
+
+        if (Grabbing != null)
+        {
+            Grabbing.SetGrabHand(config.grabHand);
+            Grabbing.SetGrabAttachMode(config.attachMode);
+            Grabbing.SetGrabDistance(config.grabRayDistance);
         }
     }
 

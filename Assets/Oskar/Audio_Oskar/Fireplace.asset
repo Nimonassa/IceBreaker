@@ -18,7 +18,7 @@ MonoBehaviour:
   isPausable: 1
   isLooping: 1
   playToCompletion: 0
-  volume: 1
+  volume: 0.878
   volumeRandomness: 0.05
   pitch: 0.947
   pitchRandomness: 0.203

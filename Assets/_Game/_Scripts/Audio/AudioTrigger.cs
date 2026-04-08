@@ -18,7 +18,7 @@ public class AudioTrigger : MonoBehaviour
     
 
     [Header("Filters")]
-    public string filterTag = "Player1";
+    public string filterTag = "Player";
     public LayerMask filterLayer = ~0;
 
     private AudioHandle currentHandle;
@@ -29,6 +29,8 @@ public class AudioTrigger : MonoBehaviour
 
     private bool fadeAudio = true;
     private float fadeDuration = 0.5f;
+
+    
 
     public void ExecuteTrigger()
     {
@@ -78,15 +80,26 @@ public class AudioTrigger : MonoBehaviour
         }
     }
 
+
+
     private void Awake()
     {
-        if (audioPlayer == null) audioPlayer = GetComponent<AudioPlayer>();
-        if (playOn == TriggerType.OnAwake) ExecuteTrigger();
-    }
+        if (audioPlayer == null)
+            audioPlayer = GetComponent<AudioPlayer>();
+            
+        if (!string.IsNullOrEmpty(filterTag) && filterTag != "Untagged")
+        {
+            try
+            {
+                GameObject.FindWithTag(filterTag);
+            }
+            catch (UnityException)
+            {
+                filterTag = "Untagged";
+            }
+        }
 
-    private void Start()
-    {
-        if (playOn == TriggerType.OnStart) ExecuteTrigger();
+        if (playOn == TriggerType.OnAwake) ExecuteTrigger();
     }
 
     private void OnEnable()
