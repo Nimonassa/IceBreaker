@@ -46,7 +46,10 @@ public class PlayerMovement : MonoBehaviour
 
     public float CurrentMoveSpeed => moveSpeed;
     public MoveType CurrentLocomotion => moveMode;
+    public TurnType CurrentTurnMode => turnMode;
+    public bool IsTeleportLocomotionBusy => teleportProvider != null && teleportProvider.locomotionState != LocomotionState.Idle;
 
+    private bool locomotionInputEnabled = true;
 
     private void Awake()
     {
@@ -190,8 +193,8 @@ public class PlayerMovement : MonoBehaviour
     {
         moveHand = hand;
 
-        bool enableLeftHand = (moveHand == LocomotionHand.Left || moveHand == LocomotionHand.Both);
-        bool enableRightHand = (moveHand == LocomotionHand.Right || moveHand == LocomotionHand.Both);
+        bool enableLeftHand = locomotionInputEnabled && (moveHand == LocomotionHand.Left || moveHand == LocomotionHand.Both);
+        bool enableRightHand = locomotionInputEnabled && (moveHand == LocomotionHand.Right || moveHand == LocomotionHand.Both);
 
         SetReaderState(continuousMove?.leftHandMoveInput, enableLeftHand);
         SetReaderState(continuousMove?.rightHandMoveInput, enableRightHand);
@@ -202,13 +205,21 @@ public class PlayerMovement : MonoBehaviour
     {
         turnHand = hand;
 
-        bool enableLeft = (turnHand == LocomotionHand.Left || turnHand == LocomotionHand.Both);
-        bool enableRight = (turnHand == LocomotionHand.Right || turnHand == LocomotionHand.Both);
+        bool enableLeft = locomotionInputEnabled && (turnHand == LocomotionHand.Left || turnHand == LocomotionHand.Both);
+        bool enableRight = locomotionInputEnabled && (turnHand == LocomotionHand.Right || turnHand == LocomotionHand.Both);
 
         SetReaderState(continuousTurn?.leftHandTurnInput, enableLeft);
         SetReaderState(continuousTurn?.rightHandTurnInput, enableRight);
         SetReaderState(snapTurn?.leftHandTurnInput, enableLeft);
         SetReaderState(snapTurn?.rightHandTurnInput, enableRight);
+    }
+
+    public void SetLocomotionInputEnabled(bool enabled)
+    {
+        locomotionInputEnabled = enabled;
+        SetMoveHand(moveHand);
+        SetTurnHand(turnHand);
+        EnableTeleportationRay(moveHand);
     }
 
     private void SetReaderState(XRInputValueReader reader, bool isActive)
@@ -233,7 +244,7 @@ public class PlayerMovement : MonoBehaviour
         if (player == null)
             return;
 
-        bool isTeleport = (moveMode == MoveType.Teleport);
+        bool isTeleport = locomotionInputEnabled && (moveMode == MoveType.Teleport);
         bool enableLeftRay = isTeleport && (hand == LocomotionHand.Left || hand == LocomotionHand.Both);
         bool enableRightRay = isTeleport && (hand == LocomotionHand.Right || hand == LocomotionHand.Both);
 
