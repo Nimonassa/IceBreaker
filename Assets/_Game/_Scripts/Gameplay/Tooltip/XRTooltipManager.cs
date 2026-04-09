@@ -39,10 +39,13 @@ public class XRTooltipManager : MonoBehaviour
     private LineRenderer splineRenderer;
     private Coroutine fadeCoroutine;
 
-    // We store the original HDR colors so we can fade them back to full intensity
     private Material instancedSplineMat, instancedSphereMat;
     private Color baseSplineColor, baseSplineEmit;
     private Color baseSphereColor, baseSphereEmit;
+
+    // Registry for handling multiple interactors per hand
+    private IXRInteractor leftActiveInteractor;
+    private IXRInteractor rightActiveInteractor;
 
     void Awake()
     {
@@ -50,27 +53,30 @@ public class XRTooltipManager : MonoBehaviour
         cam = Camera.main;
         panelRect = panel.GetComponent<RectTransform>();
 
-        if (!panel.TryGetComponent(out canvasGroup)) canvasGroup = panel.AddComponent<CanvasGroup>();
+        if (!panel.TryGetComponent(out canvasGroup)) 
+            canvasGroup = panel.AddComponent<CanvasGroup>();
+        
         canvasGroup.alpha = 0f;
         panel.SetActive(false);
 
-        // Spline Setup
+        // --- Spline Setup ---
         GameObject lineObj = new GameObject("TooltipSpline");
         lineObj.transform.SetParent(transform);
         splineRenderer = lineObj.AddComponent<LineRenderer>();
         splineRenderer.startWidth = splineRenderer.endWidth = splineWidth;
         splineRenderer.useWorldSpace = true;
+        splineRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+        splineRenderer.receiveShadows = false;
 
         instancedSplineMat = new Material(splineMaterial ? splineMaterial : new Material(Shader.Find("Standard")));
         splineRenderer.material = instancedSplineMat;
 
-        // Capture initial colors/luminance
         baseSplineColor = instancedSplineMat.HasProperty("_Color") ? instancedSplineMat.color : Color.white;
         baseSplineEmit = instancedSplineMat.HasProperty("_EmissionColor") ? instancedSplineMat.GetColor("_EmissionColor") : Color.black;
 
         splineRenderer.enabled = false;
 
-        // Sphere Setup
+        // --- Sphere Setup ---
         if (spherePrefab != null)
         {
             sphereInstance = Instantiate(spherePrefab, transform);
@@ -85,21 +91,33 @@ public class XRTooltipManager : MonoBehaviour
         }
     }
 
+    // --- INTERACTOR REGISTRY ---
+    public void SetActiveInteractor(ControllerSide side, IXRInteractor interactor)
+    {
+        if (side == ControllerSide.Left) leftActiveInteractor = interactor;
+        else rightActiveInteractor = interactor;
+    }
+
     public void RegisterControllerMap(XRControllerButtonMap map, ControllerSide side)
     {
         if (side == ControllerSide.Left) leftMap = map;
         else rightMap = map;
     }
 
-    public void Show(string text, IXRInteractor interactor, XRButtonType targetButton, Transform target)
+    // --- PUBLIC API ---
+    public void Show(string text, ControllerSide side, XRButtonType targetButton, Transform target)
     {
         promptText.text = text;
         activeTarget = target;
 
-        ControllerSide side = (interactor.handedness == InteractorHandedness.Left) ? ControllerSide.Left : ControllerSide.Right;
+        // Retrieve the interactor that actually triggered the hover
+        IXRInteractor interactor = (side == ControllerSide.Left) ? leftActiveInteractor : rightActiveInteractor;
+        if (interactor == null) return;
+
         XRControllerButtonMap activeMap = (side == ControllerSide.Left) ? leftMap : rightMap;
         activeController = (activeMap != null) ? activeMap.GetButtonTransform(targetButton) : interactor.transform;
 
+        // Instant teleport to position before showing
         GetTargetPose(out Vector3 startPos, out Quaternion startRot);
         panel.transform.SetPositionAndRotation(startPos, startRot);
 
@@ -117,6 +135,7 @@ public class XRTooltipManager : MonoBehaviour
         if (sphereInstance) sphereInstance.gameObject.SetActive(false);
     });
 
+    // --- ANIMATION & FADING ---
     private void FadeTo(float from, float to, Action callback = null)
     {
         if (fadeCoroutine != null) StopCoroutine(fadeCoroutine);
@@ -129,15 +148,11 @@ public class XRTooltipManager : MonoBehaviour
         while (elapsed < fadeDuration)
         {
             elapsed += Time.deltaTime;
-            float t = elapsed / fadeDuration;
-            float alpha = Mathf.Lerp(from, to, t);
+            float alpha = Mathf.Lerp(from, to, elapsed / fadeDuration);
 
             canvasGroup.alpha = alpha;
-
-            // FADE SPLINE (Color + Emission/Luminance)
             SetMaterialAlpha(instancedSplineMat, baseSplineColor, baseSplineEmit, alpha);
-
-            // FADE SPHERE (Color + Emission/Luminance)
+            
             if (instancedSphereMat)
                 SetMaterialAlpha(instancedSphereMat, baseSphereColor, baseSphereEmit, alpha);
 
@@ -149,23 +164,25 @@ public class XRTooltipManager : MonoBehaviour
 
     private void SetMaterialAlpha(Material mat, Color baseCol, Color baseEmit, float alpha)
     {
-        // Update main alpha
         Color c = baseCol;
         c.a *= alpha;
         mat.color = c;
 
-        // Update Luminance (Emission) - Fading the intensity of the HDR color
         if (mat.HasProperty("_EmissionColor"))
         {
             mat.SetColor("_EmissionColor", baseEmit * alpha);
         }
     }
 
+    // --- TRANSFORM CALCULATIONS ---
     private void GetTargetPose(out Vector3 targetPos, out Quaternion targetRot)
     {
+        if (activeController == null) { targetPos = Vector3.zero; targetRot = Quaternion.identity; return; }
+
         Vector3 controllerVP = cam.WorldToViewportPoint(activeController.position);
         float sideMultiplier = (controllerVP.z > 0 && controllerVP.x > 0.5f) ? -1f : 1f;
         Vector3 dynamicOffset = (cam.transform.up * verticalOffset) + (cam.transform.right * horizontalOffset * sideMultiplier);
+        
         targetPos = activeController.position + dynamicOffset;
         targetRot = Quaternion.LookRotation(targetPos - cam.transform.position);
     }
@@ -175,6 +192,7 @@ public class XRTooltipManager : MonoBehaviour
         if (!panel.activeSelf || !activeController) return;
 
         GetTargetPose(out Vector3 targetPos, out Quaternion targetRot);
+        
         panel.transform.SetPositionAndRotation(
             Vector3.Lerp(panel.transform.position, targetPos, Time.deltaTime * speed),
             Quaternion.Lerp(panel.transform.rotation, targetRot, Time.deltaTime * speed)
@@ -192,16 +210,19 @@ public class XRTooltipManager : MonoBehaviour
         float dist = Vector3.Distance(start, end);
         float curStartTension = Mathf.Min(startTension, dist * 0.5f);
         float curEndTension = Mathf.Min(endTension, dist * 0.5f);
-        Vector3 smartForward = Vector3.Lerp(activeController.forward, (end - start).normalized, 0.5f).normalized;
+        
+        Vector3 directionToUI = (end - start).normalized;
+        Vector3 smartForward = Vector3.Lerp(activeController.forward, directionToUI, 0.5f).normalized;
 
         for (int i = 0; i < splineSegments; i++)
         {
             float t = i / (float)(splineSegments - 1);
             float u = 1 - t;
-            Vector3 pos = (u * u * u * start) + (3 * u * u * t * (start + smartForward * curStartTension)) +
-                          (3 * u * t * t * (end + Vector3.down * curEndTension)) + (t * t * t * end);
+            Vector3 pos = (u * u * u * start) + 
+                          (3 * u * u * t * (start + smartForward * curStartTension)) +
+                          (3 * u * t * t * (end + Vector3.down * curEndTension)) + 
+                          (t * t * t * end);
             splineRenderer.SetPosition(i, pos);
         }
     }
 }
-

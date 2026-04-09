@@ -12,57 +12,58 @@ public class DialogueTriggerEditor : Editor
         DialogueTrigger trigger = (DialogueTrigger)target;
         serializedObject.Update();
 
-        // Use the Property Iterator to avoid hardcoding field order
-        SerializedProperty prop = serializedObject.GetIterator();
-        if (prop.NextVisible(true))
+        // --- Basic Setup ---
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("dialogueManager"));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("dialogueSceneGraph"));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("triggerOnce"));
+        EditorGUILayout.Space(10);
+
+        // --- HEADER 1: TRIGGER MODE OPTIONS ---
+        SerializedProperty triggerModeProp = serializedObject.FindProperty("triggerMode");
+        EditorGUI.BeginChangeCheck();
+        EditorGUILayout.PropertyField(triggerModeProp);
+        if (EditorGUI.EndChangeCheck())
         {
-            do
+            serializedObject.ApplyModifiedProperties();
+            HandleAutoCollider(trigger, (TriggerMode)triggerModeProp.enumValueIndex);
+        }
+
+        if (trigger.triggerMode != TriggerMode.None)
+        {
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("triggerLayerMask"));
+            DrawTagPopup(serializedObject.FindProperty("triggerTag"));
+        }
+        EditorGUILayout.Space(10);
+
+        // --- HEADER 2: INPUT OPTIONS ---
+        EditorGUILayout.LabelField("Input Options", EditorStyles.boldLabel);
+        
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("inputType"));
+
+        if (trigger.inputType != InputType.None)
+        {
+            if (trigger.inputType == InputType.Keyboard)
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("startKey"));
+                
+            else if (trigger.inputType == InputType.InputAction)
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("startAction"));
+                
+            else if (trigger.inputType == InputType.XRHand)
             {
-                // Skip internal script reference
-                if (prop.name == "m_Script") continue;
-
-                // Skip properties handled in the custom Node Selection section at the bottom
-                if (prop.name == "startingNode" || prop.name == "displayOnlyRootNodes" || prop.name == "autoAddedCollider") continue;
-
-                // Conditional Visibility Logic
-                if (prop.name == "startKey" && trigger.triggerType != TriggerType.KeyPress) continue;
-                if (prop.name == "startAction" && trigger.triggerType != TriggerType.InputAction) continue;
-                if ((prop.name == "triggerLayerMask" || prop.name == "triggerTag") && 
-                    trigger.triggerType != TriggerType.OnTriggerEnter && trigger.triggerType != TriggerType.OnTriggerExit) continue;
-
-                // Custom Handling for TriggerType (Auto-Collider Logic)
-                if (prop.name == "triggerType")
-                {
-                    EditorGUI.BeginChangeCheck();
-                    EditorGUILayout.PropertyField(prop);
-                    if (EditorGUI.EndChangeCheck())
-                    {
-                        serializedObject.ApplyModifiedProperties();
-                        HandleAutoCollider(trigger, (TriggerType)prop.enumValueIndex);
-                    }
-                }
-                // Custom Handling for triggerTag (Tag Dropdown)
-                else if (prop.name == "triggerTag")
-                {
-                    DrawTagPopup(prop);
-                }
-                // Draw everything else normally
-                else
-                {
-                    EditorGUILayout.PropertyField(prop, true);
-                }
-
-            } while (prop.NextVisible(false));
+                // Shows the target slot and the button dropdown
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("xrTarget"), new GUIContent("XR Target Object"));
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("xrButton"));
+            }
         }
 
         serializedObject.ApplyModifiedProperties();
 
-        // DRAW NODE SELECTION SECTION
+        // --- Node Selection ---
+        EditorGUILayout.Space(10);
+        DrawLine();
+        
         if (trigger.dialogueSceneGraph != null && trigger.dialogueSceneGraph.graph != null)
         {
-            EditorGUILayout.Space(10);
-            EditorGUILayout.LabelField("Node Selection", EditorStyles.boldLabel);
-            
             SerializedProperty displayRootsProp = serializedObject.FindProperty("displayOnlyRootNodes");
             EditorGUILayout.PropertyField(displayRootsProp);
             serializedObject.ApplyModifiedProperties();
@@ -71,14 +72,13 @@ public class DialogueTriggerEditor : Editor
         }
         else
         {
-            EditorGUILayout.Space(5);
             EditorGUILayout.HelpBox("Assign a Dialogue Scene Graph above to select a starting node.", MessageType.Info);
         }
     }
 
-    private void HandleAutoCollider(DialogueTrigger trigger, TriggerType newType)
+    private void HandleAutoCollider(DialogueTrigger trigger, TriggerMode newMode)
     {
-        if (newType == TriggerType.OnTriggerEnter || newType == TriggerType.OnTriggerExit)
+        if (newMode != TriggerMode.None)
         {
             if (trigger.GetComponent<Collider>() == null)
             {
@@ -110,45 +110,44 @@ public class DialogueTriggerEditor : Editor
     }
 
     private void DrawNodeSelectionPopup(DialogueTrigger trigger, bool onlyRoots)
-{
-    NodeGraph graph = trigger.dialogueSceneGraph.graph;
-    List<BaseNode> validNodes = new List<BaseNode>();
-    List<string> popupOptions = new List<string>();
-
-    foreach (Node node in graph.nodes)
     {
-        if (node is BaseNode baseNode)
+        NodeGraph graph = trigger.dialogueSceneGraph.graph;
+        List<BaseNode> validNodes = new List<BaseNode>();
+        List<string> popupOptions = new List<string>();
+
+        foreach (Node node in graph.nodes)
         {
-            if (onlyRoots)
+            if (node is BaseNode baseNode)
             {
-                NodePort enterPort = baseNode.GetInputPort("enter");
-                if (enterPort != null && !enterPort.IsConnected)
+                if (onlyRoots)
+                {
+                    NodePort enterPort = baseNode.GetInputPort("enter");
+                    if (enterPort != null && !enterPort.IsConnected)
+                    {
+                        validNodes.Add(baseNode);
+                        popupOptions.Add(baseNode.name);
+                    }
+                }
+                else
                 {
                     validNodes.Add(baseNode);
                     popupOptions.Add(baseNode.name);
                 }
             }
-            else
-            {
-                validNodes.Add(baseNode);
-                popupOptions.Add(baseNode.name);
-            }
         }
-    }
 
-    if (validNodes.Count > 0)
-    {
-        int currentIndex = validNodes.IndexOf(trigger.startingNode);
-
-        if (currentIndex < 0) 
+        if (validNodes.Count > 0)
         {
-            currentIndex = 0;
-            Undo.RecordObject(trigger, "Reset Starting Node to Valid Entry");
-            trigger.startingNode = validNodes[0];
-            EditorUtility.SetDirty(trigger);
-        }
+            int currentIndex = validNodes.IndexOf(trigger.startingNode);
+            if (currentIndex < 0) 
+            {
+                currentIndex = 0;
+                Undo.RecordObject(trigger, "Reset Starting Node to Valid Entry");
+                trigger.startingNode = validNodes[0];
+                EditorUtility.SetDirty(trigger);
+            }
 
-        int newIndex = EditorGUILayout.Popup("Start From Node:", currentIndex, popupOptions.ToArray());
+            int newIndex = EditorGUILayout.Popup("Start From Node:", currentIndex, popupOptions.ToArray());
 
             if (newIndex != currentIndex || trigger.startingNode == null)
             {
@@ -156,11 +155,18 @@ public class DialogueTriggerEditor : Editor
                 trigger.startingNode = validNodes[newIndex];
                 EditorUtility.SetDirty(trigger);
             }
-        
+        }
+        else
+        {
+            EditorGUILayout.HelpBox(onlyRoots ? "No Root Nodes found!" : "No Dialogue Nodes found!", MessageType.Warning);
+        }
     }
-    else
+
+    private void DrawLine()
     {
-        EditorGUILayout.HelpBox(onlyRoots ? "No Root Nodes found!" : "No Dialogue Nodes found!", MessageType.Warning);
+        Rect rect = EditorGUILayout.GetControlRect(false, 1);
+        rect.height = 1;
+        EditorGUI.DrawRect(rect, new Color(0.3f, 0.3f, 0.3f, 1));
+        EditorGUILayout.Space(5);
     }
-}
 }
