@@ -48,6 +48,13 @@ public class PlayerManager : Singleton<PlayerManager>
             this.transform.rotation = point.rotation;
         }
     }
+    public void TeleportPosition(Transform point)
+    {
+        if (point != null)
+        {
+            this.transform.position = point.position;
+        }
+    }
 
 
     public void Load(PlayerConfig config)
