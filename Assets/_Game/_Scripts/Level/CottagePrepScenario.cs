@@ -6,8 +6,8 @@ public class CottagePrepScenario : BaseScenario
 
     [Header("Dialogue References")]
     public DialogueReference introDialogue;
-    public DialogueReference readyToExitDialogue;
-    
+
+
     public void Start()
     {
         if (introDialogue.IsValid)
