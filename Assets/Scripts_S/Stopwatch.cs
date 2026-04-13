@@ -1,22 +1,43 @@
-using UnityEngine;
 using TMPro;
+using Unity.Burst.CompilerServices;
+using UnityEngine;
 using UnityEngine.Events;
 
 [RequireComponent(typeof(TextMeshProUGUI))]
 public class Stopwatch : MonoBehaviour
 {
-    public float stopTime = 60f;
-    public UnityEvent onTick, onStop;
+    public enum Condition { Awake, Manual }
 
+    [System.Serializable]
+    public class WatchEvents { public UnityEvent onTick, onStart, onStop;  }
+
+    [Header("References")]
+    public TextMeshProUGUI uiText;
+    [Header("Settings")]
+    public float stopTime = 60f;
+    public Condition trigger = Condition.Awake;
+    public WatchEvents events = new WatchEvents();  
+
+
+   
+        
+    
     private float time;
     private int lastTick;
     private bool isRunning = true;
-    private TextMeshProUGUI uiText;
 
     void Start()
     {
-        uiText = GetComponent<TextMeshProUGUI>();
+        if(uiText == null)
+            uiText = GetComponent<TextMeshProUGUI>();
+
         UpdateUI();
+
+        if (trigger == Condition.Awake)
+        {
+            StartTimer();
+        }
+            
     }
 
     void Update()
@@ -32,7 +53,7 @@ public class Stopwatch : MonoBehaviour
         if ((int)time > lastTick)
         {
             lastTick = (int)time;
-            onTick?.Invoke();
+            events.onTick?.Invoke();
         }
 
         // Stop limit
@@ -40,7 +61,7 @@ public class Stopwatch : MonoBehaviour
         {
             time = stopTime;
             isRunning = false;
-            onStop?.Invoke();
+            events.onStop?.Invoke();
         }
 
         UpdateUI();
@@ -58,6 +79,7 @@ public class Stopwatch : MonoBehaviour
 
     public void StartTimer()
     {
+        events.onStart?.Invoke();
         isRunning = stopTime <= 0 || time < stopTime;
     }
 
@@ -80,3 +102,4 @@ public class Stopwatch : MonoBehaviour
         }
     }
 }
+
