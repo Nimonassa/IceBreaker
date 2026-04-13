@@ -48,8 +48,8 @@ public class PlayerManager : Singleton<PlayerManager>
             this.transform.rotation = point.rotation;
         }
     }
-    
-    
+
+
     public void Load(PlayerConfig config)
     {
         if (config == null)
@@ -59,23 +59,31 @@ public class PlayerManager : Singleton<PlayerManager>
 
         if (Movement != null)
         {
+            // Movement Settings
             Movement.SetMoveMode(config.moveMode);
             Movement.SetMoveHand(config.moveHand);
             Movement.SetMoveSpeed(config.moveSpeed);
             Movement.SetTeleportDistance(config.teleportDistance);
-            
+            Movement.SetShiftDistance(config.shiftDistance);
+            Movement.SetShiftSpeed(config.shiftSpeed);
+
+            // Turning Settings
             Movement.SetTurnMode(config.turnMode);
             Movement.SetTurnHand(config.turnHand);
             Movement.SetContinuousTurnSpeed(config.continuousTurnSpeed);
             Movement.SetSnapTurnAmount(config.snapTurnAmount);
+            Movement.SetShiftTurnAmount(config.shiftTurnAmount);
+            Movement.SetShiftTurnSpeed(config.shiftTurnSpeed);
         }
 
         if (Grabbing != null)
         {
+            // Grabbing Settings
             Grabbing.SetGrabHand(config.grabHand);
             Grabbing.SetGrabAttachMode(config.attachMode);
             Grabbing.SetGrabDistance(config.grabRayDistance);
         }
     }
+    
 
 }

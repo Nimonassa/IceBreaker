@@ -1,25 +1,12 @@
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.Attachment;
 using UnityEngine.XR.Interaction.Toolkit.Interactors;
-
 
 public enum InteractionHand { Left, Right, Both, None }
 
 public class PlayerGrabbing : MonoBehaviour
 {
-    [System.Serializable]
-    public class GrabbingEvents
-    {
-        public UnityEvent<GameObject> onObjectGrabbed = new();
-        public UnityEvent<GameObject> onObjectReleased = new();
-        public UnityEvent onHoverEnter = new();
-    }
-
-    [Header("Grabbing Events")]
-    public GrabbingEvents events = new GrabbingEvents();
-
     [Header("Global Settings")]
     [SerializeField] private InteractionHand grabHand = InteractionHand.Both;
     [SerializeField] private InteractorFarAttachMode attachMode = InteractorFarAttachMode.Far;
@@ -27,10 +14,12 @@ public class PlayerGrabbing : MonoBehaviour
 
     private void Start()
     {
-        UpdateSettings();
+        UpdateSettings(); // Initializing hand settings on start
     }
+
     private void OnEnable()
     {
+        // Subscribe to XR interactor events for all children
         foreach (var interactor in GetComponentsInChildren<XRBaseInteractor>(true))
         {
             interactor.selectEntered.AddListener(HandleGrab);
@@ -41,6 +30,7 @@ public class PlayerGrabbing : MonoBehaviour
 
     private void OnDisable()
     {
+        // Unsubscribe to prevent memory leaks
         foreach (var interactor in GetComponentsInChildren<XRBaseInteractor>(true))
         {
             interactor.selectEntered.RemoveListener(HandleGrab);
@@ -58,17 +48,18 @@ public class PlayerGrabbing : MonoBehaviour
 
     private void HandleGrab(SelectEnterEventArgs args)
     {
-        events.onObjectGrabbed?.Invoke(args.interactableObject.transform.gameObject);
+        // Invoke the global static event with the grabbed GameObject
+        PlayerEvents.OnObjectGrabbed.Invoke(args.interactableObject.transform.gameObject);
     }
-    
+
     private void HandleRelease(SelectExitEventArgs args)
     {
-        events.onObjectReleased?.Invoke(args.interactableObject.transform.gameObject);
+        PlayerEvents.OnObjectReleased.Invoke(args.interactableObject.transform.gameObject);
     }
 
     private void HandleHover(HoverEnterEventArgs args)
     {
-        events.onHoverEnter?.Invoke();
+        PlayerEvents.OnHoverEnter.Invoke();
     }
 
     public void UpdateSettings()
@@ -85,8 +76,8 @@ public class PlayerGrabbing : MonoBehaviour
         var player = PlayerManager.Instance;
         if (player != null)
         {
-            player.LeftHand.SetGrabRayDistance(distance);
-            player.RightHand.SetGrabRayDistance(distance);
+            player.LeftHand.SetGrabRayDistance(distance); // Update left hand distance
+            player.RightHand.SetGrabRayDistance(distance); // Update right hand distance
         }
     }
 
@@ -100,10 +91,11 @@ public class PlayerGrabbing : MonoBehaviour
             bool enableLeft = (hand == InteractionHand.Left || hand == InteractionHand.Both);
             bool enableRight = (hand == InteractionHand.Right || hand == InteractionHand.Both);
 
-            player.LeftHand.SetGrabRayActive(enableLeft);
-            player.RightHand.SetGrabRayActive(enableRight);
+            player.LeftHand.SetGrabRayActive(enableLeft); // Toggle left hand ray
+            player.RightHand.SetGrabRayActive(enableRight); // Toggle right hand ray
         }
     }
+
     public void SetGrabAttachMode(InteractorFarAttachMode mode)
     {
         attachMode = mode;
@@ -111,8 +103,8 @@ public class PlayerGrabbing : MonoBehaviour
         var player = PlayerManager.Instance;
         if (player != null)
         {
-            player.LeftHand.SetGrabAttachMode(mode);
-            player.RightHand.SetGrabAttachMode(mode);
+            player.LeftHand.SetGrabAttachMode(mode); // Set left hand attach mode
+            player.RightHand.SetGrabAttachMode(mode); // Set right hand attach mode
         }
     }
 }

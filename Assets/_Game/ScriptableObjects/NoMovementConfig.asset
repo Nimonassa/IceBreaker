@@ -10,16 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: afb0ea7ff91ebb741ac49d6cff328065, type: 3}
-  m_Name: PlayerConfig
+  m_Name: NoMovementConfig
   m_EditorClassIdentifier: Assembly-CSharp::PlayerConfig
-  moveMode: 0
+  moveMode: 3
   moveHand: 0
-  moveSpeed: 3
-  teleportDistance: 1.5
-  turnMode: 1
+  moveSpeed: 1.5
+  teleportDistance: 1
+  shiftDistance: 4
+  shiftSpeed: 25
+  turnMode: 3
   turnHand: 1
   continuousTurnSpeed: 60
   snapTurnAmount: 45
+  shiftTurnAmount: 45
+  shiftTurnSpeed: 180
   grabHand: 2
   attachMode: 1
   grabRayDistance: 5

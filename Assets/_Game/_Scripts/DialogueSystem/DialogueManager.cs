@@ -14,6 +14,7 @@ public enum AdvanceInputType
 
 public class DialogueManager : MonoBehaviour
 {
+    public static DialogueManager Instance { get; private set; } = null; 
     [Header("Base Settings")]
     public GameLanguage currentLanguage;
     public DialogueUI dialogueUI;
@@ -30,10 +31,13 @@ public class DialogueManager : MonoBehaviour
 
     private BaseNode currentNode;
     private Coroutine autoAdvanceCoroutine;
-
+    private System.Action onCurrentDialogueComplete = null;
     private int lastDialogueEndFrame = -1;
     public bool IsDialogueActive => currentNode != null || Time.frameCount == lastDialogueEndFrame;
-
+    private void Awake()
+    {
+        Instance = this;
+    }
     private void OnEnable()
     {
         if (advanceAction != null)
@@ -77,8 +81,17 @@ public class DialogueManager : MonoBehaviour
         AdvanceFromChat();
     }
 
-    public void StartDialogue(BaseNode startNode)
+    public void StartDialogue(BaseNode startNode, System.Action onComplete = null)
     {
+        onCurrentDialogueComplete = onComplete;
+
+        if (startNode == null)
+        {
+            Debug.LogWarning("DialogueManager: StartDialogue called with null node.");
+            EndDialogue();
+            return;
+        }
+    
         dialogueUI.SetVisible(true);
         OnDialogueStarted?.Invoke();
         EnterNode(startNode);
@@ -277,8 +290,9 @@ public class DialogueManager : MonoBehaviour
 
         // MODIFIED: Record the frame we ended on before firing the event
         lastDialogueEndFrame = Time.frameCount;
-
         OnDialogueEnded?.Invoke();
+        onCurrentDialogueComplete?.Invoke();
+        onCurrentDialogueComplete = null;
     }
 
     private bool IsNodeEmpty(BaseNode node)
