@@ -7,6 +7,9 @@ using UnityEngine;
 [RequireComponent(typeof(BoxCollider))]
 public class BreakableIceZone : MonoBehaviour
 {
+    public Vector2 LastBreakImpactLocalPoint => lastBreakImpactLocalPoint;
+    public bool HasBreakImpactPoint => hasBreakImpactPoint;
+
     [Header("References")]
     [Tooltip("Mesh object for the intact ice surface shown before the break.")]
     [SerializeField] private GameObject intactRoot;
@@ -121,6 +124,8 @@ public class BreakableIceZone : MonoBehaviour
     private Transform brokenFillSouth;
     private Transform brokenFillWest;
     private Transform brokenFillEast;
+    private Vector2 lastBreakImpactLocalPoint;
+    private bool hasBreakImpactPoint;
 #if UNITY_EDITOR
     private bool editorRefreshQueued;
 #endif
@@ -285,7 +290,8 @@ public class BreakableIceZone : MonoBehaviour
         yield return null;
 
         RefreshGeneratedShardReferences();
-        SelectBreakShards(player.transform.position);
+        Vector3 breakImpactWorldPosition = GetPlayerBreakImpactWorldPosition(player);
+        SelectBreakShards(breakImpactWorldPosition);
         ConfigureBrokenVisualState();
 
         if (triggerCollider != null)
@@ -308,7 +314,7 @@ public class BreakableIceZone : MonoBehaviour
 
         if (intactRoot != null)
             intactRoot.SetActive(false);
-        ReleaseSelectedShards(player.transform.position);
+        ReleaseSelectedShards(breakImpactWorldPosition);
 
         CharacterController controller = player.GetComponent<CharacterController>();
         bool restoreControllerCollisions = false;
@@ -320,7 +326,15 @@ public class BreakableIceZone : MonoBehaviour
 
         yield return SinkPlayer(player.transform);
 
-        if (respawnPoint != null)
+        bool handledByExternalRecovery = TryGetPostBreakHandler(player, out IBreakableIcePostBreakHandler handler);
+        if (handledByExternalRecovery)
+        {
+            if (controller != null)
+                controller.detectCollisions = restoreControllerCollisions;
+
+            yield return handler.HandlePostBreak(this, player);
+        }
+        else if (respawnPoint != null)
         {
             yield return new WaitForSeconds(respawnDelay);
             player.transform.SetPositionAndRotation(respawnPoint.position, respawnPoint.rotation);
@@ -328,7 +342,7 @@ public class BreakableIceZone : MonoBehaviour
 
         yield return null;
 
-        if (controller != null)
+        if (controller != null && !handledByExternalRecovery)
             controller.detectCollisions = restoreControllerCollisions;
 
         SetPlayerControl(player, true);
@@ -570,6 +584,7 @@ public class BreakableIceZone : MonoBehaviour
     {
         edgeShards = Array.Empty<BreakableIceShardPiece>();
         releasedShards = Array.Empty<BreakableIceShardPiece>();
+        hasBreakImpactPoint = false;
 
         if (triggerCollider != null)
             triggerCollider.enabled = true;
@@ -635,6 +650,14 @@ public class BreakableIceZone : MonoBehaviour
             headCamera = Camera.main;
     }
 
+    private Vector3 GetPlayerBreakImpactWorldPosition(PlayerManager player)
+    {
+        if (player == null)
+            return transform.position;
+
+        return player.transform.position;
+    }
+
     private void SubscribeTeleportEvent()
     {
         if (teleportSubscribed)
@@ -655,6 +678,28 @@ public class BreakableIceZone : MonoBehaviour
 
         cachedPlayer.Movement.events.onTeleport.RemoveListener(HandleTeleportEnded);
         teleportSubscribed = false;
+    }
+
+    private bool TryGetPostBreakHandler(PlayerManager player, out IBreakableIcePostBreakHandler handler)
+    {
+        handler = null;
+
+        foreach (MonoBehaviour component in GetComponents<MonoBehaviour>())
+        {
+            if (!component.isActiveAndEnabled)
+                continue;
+
+            if (!(component is IBreakableIcePostBreakHandler candidate))
+                continue;
+
+            if (!candidate.CanHandlePostBreak(this, player))
+                continue;
+
+            handler = candidate;
+            return true;
+        }
+
+        return false;
     }
 
     private bool TryGetPlayer(Collider other, out PlayerManager player)
@@ -908,15 +953,19 @@ public class BreakableIceZone : MonoBehaviour
     {
         edgeShards = Array.Empty<BreakableIceShardPiece>();
         releasedShards = Array.Empty<BreakableIceShardPiece>();
+        hasBreakImpactPoint = false;
         if (generatedShards == null || generatedShards.Length == 0)
             return;
 
         if (!TryGetSurfaceLayout(out Vector3 surfaceCenter, out _, out _))
             return;
 
+        Vector3 localImpactPoint = transform.InverseTransformPoint(impactWorldPosition);
         Vector2 impactLocalPoint = new(
-            impactWorldPosition.x - surfaceCenter.x,
-            impactWorldPosition.z - surfaceCenter.z);
+            localImpactPoint.x - surfaceCenter.x,
+            localImpactPoint.z - surfaceCenter.z);
+        lastBreakImpactLocalPoint = impactLocalPoint;
+        hasBreakImpactPoint = true;
 
         BreakableIceShardGenerator.SelectionSettings settings = new()
         {
@@ -997,7 +1046,7 @@ public class BreakableIceZone : MonoBehaviour
             piece.gameObject.SetActive(false);
     }
 
-    private bool TryGetSurfaceLayout(out Vector3 surfaceCenter, out float intactWidth, out float intactDepth)
+    public bool TryGetSurfaceLayout(out Vector3 surfaceCenter, out float intactWidth, out float intactDepth)
     {
         surfaceCenter = Vector3.zero;
         intactWidth = 0f;
@@ -1019,6 +1068,31 @@ public class BreakableIceZone : MonoBehaviour
         return true;
     }
 
+    public float EvaluateBreakEdgeRadius(float angle)
+    {
+        int seed = ResolveShardSeed();
+        float phase1 = Hash01(seed, 1) * Mathf.PI * 2f;
+        float phase2 = Hash01(seed, 2) * Mathf.PI * 2f;
+        float phase3 = Hash01(seed, 3) * Mathf.PI * 2f;
+        float phase4 = Hash01(seed, 4) * Mathf.PI * 2f;
+
+        float blendedWave =
+            Mathf.Sin(angle * 2.1f + phase1) * 0.52f +
+            Mathf.Sin(angle * 4.2f + phase2) * 0.24f +
+            Mathf.Sin(angle * 7.4f + phase3) * 0.12f;
+
+        float spikeWaveA = Mathf.Sin(angle * 5.7f + phase4);
+        float spikeWaveB = Mathf.Sin(angle * 10.3f + phase2 * 0.75f);
+        float spikes =
+            Mathf.Sign(spikeWaveA) * Mathf.Pow(Mathf.Abs(spikeWaveA), 7f) * breakEdgeSpikiness +
+            Mathf.Sign(spikeWaveB) * Mathf.Pow(Mathf.Abs(spikeWaveB), 9f) * breakEdgeSpikiness * 0.35f;
+
+        float radiusMultiplier = 1f + blendedWave * breakEdgeNoise + spikes;
+        float minimumRadius = breakRadius * 0.42f;
+        float maximumRadius = breakRadius * 1.18f;
+        return Mathf.Clamp(breakRadius * radiusMultiplier, minimumRadius, maximumRadius);
+    }
+
     private int ResolveShardSeed()
     {
         if (shardSeed != 0)
@@ -1026,6 +1100,17 @@ public class BreakableIceZone : MonoBehaviour
 
         string autoSeed = $"{GetHierarchyPath()}|{triggerCollider.center}|{triggerCollider.size}";
         return Animator.StringToHash(autoSeed);
+    }
+
+    private static float Hash01(int seed, int salt)
+    {
+        unchecked
+        {
+            uint value = (uint)(seed * 374761393 + salt * 668265263);
+            value = (value ^ (value >> 13)) * 1274126177u;
+            value ^= value >> 16;
+            return (value & 0x00FFFFFFu) / 16777215f;
+        }
     }
 
     private string GetHierarchyPath()
