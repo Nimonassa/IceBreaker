@@ -838,7 +838,7 @@ MonoBehaviour:
   - {fileID: 8703086638314360319, guid: 7731e6cfd1aa87e4bbcf1d4c4d6cff6c, type: 3}
   cloneMode: 1
   randomSeed: 0
-  gridCount: {x: 31, y: 1, z: 44}
+  gridCount: {x: 34, y: 1, z: 44}
   spacing: {x: 15.8, y: 0, z: 1.65}
 --- !u!4 &1701831917
 Transform:
