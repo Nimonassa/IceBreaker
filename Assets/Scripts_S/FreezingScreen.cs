@@ -9,13 +9,10 @@ public class FreezingScreen : MonoBehaviour
     public Volume postProcessVolume;
     private Vignette vignette;
 
-    // Tracks the active animation so we don't overlap them
     private Coroutine transitionCoroutine;
 
     void Start()
     {
-        // Assuming your UnityEvent is directly on the stopwatch.
-        // Change to stopwatch.events.onTick if you nested it in a struct.
         stopwatch.events.onTick.AddListener(OnTick);
         postProcessVolume.profile.TryGet(out vignette);
     }
@@ -23,19 +20,13 @@ public class FreezingScreen : MonoBehaviour
     public void OnTick()
     {
         if (vignette == null || !gameObject.activeInHierarchy)
-        {
             return;
-        }
 
         float targetProgress = stopwatch.GetProgress();
 
-        // Stop the previous second's animation if it is still running
         if (transitionCoroutine != null)
-        {
             StopCoroutine(transitionCoroutine);
-        }
 
-        // Start smoothly animating to the new progress value
         transitionCoroutine = StartCoroutine(SmoothTransition(targetProgress));
     }
 
@@ -43,19 +34,29 @@ public class FreezingScreen : MonoBehaviour
     {
         float startIntensity = vignette.intensity.value;
         float elapsedTime = 0f;
-        float duration = 1f; // Ticks happen once per second, so we animate over 1 second
+        float duration = 1f;
 
         while (elapsedTime < duration)
         {
             elapsedTime += Time.deltaTime;
 
-            // Lerp smoothly blends from the old value to the new value
-            vignette.intensity.value = Mathf.Lerp(startIntensity, targetIntensity, elapsedTime / duration);
+            float t = elapsedTime / duration;
 
-            yield return null; // Wait for the next frame
+         
+            float easedT = EaseOutSine(t);
+
+            vignette.intensity.value =
+                Mathf.Lerp(startIntensity, targetIntensity, easedT);
+
+            yield return null;
         }
 
-        // Ensure it hits the exact target value at the end
         vignette.intensity.value = targetIntensity;
+    }
+
+    // the correct mathematical function 
+    private float EaseOutSine(float x)
+    {
+        return Mathf.Sin((x * Mathf.PI) / 2f);
     }
 }
