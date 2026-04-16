@@ -26,7 +26,10 @@ MonoBehaviour:
     probeVolumeBlendStatesCS: {fileID: 0}
   m_RendererFeatures:
   - {fileID: 6004484731260998631}
-  m_RendererFeatureMap: e79311ca0c375453
+  - {fileID: 5238884869321219094}
+  - {fileID: 4846921684992651692}
+  - {fileID: 1011120940521732545}
+  m_RendererFeatureMap: e79311ca0c375453165c0f270842b448acf11fa897b94343c1b9c1642339080e
   m_UseNativeRenderPass: 0
   xrSystemData: {fileID: 11400000, guid: 60e1133243b97e347b653163a8c01b64, type: 2}
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
@@ -48,13 +51,75 @@ MonoBehaviour:
     failOperation: 0
     zFailOperation: 0
   m_ShadowTransparentReceive: 1
-  m_RenderingMode: 2
+  m_RenderingMode: 3
   m_DepthPrimingMode: 0
   m_CopyDepthMode: 0
   m_DepthAttachmentFormat: 0
   m_DepthTextureFormat: 0
   m_AccurateGbufferNormals: 0
   m_IntermediateTextureMode: 0
+--- !u!114 &1011120940521732545
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3e6b9910358046a1a7a6e84c3169447, type: 3}
+  m_Name: VolumetricLightsTranslucentShadowMapFeature
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::VolumetricLights.VolumetricLightsTranslucentShadowMapFeature
+  m_Active: 1
+  ignoreOverlayCamera: 1
+--- !u!114 &4846921684992651692
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e6a73f16fc15400aa1bbb77dd779b76, type: 3}
+  m_Name: VolumetricLightsDepthPrePassFeature
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::VolumetricLights.VolumetricLightsDepthPrePassFeature
+  m_Active: 1
+  transparentLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  alphaCutoutLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  alphaCutOff: 0
+  ignoreReflectionProbes: 1
+  ignoreOverlayCamera: 1
+--- !u!114 &5238884869321219094
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a9a4847a92104072b352fe44da35cbb, type: 3}
+  m_Name: Volumetric Lights
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::VolumetricLights.VolumetricLightsRenderFeature
+  m_Active: 1
+  shader: {fileID: 4800000, guid: 6b7e6acc194204408b3294f5c220fc1e, type: 3}
+  blendMode: 0
+  renderPassEvent: 450
+  downscaling: 1
+  blurPasses: 1
+  blurDownscaling: 1
+  blurSpread: 1
+  blurHDR: 1
+  blurEdgePreserve: 0
+  blurEdgeDepthThreshold: 0.001
+  brightness: 1
+  ditherStrength: 0
+  ignoreOverlayCamera: 1
 --- !u!114 &6004484731260998631
 MonoBehaviour:
   m_ObjectHideFlags: 0
