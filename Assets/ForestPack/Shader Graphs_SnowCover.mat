@@ -47,7 +47,7 @@ Material:
     - _FresnelColorInfluence: 0.5
     - _Fresnel_Strength: 1
     - _IOR: 1.31
-    - _Normal_Strength: 1
+    - _Normal_Strength: 0
     - _QueueControl: 0
     - _QueueOffset: 0
     - _Smoothness_Strength: 0.125
