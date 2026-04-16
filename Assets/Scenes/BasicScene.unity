@@ -2313,9 +2313,6 @@ PrefabInstance:
       addedObject: {fileID: 235185011}
     - targetCorrespondingSourceObject: {fileID: -6689036041284674117, guid: 1ad79a1c1f1bc7c4dbd6cb6c9b647b12, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 235185012}
-    - targetCorrespondingSourceObject: {fileID: -6689036041284674117, guid: 1ad79a1c1f1bc7c4dbd6cb6c9b647b12, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 235185014}
     - targetCorrespondingSourceObject: {fileID: -6689036041284674117, guid: 1ad79a1c1f1bc7c4dbd6cb6c9b647b12, type: 3}
       insertIndex: -1
@@ -2361,80 +2358,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &235185012
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 235185009}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a35f6cfbfba9b548aaa00d52cfe8a50, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.Interactables.XRSimpleInteractable
-  m_InteractionManager: {fileID: 0}
-  m_Colliders: []
-  m_InteractionLayers:
-    m_Bits: 1
-  m_DistanceCalculationMode: 1
-  m_SelectMode: 0
-  m_FocusMode: 1
-  m_CustomReticle: {fileID: 0}
-  m_AllowGazeInteraction: 0
-  m_AllowGazeSelect: 0
-  m_OverrideGazeTimeToSelect: 0
-  m_GazeTimeToSelect: 0.5
-  m_OverrideTimeToAutoDeselectGaze: 0
-  m_TimeToAutoDeselectGaze: 3
-  m_AllowGazeAssistance: 0
-  m_FirstHoverEntered:
-    m_PersistentCalls:
-      m_Calls: []
-  m_LastHoverExited:
-    m_PersistentCalls:
-      m_Calls: []
-  m_HoverEntered:
-    m_PersistentCalls:
-      m_Calls: []
-  m_HoverExited:
-    m_PersistentCalls:
-      m_Calls: []
-  m_FirstSelectEntered:
-    m_PersistentCalls:
-      m_Calls: []
-  m_LastSelectExited:
-    m_PersistentCalls:
-      m_Calls: []
-  m_SelectEntered:
-    m_PersistentCalls:
-      m_Calls: []
-  m_SelectExited:
-    m_PersistentCalls:
-      m_Calls: []
-  m_FirstFocusEntered:
-    m_PersistentCalls:
-      m_Calls: []
-  m_LastFocusExited:
-    m_PersistentCalls:
-      m_Calls: []
-  m_FocusEntered:
-    m_PersistentCalls:
-      m_Calls: []
-  m_FocusExited:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Activated:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Deactivated:
-    m_PersistentCalls:
-      m_Calls: []
-  m_StartingHoverFilters: []
-  m_StartingSelectFilters: []
-  m_StartingInteractionStrengthFilters: []
-  m_AutoFindParentInteractableInHierarchy: 0
-  m_ParentInteractableObject: {fileID: 0}
 --- !u!114 &235185013
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5276,6 +5199,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 114785888180176524, guid: 3b5fc28e3f41be142aa210a048d92fe1, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2354160028574172701, guid: 3b5fc28e3f41be142aa210a048d92fe1, type: 3}
       propertyPath: m_Name
       value: TooltipManager
@@ -5283,6 +5210,26 @@ PrefabInstance:
     - target: {fileID: 2354160028574172701, guid: 3b5fc28e3f41be142aa210a048d92fe1, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4195985446224430183, guid: 3b5fc28e3f41be142aa210a048d92fe1, type: 3}
+      propertyPath: m_fontSize
+      value: 185.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4195985446224430183, guid: 3b5fc28e3f41be142aa210a048d92fe1, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: cf7283ad12d80c541b771e36c8c98feb, type: 2}
+    - target: {fileID: 4195985446224430183, guid: 3b5fc28e3f41be142aa210a048d92fe1, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 185.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4195985446224430183, guid: 3b5fc28e3f41be142aa210a048d92fe1, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 4463481314161175015, guid: cf7283ad12d80c541b771e36c8c98feb, type: 2}
+    - target: {fileID: 4195985446224430183, guid: 3b5fc28e3f41be142aa210a048d92fe1, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4428332047253856852, guid: 3b5fc28e3f41be142aa210a048d92fe1, type: 3}
       propertyPath: m_LocalPosition.x
@@ -16490,9 +16437,6 @@ PrefabInstance:
       addedObject: {fileID: 2024505927}
     - targetCorrespondingSourceObject: {fileID: -6689036041284674117, guid: 8baf57b9437dad144b79dee74dfa38aa, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 2024505928}
-    - targetCorrespondingSourceObject: {fileID: -6689036041284674117, guid: 8baf57b9437dad144b79dee74dfa38aa, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 2024505930}
     - targetCorrespondingSourceObject: {fileID: -6689036041284674117, guid: 8baf57b9437dad144b79dee74dfa38aa, type: 3}
       insertIndex: -1
@@ -16543,80 +16487,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &2024505928
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2024505925}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a35f6cfbfba9b548aaa00d52cfe8a50, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.Interactables.XRSimpleInteractable
-  m_InteractionManager: {fileID: 0}
-  m_Colliders: []
-  m_InteractionLayers:
-    m_Bits: 1
-  m_DistanceCalculationMode: 1
-  m_SelectMode: 0
-  m_FocusMode: 1
-  m_CustomReticle: {fileID: 0}
-  m_AllowGazeInteraction: 0
-  m_AllowGazeSelect: 0
-  m_OverrideGazeTimeToSelect: 0
-  m_GazeTimeToSelect: 0.5
-  m_OverrideTimeToAutoDeselectGaze: 0
-  m_TimeToAutoDeselectGaze: 3
-  m_AllowGazeAssistance: 0
-  m_FirstHoverEntered:
-    m_PersistentCalls:
-      m_Calls: []
-  m_LastHoverExited:
-    m_PersistentCalls:
-      m_Calls: []
-  m_HoverEntered:
-    m_PersistentCalls:
-      m_Calls: []
-  m_HoverExited:
-    m_PersistentCalls:
-      m_Calls: []
-  m_FirstSelectEntered:
-    m_PersistentCalls:
-      m_Calls: []
-  m_LastSelectExited:
-    m_PersistentCalls:
-      m_Calls: []
-  m_SelectEntered:
-    m_PersistentCalls:
-      m_Calls: []
-  m_SelectExited:
-    m_PersistentCalls:
-      m_Calls: []
-  m_FirstFocusEntered:
-    m_PersistentCalls:
-      m_Calls: []
-  m_LastFocusExited:
-    m_PersistentCalls:
-      m_Calls: []
-  m_FocusEntered:
-    m_PersistentCalls:
-      m_Calls: []
-  m_FocusExited:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Activated:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Deactivated:
-    m_PersistentCalls:
-      m_Calls: []
-  m_StartingHoverFilters: []
-  m_StartingSelectFilters: []
-  m_StartingInteractionStrengthFilters: []
-  m_AutoFindParentInteractableInHierarchy: 0
-  m_ParentInteractableObject: {fileID: 0}
 --- !u!114 &2024505929
 MonoBehaviour:
   m_ObjectHideFlags: 0
