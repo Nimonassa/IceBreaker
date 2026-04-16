@@ -44,14 +44,11 @@ public class NaskalitAttach : MonoBehaviour
     {
         isAttached = true;
 
-        // Parent to neck
         transform.SetParent(neckSocket);
 
-        // Snap into place
         transform.localPosition = Vector3.zero;
         transform.localRotation = Quaternion.identity;
 
-        // Disable physics so it doesn't drift away
         if (rb)
         {
             rb.isKinematic = true;
@@ -60,18 +57,17 @@ public class NaskalitAttach : MonoBehaviour
             rb.angularVelocity = Vector3.zero;
         }
 
-        // Disable collider to prevent head collision pushing it away
         Collider col = GetComponent<Collider>();
         if (col) col.enabled = false;
     }
 
     public void Detach()
     {
+
         isAttached = false;
 
         transform.SetParent(null);
 
-        // Re-enable physics
         if (rb)
         {
             rb.isKinematic = false;
@@ -81,6 +77,11 @@ public class NaskalitAttach : MonoBehaviour
         Collider col = GetComponent<Collider>();
         if (col) col.enabled = true;
     }
+
+    public bool IsAttached()
+    {
+        return isAttached;
+    } 
 
     bool IsBeingHeld()
     {
