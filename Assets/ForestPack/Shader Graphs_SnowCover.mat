@@ -42,7 +42,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Edge_Softness: 0.71
+    - _Edge_Softness: 0.23
     - _Float: 0
     - _FresnelColorInfluence: 0.5
     - _Fresnel_Strength: 1
@@ -51,7 +51,7 @@ Material:
     - _QueueControl: 0
     - _QueueOffset: 0
     - _Smoothness_Strength: 0.125
-    - _SnowAmount: 0.18
+    - _SnowAmount: 0.61
     - _Specular_Strength: 0.868
     - _Tiling: 2.66
     - _TriTiling: 0.024
