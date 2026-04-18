@@ -53,6 +53,7 @@ Material:
     - _Smoothness_Strength: 0.125
     - _SnowAmount: 0.61
     - _Specular_Strength: 0.868
+    - _Thickness: 15.9
     - _Tiling: 2.66
     - _TriTiling: 0.024
     m_Colors:
