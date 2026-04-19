@@ -25,7 +25,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _Normal_Texture:
-        m_Texture: {fileID: 2800000, guid: a39920262113796458b7dc04a9d7e6fe, type: 3}
+        m_Texture: {fileID: 2800000, guid: 5a96a37224c47ab4cacd30b01c46752e, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -47,7 +47,7 @@ Material:
     - _FresnelColorInfluence: 0.5
     - _Fresnel_Strength: 1
     - _IOR: 1.31
-    - _Normal_Strength: 0
+    - _Normal_Strength: 0.105
     - _QueueControl: 0
     - _QueueOffset: 0
     - _Smoothness_Strength: 0.125
@@ -55,7 +55,7 @@ Material:
     - _Specular_Strength: 0.868
     - _Thickness: 15.9
     - _Tiling: 2.66
-    - _TriTiling: 0.024
+    - _TriTiling: 3.1
     m_Colors:
     - _Offset: {r: 0, g: 0, b: 0, a: 0}
     - _SnowColor: {r: 0.8078432, g: 0.8431373, b: 0.89019614, a: 1}

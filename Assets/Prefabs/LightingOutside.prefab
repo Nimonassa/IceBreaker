@@ -5750,8 +5750,8 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 0.02
-      minScalar: 0.01
+      scalar: 0.04
+      minScalar: 0.03
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -6214,7 +6214,7 @@ ParticleSystem:
     sphericalDirectionAmount: 0
     randomPositionAmount: 0
     radius:
-      value: 0.0001
+      value: 0.1
       mode: 0
       spread: 0
       speed:
@@ -6958,8 +6958,8 @@ ParticleSystem:
     x:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 0.131575
-      minScalar: -0.068425
+      scalar: 0.1
+      minScalar: -0.1
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -7011,8 +7011,8 @@ ParticleSystem:
     y:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 0.11732711
-      minScalar: -0.082672894
+      scalar: 0.1
+      minScalar: -0.1
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -7064,8 +7064,8 @@ ParticleSystem:
     z:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 0.09832936
-      minScalar: -0.101670645
+      scalar: 0.1
+      minScalar: -0.1
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -11057,7 +11057,7 @@ Light:
   m_InnerSpotAngle: 1.4596195
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 0
+    m_Type: 2
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 1
@@ -11090,7 +11090,7 @@ Light:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RenderingLayerMask: 1
-  m_Lightmapping: 2
+  m_Lightmapping: 1
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 26.566017, y: 2}
   m_BounceIntensity: 1
@@ -11193,13 +11193,13 @@ MonoBehaviour:
   dustAutoToggle: 0
   dustDistanceDeactivation: 70
   dustPrewarm: 1
-  enableShadows: 0
+  enableShadows: 1
   shadowIntensity: 0.7
   shadowColor: {r: 0, g: 0, b: 0, a: 1}
   shadowTranslucency: 0
   shadowTranslucencyIntensity: 1
   shadowTranslucencyBlend: 0.5
-  shadowResolution: 256
+  shadowResolution: 1024
   shadowCullingMask:
     serializedVersion: 2
     m_Bits: 4294967293
