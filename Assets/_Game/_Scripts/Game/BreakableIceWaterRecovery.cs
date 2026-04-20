@@ -10,13 +10,17 @@ using UnityEditor;
 [RequireComponent(typeof(BreakableIceZone))]
 public class BreakableIceWaterRecovery : MonoBehaviour, IBreakableIcePostBreakHandler
 {
+    private static readonly WaitForEndOfFrame EndOfFrame = new();
+
     private sealed class HandPullState
     {
         public Transform handTransform;
-        public bool isArmed;
-        public bool strokeTriggered;
-        public Vector3 armedHandWorldPosition;
-        public GripFrame armedGripFrame;
+        public bool isAnchored;
+        public Vector3 anchorWorldPosition;
+        public GripFrame anchorGripFrame;
+        public Vector3 plantedStrokeDirection;
+        public Vector3 previousHandWorldPosition;
+        public Vector3 smoothedPullMotion;
 
         public HandPullState(Transform transform)
         {
@@ -26,6 +30,7 @@ public class BreakableIceWaterRecovery : MonoBehaviour, IBreakableIcePostBreakHa
 
     private struct GripFrame
     {
+        public Vector3 anchorWorldPosition;
         public Vector3 outward;
         public Vector3 sideways;
     }
@@ -33,7 +38,7 @@ public class BreakableIceWaterRecovery : MonoBehaviour, IBreakableIcePostBreakHa
     [Header("Recovery Exit")]
     [Tooltip("Optional custom point used as the final assisted pull-out destination. Leave empty to derive it automatically from the broken edge.")]
     [SerializeField] private Transform recoveryExitPoint;
-    [Tooltip("Extra distance beyond the broken edge used for the final assisted pull onto the ice.")]
+    [Tooltip("Extra distance beyond the broken edge used for the final assisted pull onto the ice and to extend the outer recovery grab area.")]
     [SerializeField, Min(0.05f)] private float recoveryPullOutDistance = 0.36f;
     [Tooltip("How long the assisted pull from the water onto the ice takes once the player has climbed high enough.")]
     [SerializeField, Min(0.05f)] private float recoveryPullDuration = 0.4f;
@@ -69,6 +74,18 @@ public class BreakableIceWaterRecovery : MonoBehaviour, IBreakableIcePostBreakHa
     [SerializeField, Min(0f)] private float recoveryMinProgressToExit = 0.16f;
     [Tooltip("Minimum number of valid pull strokes required before the player can finish climbing out.")]
     [SerializeField, Min(1)] private int recoveryRequiredPulls = 2;
+
+    [Header("Pull Feel")]
+    [Tooltip("How quickly the planted-pick pull catches up to the controller motion. Higher values feel snappier, lower values feel smoother.")]
+    [SerializeField, Min(1f)] private float recoveryPullSmoothing = 14f;
+    [Tooltip("How much of the height difference to the planted hand is mixed into the pull direction.")]
+    [SerializeField, Range(0f, 1f)] private float recoveryPullUpBias = 0.35f;
+    [Tooltip("Extra radial slack around the broken edge that still lets a hand catch and snap an ice-pick anchor onto the rim.")]
+    [SerializeField, Min(0f)] private float recoveryAnchorCatchSlack = 0.1f;
+    [Tooltip("Small pull amount ignored to reduce controller jitter when the hand is planted.")]
+    [SerializeField, Min(0f)] private float recoveryPullDeadzone = 0.012f;
+    [Tooltip("How much player body motion is applied from one meter of valid hand pull away from the planted pick.")]
+    [SerializeField, Min(0.1f)] private float recoveryHandMotionToBodyScale = 2.25f;
 
     [Header("Debug")]
     [Tooltip("Draws the grip area gizmo in the Scene view when this object is selected.")]
@@ -127,12 +144,20 @@ public class BreakableIceWaterRecovery : MonoBehaviour, IBreakableIcePostBreakHa
         ContinuousMoveProvider continuousMove = player.GetComponentInChildren<ContinuousMoveProvider>(true);
         bool gravityLocked = continuousMove != null && continuousMove.TryLockGravity(GravityOverride.ForcedOff);
 
-        HandPullState leftHand = new(player.LeftHand != null ? player.LeftHand.transform : null);
-        HandPullState rightHand = new(player.RightHand != null ? player.RightHand.transform : null);
+        if (player.Movement != null)
+        {
+            player.Movement.SetMoveInputEnabled(false);
+            player.Movement.SetTurnInputEnabled(true);
+        }
+
+        HandPullState leftHand = new(player.LeftHand != null ? player.LeftHand.GetRecoveryPullPoint() : null);
+        HandPullState rightHand = new(player.RightHand != null ? player.RightHand.GetRecoveryPullPoint() : null);
         accumulatedRecoveryProgress = 0f;
         validPullCount = 0;
         lastRecoveryStrokeDirection = Vector3.zero;
         bool isCrawlingOnIce = false;
+        float recoveryWaterRootY = player.transform.position.y;
+        float recoveryMinHeadWorldY = headCamera != null ? headCamera.transform.position.y : float.NaN;
 
         while (player != null)
         {
@@ -146,13 +171,16 @@ public class BreakableIceWaterRecovery : MonoBehaviour, IBreakableIcePostBreakHa
                 player.transform.position += motion;
 
             if (!isCrawlingOnIce)
+                PreventAdditionalWaterSink(player, recoveryWaterRootY, recoveryMinHeadWorldY);
+
+            if (!isCrawlingOnIce)
             {
-                bool canExitWater = accumulatedRecoveryProgress >= recoveryMinProgressToExit
-                    && validPullCount >= Mathf.Max(1, recoveryRequiredPulls);
-                if (canExitWater && TryGetRecoveryExitPose(zone, player, out Vector3 targetPosition, out Quaternion targetRotation))
+                bool canExitWater = accumulatedRecoveryProgress >= recoveryMinProgressToExit;
+                if (canExitWater && TryGetRecoveryExitPose(zone, player, out Vector3 targetPosition))
                 {
-                    yield return PullPlayerOntoIce(player, targetPosition, targetRotation);
+                    yield return PullPlayerOntoIce(player, targetPosition);
                     isCrawlingOnIce = true;
+                    RestoreOnIceLocomotion(player);
                     ResetHandState(leftHand);
                     ResetHandState(rightHand);
                 }
@@ -163,7 +191,7 @@ public class BreakableIceWaterRecovery : MonoBehaviour, IBreakableIcePostBreakHa
                 break;
             }
 
-            yield return null;
+            yield return EndOfFrame;
         }
 
         if (gravityLocked && continuousMove != null)
@@ -209,7 +237,7 @@ public class BreakableIceWaterRecovery : MonoBehaviour, IBreakableIcePostBreakHa
         bool isInsideGripBand = TryGetGripFrame(zone, player, handWorldPosition, isCrawlingOnIce, out GripFrame gripFrame);
         if (!isInsideGripBand)
         {
-            if (!TryRetainArmedGrip(zone, handState, handWorldPosition, out gripFrame))
+            if (!TryRetainAnchor(zone, handState, handWorldPosition, out gripFrame))
             {
                 ResetHandState(handState);
                 return;
@@ -223,53 +251,59 @@ public class BreakableIceWaterRecovery : MonoBehaviour, IBreakableIcePostBreakHa
         }
 
         float surfaceWorldY = zone.transform.TransformPoint(surfaceCenter).y;
-        bool nearSurfaceEnoughToArm = handWorldPosition.y >= surfaceWorldY - recoveryStrokeArmHeightBelowSurface;
+        bool nearSurfaceEnoughToAnchor = handWorldPosition.y >= surfaceWorldY - recoveryStrokeArmHeightBelowSurface;
 
-        if (!handState.isArmed)
+        if (!handState.isAnchored)
         {
-            if (!nearSurfaceEnoughToArm)
+            if (!nearSurfaceEnoughToAnchor)
                 return;
 
-            handState.isArmed = true;
-            handState.strokeTriggered = false;
-            handState.armedHandWorldPosition = handWorldPosition;
-            handState.armedGripFrame = gripFrame;
+            handState.isAnchored = true;
+            handState.anchorWorldPosition = gripFrame.anchorWorldPosition;
+            handState.anchorGripFrame = gripFrame;
+            handState.plantedStrokeDirection = gripFrame.outward.sqrMagnitude >= 0.0001f
+                ? gripFrame.outward.normalized
+                : Vector3.zero;
+            handState.previousHandWorldPosition = handWorldPosition;
+            handState.smoothedPullMotion = Vector3.zero;
             return;
         }
 
-        if (handState.strokeTriggered)
-        {
-            float riseFromLowestPoint = handWorldPosition.y - handState.armedHandWorldPosition.y;
-            if (nearSurfaceEnoughToArm && riseFromLowestPoint >= recoveryStrokeRearmRiseDistance)
-            {
-                handState.strokeTriggered = false;
-                handState.armedHandWorldPosition = handWorldPosition;
-                handState.armedGripFrame = gripFrame;
-            }
+        Vector3 handMotion = handState.previousHandWorldPosition - handWorldPosition;
+        handState.previousHandWorldPosition = handWorldPosition;
+        Vector3 planarHandMotion = Vector3.ProjectOnPlane(handMotion, Vector3.up);
+        float effectiveMotionDeadzone = Mathf.Min(recoveryPullDeadzone, 0.004f);
+        float planarMotionMagnitude = planarHandMotion.magnitude;
+        Vector3 targetPullMotion = Vector3.zero;
+        if (planarMotionMagnitude > effectiveMotionDeadzone)
+            targetPullMotion = planarHandMotion * ((planarMotionMagnitude - effectiveMotionDeadzone) / planarMotionMagnitude);
 
-            return;
-        }
-
-        Vector3 pullVector = handState.armedHandWorldPosition - handWorldPosition;
-        float downwardPull = Mathf.Max(0f, Vector3.Dot(pullVector, Vector3.up));
-        if (downwardPull < recoveryStrokePullDownDistance)
+        float smoothingT = 1f - Mathf.Exp(-Mathf.Max(1f, recoveryPullSmoothing) * Time.deltaTime);
+        handState.smoothedPullMotion = Vector3.Lerp(handState.smoothedPullMotion, targetPullMotion, smoothingT);
+        if (handState.smoothedPullMotion.sqrMagnitude <= 0.0000001f)
             return;
 
-        Vector3 recoveryMotion = ComputeRecoveryMotion(zone, player, handState, pullVector, handState.armedGripFrame, out Vector3 strokeDirection);
+        Vector3 recoveryMotion = ComputeRecoveryMotion(zone, player, handState, handState.smoothedPullMotion, handState.anchorGripFrame, out Vector3 strokeDirection);
         if (recoveryMotion.sqrMagnitude <= 0f)
             return;
 
         accumulatedMotion += recoveryMotion;
-        lastRecoveryStrokeDirection = strokeDirection;
+        Vector3 outwardDirection = handState.anchorGripFrame.outward.sqrMagnitude >= 0.0001f
+            ? handState.anchorGripFrame.outward.normalized
+            : strokeDirection;
+        if (outwardDirection.sqrMagnitude >= 0.0001f)
+            lastRecoveryStrokeDirection = outwardDirection;
+        else
+            lastRecoveryStrokeDirection = strokeDirection;
 
         if (!isCrawlingOnIce)
         {
-            accumulatedRecoveryProgress += recoveryMotion.magnitude;
-            validPullCount++;
+            Vector3 planarRecoveryMotion = Vector3.ProjectOnPlane(recoveryMotion, Vector3.up);
+            float outwardProgress = outwardDirection.sqrMagnitude >= 0.0001f
+                ? Mathf.Max(0f, Vector3.Dot(planarRecoveryMotion, outwardDirection))
+                : planarRecoveryMotion.magnitude;
+            accumulatedRecoveryProgress += outwardProgress;
         }
-
-        handState.strokeTriggered = true;
-        handState.armedHandWorldPosition = handWorldPosition;
     }
 
     private bool TryGetGripFrame(
@@ -294,36 +328,40 @@ public class BreakableIceWaterRecovery : MonoBehaviour, IBreakableIcePostBreakHa
             return false;
         }
 
-        Vector2 outward2D;
-        if (isCrawlingOnIce)
-        {
-            if (HasClearedCrawlArea(zone, player))
-                return false;
-
-            Vector2 playerLocal2D = WorldToSurfaceLocalPoint(zone.transform, GetRecoveryReferenceWorldPosition(player), surfaceCenter);
-            outward2D = playerLocal2D - zone.LastBreakImpactLocalPoint;
-        }
-        else
-        {
-            Vector2 handLocal2D = WorldToSurfaceLocalPoint(zone.transform, handWorldPosition, surfaceCenter);
-            float halfWidth = intactWidth * 0.5f;
-            float halfDepth = intactDepth * 0.5f;
-            if (Mathf.Abs(handLocal2D.x) > halfWidth || Mathf.Abs(handLocal2D.y) > halfDepth)
-                return false;
-
-            outward2D = handLocal2D - zone.LastBreakImpactLocalPoint;
-        }
-
-        if (outward2D.sqrMagnitude < 0.0001f)
-        {
-            Vector3 fallbackForward = headCamera != null ? headCamera.transform.forward : zone.transform.forward;
-            outward2D = new Vector2(fallbackForward.x, fallbackForward.z);
-        }
-
-        if (outward2D.sqrMagnitude < 0.0001f)
+        if (isCrawlingOnIce && HasClearedCrawlArea(zone, player))
             return false;
 
-        Vector3 outward = zone.transform.TransformVector(new Vector3(outward2D.x, 0f, outward2D.y));
+        Vector2 handLocal2D = WorldToSurfaceLocalPoint(zone.transform, handWorldPosition, surfaceCenter);
+        float outerGripExtension = Mathf.Max(0f, recoveryPullOutDistance);
+        float boundarySlack = recoveryGripBandWidth * 0.5f + recoveryAnchorCatchSlack + outerGripExtension;
+        float halfWidth = intactWidth * 0.5f + boundarySlack;
+        float halfDepth = intactDepth * 0.5f + boundarySlack;
+        if (Mathf.Abs(handLocal2D.x) > halfWidth || Mathf.Abs(handLocal2D.y) > halfDepth)
+            return false;
+
+        Vector2 outward2D = handLocal2D - zone.LastBreakImpactLocalPoint;
+        float currentDistance = outward2D.magnitude;
+        if (currentDistance < 0.0001f)
+            return false;
+
+        Vector2 anchorDirection2D = outward2D / currentDistance;
+        float edgeAngle = Mathf.Atan2(outward2D.y, outward2D.x);
+        float edgeRadius = zone.EvaluateBreakEdgeRadius(edgeAngle);
+        float bandHalfWidth = recoveryGripBandWidth * 0.5f + recoveryAnchorCatchSlack;
+        float gripBandCenter = Mathf.Max(0.01f, edgeRadius - recoveryHandleInset);
+        float minGripDistance = Mathf.Max(0.01f, gripBandCenter - bandHalfWidth);
+        float maxGripDistance = gripBandCenter + bandHalfWidth + outerGripExtension;
+        if (currentDistance < minGripDistance || currentDistance > maxGripDistance)
+            return false;
+
+        float anchorDistance = Mathf.Clamp(currentDistance, minGripDistance, maxGripDistance);
+        Vector2 anchorLocal2D = zone.LastBreakImpactLocalPoint + anchorDirection2D * anchorDistance;
+        gripFrame.anchorWorldPosition = zone.transform.TransformPoint(new Vector3(
+            surfaceCenter.x + anchorLocal2D.x,
+            surfaceCenter.y,
+            surfaceCenter.z + anchorLocal2D.y));
+
+        Vector3 outward = zone.transform.TransformVector(new Vector3(anchorDirection2D.x, 0f, anchorDirection2D.y));
         outward.y = 0f;
         if (outward.sqrMagnitude < 0.0001f)
             return false;
@@ -338,28 +376,96 @@ public class BreakableIceWaterRecovery : MonoBehaviour, IBreakableIcePostBreakHa
         BreakableIceZone zone,
         PlayerManager player,
         HandPullState handState,
-        Vector3 pullVectorWorld,
+        Vector3 pullMotionWorld,
         GripFrame gripFrame,
         out Vector3 strokeDirection)
     {
         strokeDirection = Vector3.zero;
 
-        float downwardPull = Mathf.Max(0f, Vector3.Dot(pullVectorWorld, Vector3.up));
-        if (downwardPull <= 0f)
+        Vector3 planarPullMotion = Vector3.ProjectOnPlane(pullMotionWorld, Vector3.up);
+        if (planarPullMotion.sqrMagnitude <= 0.0000001f)
             return Vector3.zero;
 
-        strokeDirection = GetStrokeDirection(zone, player, handState, gripFrame);
-        if (strokeDirection.sqrMagnitude < 0.0001f)
-        {
-            strokeDirection = Vector3.zero;
-            return Vector3.zero;
-        }
-
-        float strokeT = Mathf.Clamp01(downwardPull / Mathf.Max(0.001f, recoveryStrokePullDownDistance));
-        return strokeDirection * (recoveryStrokeForward * strokeT);
+        float effectivePullScale = Mathf.Max(1.75f, recoveryHandMotionToBodyScale);
+        Vector3 recoveryMotion = planarPullMotion * effectivePullScale;
+        strokeDirection = recoveryMotion.normalized;
+        return recoveryMotion;
     }
 
-    private bool TryRetainArmedGrip(
+    private Vector3 ResolveCurrentStrokeDirection(
+        PlayerManager player,
+        HandPullState handState,
+        GripFrame gripFrame)
+    {
+        Vector3 fallbackDirection = Vector3.zero;
+        if (handState != null && handState.plantedStrokeDirection.sqrMagnitude >= 0.0001f)
+            fallbackDirection = handState.plantedStrokeDirection.normalized;
+        else if (gripFrame.outward.sqrMagnitude >= 0.0001f)
+            fallbackDirection = gripFrame.outward.normalized;
+
+        if (handState?.handTransform == null)
+            return fallbackDirection;
+
+        Vector3 referencePosition = GetRecoveryReferenceWorldPosition(player);
+        Vector3 towardHand = Vector3.ProjectOnPlane(handState.handTransform.position - referencePosition, Vector3.up);
+        Vector3 candidateDirection = towardHand.sqrMagnitude >= 0.0001f
+            ? towardHand.normalized
+            : fallbackDirection;
+
+        if (gripFrame.outward.sqrMagnitude < 0.0001f)
+        {
+            if (handState != null)
+                handState.plantedStrokeDirection = candidateDirection.sqrMagnitude >= 0.0001f ? candidateDirection.normalized : Vector3.zero;
+
+            return handState != null ? handState.plantedStrokeDirection : Vector3.zero;
+        }
+
+        float outwardAmount = Mathf.Max(0f, Vector3.Dot(candidateDirection, gripFrame.outward));
+        float sidewaysAmount = Vector3.Dot(candidateDirection, gripFrame.sideways);
+        Vector3 correctedDirection = gripFrame.outward * outwardAmount + gripFrame.sideways * sidewaysAmount;
+        if (correctedDirection.sqrMagnitude < 0.0001f)
+            correctedDirection = fallbackDirection.sqrMagnitude >= 0.0001f ? fallbackDirection : gripFrame.outward;
+
+        correctedDirection.y = 0f;
+        correctedDirection = correctedDirection.sqrMagnitude >= 0.0001f
+            ? correctedDirection.normalized
+            : gripFrame.outward.normalized;
+
+        if (handState != null)
+            handState.plantedStrokeDirection = correctedDirection;
+
+        return correctedDirection;
+    }
+
+    private Vector3 GetPullEffortDirection(
+        PlayerManager player,
+        HandPullState handState,
+        GripFrame gripFrame,
+        Vector3 strokeDirection)
+    {
+        if (strokeDirection.sqrMagnitude < 0.0001f)
+            return Vector3.zero;
+
+        Vector3 effortDirection = strokeDirection;
+        if (handState == null || recoveryPullUpBias <= 0f)
+            return effortDirection.normalized;
+
+        Vector3 referencePosition = GetRecoveryReferenceWorldPosition(player);
+        Vector3 towardAnchor = handState.anchorWorldPosition - referencePosition;
+        if (towardAnchor.sqrMagnitude < 0.0001f && handState.handTransform != null)
+            towardAnchor = handState.handTransform.position - referencePosition;
+        if (towardAnchor.sqrMagnitude < 0.0001f)
+            towardAnchor = gripFrame.outward;
+
+        float upwardPullWeight = Mathf.Max(0f, Vector3.Dot(towardAnchor.normalized, Vector3.up)) * recoveryPullUpBias;
+        if (upwardPullWeight <= 0f)
+            return effortDirection.normalized;
+
+        effortDirection = strokeDirection + Vector3.up * upwardPullWeight;
+        return effortDirection.sqrMagnitude >= 0.0001f ? effortDirection.normalized : strokeDirection.normalized;
+    }
+
+    private bool TryRetainAnchor(
         BreakableIceZone zone,
         HandPullState handState,
         Vector3 handWorldPosition,
@@ -367,24 +473,27 @@ public class BreakableIceWaterRecovery : MonoBehaviour, IBreakableIcePostBreakHa
     {
         gripFrame = default;
 
-        if (zone == null || handState == null || !handState.isArmed)
+        if (zone == null || handState == null || !handState.isAnchored)
             return false;
 
         if (!zone.TryGetSurfaceLayout(out Vector3 surfaceCenter, out _, out _))
             return false;
 
         float surfaceWorldY = zone.transform.TransformPoint(surfaceCenter).y;
-        float minY = surfaceWorldY - recoveryGripHeightBelowSurface - recoveryArmedGripHeightSlack;
+        float minY = surfaceWorldY - recoveryGripHeightBelowSurface - recoveryArmedGripHeightSlack - recoveryStrokePullDownDistance;
         float maxY = surfaceWorldY + recoveryGripHeightAboveSurface + recoveryArmedGripHeightSlack;
         if (handWorldPosition.y < minY || handWorldPosition.y > maxY)
             return false;
 
-        Vector3 horizontalDrift = handWorldPosition - handState.armedHandWorldPosition;
-        horizontalDrift.y = 0f;
-        if (horizontalDrift.sqrMagnitude > recoveryArmedGripDriftAllowance * recoveryArmedGripDriftAllowance)
+        Vector3 anchorOffset = handWorldPosition - handState.anchorWorldPosition;
+        Vector3 planarAnchorOffset = Vector3.ProjectOnPlane(anchorOffset, Vector3.up);
+        float maxPlanarDrift = Mathf.Max(
+            recoveryArmedGripDriftAllowance * 2f,
+            recoveryGripBandWidth + recoveryArmedGripDriftAllowance + recoveryAnchorCatchSlack);
+        if (planarAnchorOffset.sqrMagnitude > maxPlanarDrift * maxPlanarDrift)
             return false;
 
-        gripFrame = handState.armedGripFrame;
+        gripFrame = handState.anchorGripFrame;
         return gripFrame.outward.sqrMagnitude >= 0.0001f;
     }
 
@@ -393,60 +502,72 @@ public class BreakableIceWaterRecovery : MonoBehaviour, IBreakableIcePostBreakHa
         if (handState == null)
             return;
 
-        handState.isArmed = false;
-        handState.strokeTriggered = false;
-        handState.armedHandWorldPosition = Vector3.zero;
-        handState.armedGripFrame = default;
+        handState.isAnchored = false;
+        handState.anchorWorldPosition = Vector3.zero;
+        handState.anchorGripFrame = default;
+        handState.plantedStrokeDirection = Vector3.zero;
+        handState.previousHandWorldPosition = Vector3.zero;
+        handState.smoothedPullMotion = Vector3.zero;
     }
 
-    private bool TryGetRecoveryExitPose(BreakableIceZone zone, PlayerManager player, out Vector3 targetPosition, out Quaternion targetRotation)
+    private static void RestoreOnIceLocomotion(PlayerManager player)
+    {
+        if (player == null)
+            return;
+
+        player.LeftHand?.SetInteractionActive(true);
+        player.RightHand?.SetInteractionActive(true);
+        player.LeftHand?.SetGrabRayActive(true);
+        player.RightHand?.SetGrabRayActive(true);
+
+        if (player.Grabbing != null)
+            player.Grabbing.UpdateSettings();
+
+        if (player.Movement != null)
+        {
+            player.Movement.SetLocomotionInputEnabled(true);
+            player.Movement.RefreshLocomotionState();
+        }
+    }
+
+    private void PreventAdditionalWaterSink(PlayerManager player, float waterRootY, float minHeadWorldY)
+    {
+        if (player == null)
+            return;
+
+        if (headCamera != null && !float.IsNaN(minHeadWorldY))
+        {
+            float headSinkDelta = minHeadWorldY - headCamera.transform.position.y;
+            if (headSinkDelta > 0.0001f)
+            {
+                player.transform.position += Vector3.up * headSinkDelta;
+                return;
+            }
+        }
+
+        Vector3 position = player.transform.position;
+        if (position.y >= waterRootY - 0.0001f)
+            return;
+        position.y = waterRootY;
+        player.transform.position = position;
+    }
+
+    private bool TryGetRecoveryExitPose(BreakableIceZone zone, PlayerManager player, out Vector3 targetPosition)
     {
         targetPosition = Vector3.zero;
-        targetRotation = Quaternion.identity;
 
         if (zone == null || player == null || !zone.HasBreakImpactPoint)
             return false;
 
-        if (recoveryExitPoint != null)
-        {
-            if (!HasReachedWaterExitThreshold(zone, player))
-                return false;
-
-            targetPosition = recoveryExitPoint.position;
-            if (zone.TryGetSurfaceLayout(out Vector3 exitSurfaceCenter, out _, out _))
-                targetPosition.y = ComputeCrawlRootY(player, exitSurfaceCenter.y);
-            targetRotation = Quaternion.Euler(0f, recoveryExitPoint.eulerAngles.y, 0f);
-            return true;
-        }
-
-        if (!zone.TryGetSurfaceLayout(out Vector3 surfaceCenter, out float intactWidth, out float intactDepth))
+        if (!zone.TryGetSurfaceLayout(out Vector3 surfaceCenter, out _, out _))
             return false;
-
-        Vector2 outward2D = GetRecoveryDirectionLocal(zone, player);
-
-        if (outward2D.sqrMagnitude < 0.0001f)
-            outward2D = Vector2.up;
-
-        outward2D.Normalize();
-        float angle = Mathf.Atan2(outward2D.y, outward2D.x);
-        float edgeRadius = zone.EvaluateBreakEdgeRadius(angle);
-        Vector2 targetLocal2D = zone.LastBreakImpactLocalPoint + outward2D * (edgeRadius + recoveryPullOutDistance);
-        float halfWidth = intactWidth * 0.5f;
-        float halfDepth = intactDepth * 0.5f;
-        targetLocal2D.x = Mathf.Clamp(targetLocal2D.x, -halfWidth + 0.08f, halfWidth - 0.08f);
-        targetLocal2D.y = Mathf.Clamp(targetLocal2D.y, -halfDepth + 0.08f, halfDepth - 0.08f);
-
-        Vector3 estimatedTarget = zone.transform.TransformPoint(new Vector3(
-            surfaceCenter.x + targetLocal2D.x,
-            ComputeCrawlRootY(player, surfaceCenter.y),
-            surfaceCenter.z + targetLocal2D.y));
 
         if (!HasReachedWaterExitThreshold(zone, player))
             return false;
 
-        targetPosition = estimatedTarget;
-        float yaw = headCamera != null ? headCamera.transform.eulerAngles.y : player.transform.eulerAngles.y;
-        targetRotation = Quaternion.Euler(0f, yaw, 0f);
+        // Preserve the player's horizontal placement and facing when the assisted crawl state begins.
+        targetPosition = player.transform.position;
+        targetPosition.y = ComputeCrawlRootY(player, surfaceCenter.y);
         return true;
     }
 
@@ -518,7 +639,7 @@ public class BreakableIceWaterRecovery : MonoBehaviour, IBreakableIcePostBreakHa
         player.transform.position = targetPosition;
     }
 
-    private IEnumerator PullPlayerOntoIce(PlayerManager player, Vector3 targetPosition, Quaternion targetRotation)
+    private IEnumerator PullPlayerOntoIce(PlayerManager player, Vector3 targetPosition)
     {
         if (player == null)
             yield break;
@@ -532,7 +653,6 @@ public class BreakableIceWaterRecovery : MonoBehaviour, IBreakableIcePostBreakHa
         }
 
         Vector3 startPosition = player.transform.position;
-        Quaternion startRotation = player.transform.rotation;
         float elapsed = 0f;
         float duration = Mathf.Max(0.05f, recoveryPullDuration);
 
@@ -544,13 +664,11 @@ public class BreakableIceWaterRecovery : MonoBehaviour, IBreakableIcePostBreakHa
             elapsed += Time.deltaTime;
             float t = Mathf.Clamp01(elapsed / duration);
             t = 1f - Mathf.Pow(1f - t, 3f);
-            player.transform.SetPositionAndRotation(
-                Vector3.Lerp(startPosition, targetPosition, t),
-                Quaternion.Slerp(startRotation, targetRotation, t));
+            player.transform.position = Vector3.Lerp(startPosition, targetPosition, t);
             yield return null;
         }
 
-        player.transform.SetPositionAndRotation(targetPosition, targetRotation);
+        player.transform.position = targetPosition;
 
         if (controller != null)
             controller.detectCollisions = restoreControllerCollisions;
@@ -568,14 +686,30 @@ public class BreakableIceWaterRecovery : MonoBehaviour, IBreakableIcePostBreakHa
         HandPullState handState,
         GripFrame gripFrame)
     {
+        if (handState != null)
+        {
+            Vector3 resolvedDirection = ResolveCurrentStrokeDirection(player, handState, gripFrame);
+            if (resolvedDirection.sqrMagnitude >= 0.0001f)
+                return resolvedDirection.normalized;
+        }
+
         Vector3 referencePosition = GetRecoveryReferenceWorldPosition(player);
 
-        if (player != null && handState != null)
+        if (handState != null)
         {
-            Vector3 towardArmedHand = handState.armedHandWorldPosition - referencePosition;
-            towardArmedHand = Vector3.ProjectOnPlane(towardArmedHand, Vector3.up);
-            if (towardArmedHand.sqrMagnitude >= 0.0001f)
-                return towardArmedHand.normalized;
+            // Pull the rig toward the planted pick, but stay on the ice plane.
+            Vector3 towardAnchor = handState.anchorWorldPosition - referencePosition;
+            Vector3 horizontalTowardAnchor = Vector3.ProjectOnPlane(towardAnchor, Vector3.up);
+            if (horizontalTowardAnchor.sqrMagnitude >= 0.0001f)
+                return horizontalTowardAnchor.normalized;
+        }
+
+        if (handState?.handTransform != null)
+        {
+            Vector3 towardHand = handState.handTransform.position - referencePosition;
+            Vector3 horizontalTowardHand = Vector3.ProjectOnPlane(towardHand, Vector3.up);
+            if (horizontalTowardHand.sqrMagnitude >= 0.0001f)
+                return horizontalTowardHand.normalized;
         }
 
         if (gripFrame.outward.sqrMagnitude >= 0.0001f)

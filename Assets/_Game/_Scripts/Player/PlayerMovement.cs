@@ -49,7 +49,8 @@ public class PlayerMovement : MonoBehaviour
     public TurnType CurrentTurnMode => turnMode;
     public bool IsTeleportLocomotionBusy => teleportProvider != null && teleportProvider.locomotionState != LocomotionState.Idle;
 
-    private bool locomotionInputEnabled = true;
+    private bool moveInputEnabled = true;
+    private bool turnInputEnabled = true;
 
     private void Awake()
     {
@@ -193,8 +194,8 @@ public class PlayerMovement : MonoBehaviour
     {
         moveHand = hand;
 
-        bool enableLeftHand = locomotionInputEnabled && (moveHand == LocomotionHand.Left || moveHand == LocomotionHand.Both);
-        bool enableRightHand = locomotionInputEnabled && (moveHand == LocomotionHand.Right || moveHand == LocomotionHand.Both);
+        bool enableLeftHand = moveInputEnabled && (moveHand == LocomotionHand.Left || moveHand == LocomotionHand.Both);
+        bool enableRightHand = moveInputEnabled && (moveHand == LocomotionHand.Right || moveHand == LocomotionHand.Both);
 
         SetReaderState(continuousMove?.leftHandMoveInput, enableLeftHand);
         SetReaderState(continuousMove?.rightHandMoveInput, enableRightHand);
@@ -205,8 +206,8 @@ public class PlayerMovement : MonoBehaviour
     {
         turnHand = hand;
 
-        bool enableLeft = locomotionInputEnabled && (turnHand == LocomotionHand.Left || turnHand == LocomotionHand.Both);
-        bool enableRight = locomotionInputEnabled && (turnHand == LocomotionHand.Right || turnHand == LocomotionHand.Both);
+        bool enableLeft = turnInputEnabled && (turnHand == LocomotionHand.Left || turnHand == LocomotionHand.Both);
+        bool enableRight = turnInputEnabled && (turnHand == LocomotionHand.Right || turnHand == LocomotionHand.Both);
 
         SetReaderState(continuousTurn?.leftHandTurnInput, enableLeft);
         SetReaderState(continuousTurn?.rightHandTurnInput, enableRight);
@@ -216,26 +217,53 @@ public class PlayerMovement : MonoBehaviour
 
     public void SetLocomotionInputEnabled(bool enabled)
     {
-        locomotionInputEnabled = enabled;
+        moveInputEnabled = enabled;
+        turnInputEnabled = enabled;
         SetMoveHand(moveHand);
         SetTurnHand(turnHand);
         EnableTeleportationRay(moveHand);
+    }
+
+    public void SetMoveInputEnabled(bool enabled)
+    {
+        moveInputEnabled = enabled;
+        SetMoveHand(moveHand);
+        EnableTeleportationRay(moveHand);
+    }
+
+    public void SetTurnInputEnabled(bool enabled)
+    {
+        turnInputEnabled = enabled;
+        SetTurnHand(turnHand);
+    }
+
+    public void RefreshLocomotionState()
+    {
+        SetMoveMode(moveMode);
+        SetTurnMode(turnMode);
+        SetMoveHand(moveHand);
+        SetTurnHand(turnHand);
     }
 
     private void SetReaderState(XRInputValueReader reader, bool isActive)
     {
         if (reader == null) return;
 
-        if (reader.inputSourceMode == XRInputValueReader.InputSourceMode.InputActionReference)
-        {
-            if (reader.inputActionReference != null && reader.inputActionReference.action != null)
-            {
-                if (isActive)
-                    reader.inputActionReference.action.Enable();
-                else
-                    reader.inputActionReference.action.Disable();
-            }
-        }
+        if (isActive)
+            reader.EnableDirectActionIfModeUsed();
+        else
+            reader.DisableDirectActionIfModeUsed();
+
+        if (reader.inputSourceMode != XRInputValueReader.InputSourceMode.InputActionReference)
+            return;
+
+        if (reader.inputActionReference == null || reader.inputActionReference.action == null)
+            return;
+
+        if (isActive)
+            reader.inputActionReference.action.Enable();
+        else
+            reader.inputActionReference.action.Disable();
     }
 
     private void EnableTeleportationRay(LocomotionHand hand)
@@ -244,11 +272,20 @@ public class PlayerMovement : MonoBehaviour
         if (player == null)
             return;
 
-        bool isTeleport = locomotionInputEnabled && (moveMode == MoveType.Teleport);
+        bool isTeleport = moveInputEnabled && (moveMode == MoveType.Teleport);
         bool enableLeftRay = isTeleport && (hand == LocomotionHand.Left || hand == LocomotionHand.Both);
         bool enableRightRay = isTeleport && (hand == LocomotionHand.Right || hand == LocomotionHand.Both);
 
         player.LeftHand.SetTeleportActive(enableLeftRay);
         player.RightHand.SetTeleportActive(enableRightRay);
+
+        if (player.Grabbing != null)
+            player.Grabbing.UpdateSettings();
+
+        if (enableLeftRay)
+            player.LeftHand.SetGrabRayActive(false);
+
+        if (enableRightRay)
+            player.RightHand.SetGrabRayActive(false);
     }
 }

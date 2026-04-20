@@ -363,7 +363,6 @@ public class BreakableIceZone : MonoBehaviour
             if (headCamera != null)
                 headOffset = headCamera.transform.position.y - playerRoot.position.y;
 
-            targetPosition = waterSurfaceMarker.position;
             targetPosition.y = waterSurfaceMarker.position.y + headClearanceAboveWater - headOffset;
         }
         else
@@ -549,7 +548,6 @@ public class BreakableIceZone : MonoBehaviour
         {
             player.Movement.SetMoveMode(cachedMoveMode);
             player.Movement.SetTurnMode(cachedTurnMode);
-            player.Movement.SetLocomotionInputEnabled(true);
         }
 
         SetHandControl(player.LeftHand, true);
@@ -557,6 +555,12 @@ public class BreakableIceZone : MonoBehaviour
 
         if (player.Grabbing != null)
             player.Grabbing.UpdateSettings();
+
+        if (player.Movement != null)
+        {
+            player.Movement.SetLocomotionInputEnabled(true);
+            player.Movement.RefreshLocomotionState();
+        }
     }
 
     private void CachePlayerModes(PlayerManager player)

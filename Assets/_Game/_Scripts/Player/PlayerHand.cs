@@ -13,6 +13,8 @@ public class PlayerHand : MonoBehaviour
     [SerializeField] private NearFarInteractor nearFar;
     [SerializeField] private XRRayInteractor teleportRay;
     [SerializeField] private CurveInteractionCaster farGrabCaster;
+    [Header("Recovery")]
+    [SerializeField] private Transform recoveryPullPoint;
 
     private void OnValidate()
     {
@@ -30,12 +32,26 @@ public class PlayerHand : MonoBehaviour
                 teleportRay = teleportMarker.GetComponent<XRRayInteractor>();
             }
         }
+
+        if (recoveryPullPoint == null)
+            recoveryPullPoint = FindRecoveryPullPoint();
     }
     
 
     private void Awake()
     {
         SetTeleportActive(false);
+
+        if (recoveryPullPoint == null)
+            recoveryPullPoint = FindRecoveryPullPoint();
+    }
+
+    public Transform GetRecoveryPullPoint()
+    {
+        if (recoveryPullPoint == null)
+            recoveryPullPoint = FindRecoveryPullPoint();
+
+        return recoveryPullPoint != null ? recoveryPullPoint : transform;
     }
 
     public void SetTeleportActive(bool isActive)
@@ -90,5 +106,23 @@ public class PlayerHand : MonoBehaviour
         {
             nearFar.farAttachMode = mode;
         }
+    }
+
+    private Transform FindRecoveryPullPoint()
+    {
+        Transform directMatch = transform.Find("Aim Pose");
+        if (directMatch != null)
+            return directMatch;
+
+        foreach (Transform child in GetComponentsInChildren<Transform>(true))
+        {
+            if (child == null || child == transform)
+                continue;
+
+            if (child.name == "Aim Pose")
+                return child;
+        }
+
+        return teleportRay != null ? teleportRay.transform : transform;
     }
 }

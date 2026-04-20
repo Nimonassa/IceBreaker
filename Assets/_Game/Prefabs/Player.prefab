@@ -798,7 +798,7 @@ MonoBehaviour:
     onHoverEnter:
       m_PersistentCalls:
         m_Calls: []
-  grabHand: 1
+  grabHand: 2
   attachMode: 1
   grabRayDistance: 4
 --- !u!4 &764807198242205918 stripped
