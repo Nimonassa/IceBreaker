@@ -561,7 +561,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FreezingScreenEffect
   vignetteMaterial: {fileID: 2100000, guid: 6e4848a05899c7b42841a8b6a2c28ec4, type: 2}
-  screenFader: {fileID: 2440563192106041713}
+  fadeScreen: {fileID: 2440563192106041713}
   freezeEasing: 0
   freezeDuration: 60
   fadeToBlackDuration: 3

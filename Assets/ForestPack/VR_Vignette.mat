@@ -69,10 +69,10 @@ Material:
     m_Floats:
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _Radius: 1
+    - _Radius: 0.6
     - _Smoothness: 0.26
     m_Colors:
-    - _BgColor: {r: 1, g: 1, b: 1, a: 0.17254902}
+    - _BgColor: {r: 1, g: 1, b: 1, a: 0.12156863}
     - _BgTiling: {r: 1, g: 1, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _FrColor: {r: 1, g: 1, b: 1, a: 1}

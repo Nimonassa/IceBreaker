@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 
-public class ScreenFader : MonoBehaviour
+public class FadeScreen : MonoBehaviour
 {
     public Image fadeImage;
 
