@@ -3,6 +3,9 @@ using UnityEngine.Events;
 
 public static class PlayerEvents
 {
+    public static UnityEvent<float> OnFreezingStart = new();
+    public static UnityEvent OnFreezingEnd = new();
+
     // Locomotion - Teleport
     public static UnityEvent OnTeleportStarted = new();
     public static UnityEvent OnTeleportEnded = new();

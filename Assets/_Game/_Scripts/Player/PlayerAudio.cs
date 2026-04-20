@@ -19,6 +19,11 @@ public class PlayerAudio : MonoBehaviour
     [SerializeField] private AudioPreset drop;
     [SerializeField] private AudioPreset hover;
 
+    [Header("Freezing Audio")]
+    [SerializeField] private AudioPreset freezing;
+
+    private AudioHandle freezingHandle;
+
     private void OnEnable()
     {
         PlayerEvents.OnTeleportEnded.AddListener(PlayTeleport);
@@ -29,6 +34,8 @@ public class PlayerAudio : MonoBehaviour
         PlayerEvents.OnObjectReleased.AddListener(PlayDrop);
         PlayerEvents.OnHoverEnter.AddListener(PlayHover);
         PlayerEvents.OnStepTaken.AddListener(PlayFootSteps);
+        PlayerEvents.OnFreezingStart.AddListener(PlayFreezing);
+        PlayerEvents.OnFreezingEnd.AddListener(StopFreezing);
     }
 
     private void OnDisable()
@@ -41,10 +48,26 @@ public class PlayerAudio : MonoBehaviour
         PlayerEvents.OnObjectReleased.RemoveListener(PlayDrop);
         PlayerEvents.OnHoverEnter.RemoveListener(PlayHover);
         PlayerEvents.OnStepTaken.RemoveListener(PlayFootSteps);
+        PlayerEvents.OnFreezingStart.RemoveListener(PlayFreezing);
+        PlayerEvents.OnFreezingEnd.RemoveListener(StopFreezing);
     }
 
 
+    private void PlayFreezing(float duration)
+    {
+        if(head != null)
+        {
+            freezingHandle = head.Play(freezing);
+            head.FadeTo(freezingHandle, 0f, 0f);
+            head.FadeTo(freezingHandle, 1f, duration);
+        }
+    }
 
+    private void StopFreezing()
+    {
+        head.StopSound(freezingHandle);
+    }
+    
     private void PlayFootSteps()
     {
         feet?.Play(footstep);
