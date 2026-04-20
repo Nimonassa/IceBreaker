@@ -479,8 +479,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fdde8295fb6aad14991fc98b53d98861, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FreezingScreen
-  stopwatch: {fileID: 378042639}
-  postProcessVolume: {fileID: 49839441}
+  vignetteMaterial: {fileID: 0}
+  fadeScreen: {fileID: 0}
+  freezeEasing: 0
+  freezeDuration: 60
+  fadeToBlackDuration: 3
 --- !u!1 &71020380
 GameObject:
   m_ObjectHideFlags: 0
@@ -5110,6 +5113,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3675643659491572294, guid: aafb9765462eec04f8f1b4737a73610b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2120208975}
+    - targetCorrespondingSourceObject: {fileID: 3675643659491572294, guid: aafb9765462eec04f8f1b4737a73610b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 962579243}
     - targetCorrespondingSourceObject: {fileID: 4805913763038647354, guid: aafb9765462eec04f8f1b4737a73610b, type: 3}
       insertIndex: 2
       addedObject: {fileID: 1260996680}
@@ -8050,6 +8056,68 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 682994847}
   m_SourcePrefab: {fileID: 100100000, guid: 5cc65fb1f5d199c4283c223b1e1c303b, type: 3}
+--- !u!1001 &962579242
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 2062572766}
+    m_Modifications:
+    - target: {fileID: 5151858790438104546, guid: 3b87c7cbcf7e0a540af19be2e4ae133e, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1.8423536
+      objectReference: {fileID: 0}
+    - target: {fileID: 5151858790438104546, guid: 3b87c7cbcf7e0a540af19be2e4ae133e, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.57989
+      objectReference: {fileID: 0}
+    - target: {fileID: 5151858790438104546, guid: 3b87c7cbcf7e0a540af19be2e4ae133e, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -1.1811256
+      objectReference: {fileID: 0}
+    - target: {fileID: 5151858790438104546, guid: 3b87c7cbcf7e0a540af19be2e4ae133e, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5151858790438104546, guid: 3b87c7cbcf7e0a540af19be2e4ae133e, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5151858790438104546, guid: 3b87c7cbcf7e0a540af19be2e4ae133e, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5151858790438104546, guid: 3b87c7cbcf7e0a540af19be2e4ae133e, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5151858790438104546, guid: 3b87c7cbcf7e0a540af19be2e4ae133e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5151858790438104546, guid: 3b87c7cbcf7e0a540af19be2e4ae133e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5151858790438104546, guid: 3b87c7cbcf7e0a540af19be2e4ae133e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7877476682386246375, guid: 3b87c7cbcf7e0a540af19be2e4ae133e, type: 3}
+      propertyPath: m_Name
+      value: CoffeeCup
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 3b87c7cbcf7e0a540af19be2e4ae133e, type: 3}
+--- !u!4 &962579243 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5151858790438104546, guid: 3b87c7cbcf7e0a540af19be2e4ae133e, type: 3}
+  m_PrefabInstance: {fileID: 962579242}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &962733107
 GameObject:
   m_ObjectHideFlags: 0
