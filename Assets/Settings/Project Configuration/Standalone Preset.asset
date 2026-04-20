@@ -70,7 +70,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3e6b9910358046a1a7a6e84c3169447, type: 3}
   m_Name: VolumetricLightsTranslucentShadowMapFeature
   m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::VolumetricLights.VolumetricLightsTranslucentShadowMapFeature
-  m_Active: 1
+  m_Active: 0
   ignoreOverlayCamera: 1
 --- !u!114 &4846921684992651692
 MonoBehaviour:
@@ -84,7 +84,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e6a73f16fc15400aa1bbb77dd779b76, type: 3}
   m_Name: VolumetricLightsDepthPrePassFeature
   m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::VolumetricLights.VolumetricLightsDepthPrePassFeature
-  m_Active: 1
+  m_Active: 0
   transparentLayerMask:
     serializedVersion: 2
     m_Bits: 0
