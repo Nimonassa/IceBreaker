@@ -479,8 +479,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fdde8295fb6aad14991fc98b53d98861, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FreezingScreen
-  stopwatch: {fileID: 378042639}
-  postProcessVolume: {fileID: 49839441}
+  vignetteMaterial: {fileID: 0}
+  fadeScreen: {fileID: 0}
+  freezeEasing: 0
+  freezeDuration: 60
+  fadeToBlackDuration: 3
 --- !u!1 &71020380
 GameObject:
   m_ObjectHideFlags: 0
