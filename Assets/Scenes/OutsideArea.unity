@@ -560,7 +560,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: -0.68426895, g: 0.01193656, b: 0.7291321, a: 0}
-    - _WindDirection: {r: 2.5934258, g: 1.728946, b: 0, a: 83.43459}
+    - _WindDirection: {r: 31.844109, g: 21.22938, b: 0, a: 191.59055}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!1 &40802305
@@ -2261,7 +2261,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: 0.02350844, g: 0.011936575, b: -0.9996524, a: 0}
-    - _WindDirection: {r: 2.5934258, g: 1.728946, b: 0, a: 83.43459}
+    - _WindDirection: {r: 31.844109, g: 21.22938, b: 0, a: 191.59055}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!1 &485724150
@@ -3232,7 +3232,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: 0.02350844, g: 0.011936575, b: -0.9996524, a: 0}
-    - _WindDirection: {r: 2.5934258, g: 1.728946, b: 0, a: 83.43459}
+    - _WindDirection: {r: 31.844109, g: 21.22938, b: 0, a: 191.59055}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!21 &663267895
@@ -4121,7 +4121,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0.7, g: 0.3, b: 0, a: 0}
     - _ToLightDir: {r: -0.16794418, g: 0.33544862, b: -0.9269676, a: 0.75}
-    - _WindDirection: {r: 2.5934258, g: 1.728946, b: 0, a: 83.43459}
+    - _WindDirection: {r: 31.844109, g: 21.22938, b: 0, a: 191.59055}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!21 &823016110
@@ -4816,6 +4816,43 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1008784550}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!84 &1025046830
+RenderTexture:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_ImageContentsHash:
+    serializedVersion: 2
+    Hash: 00000000000000000000000000000000
+  m_IsAlphaChannelOptional: 0
+  serializedVersion: 6
+  m_Width: 1024
+  m_Height: 1024
+  m_AntiAliasing: 1
+  m_MipCount: -1
+  m_DepthStencilFormat: 90
+  m_ColorFormat: 0
+  m_MipMap: 0
+  m_GenerateMips: 1
+  m_SRGB: 0
+  m_UseDynamicScale: 0
+  m_UseDynamicScaleExplicit: 0
+  m_BindMS: 0
+  m_EnableCompatibleFormat: 1
+  m_EnableRandomWrite: 0
+  m_TextureSettings:
+    serializedVersion: 2
+    m_FilterMode: 1
+    m_Aniso: 1
+    m_MipBias: 0
+    m_WrapU: 1
+    m_WrapV: 1
+    m_WrapW: 1
+  m_Dimension: 2
+  m_VolumeDepth: 1
+  m_ShadowSamplingMode: 2
 --- !u!1001 &1050027506
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6551,7 +6588,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: -0.68426895, g: 0.01193656, b: 0.7291321, a: 0}
-    - _WindDirection: {r: 2.5934258, g: 1.728946, b: 0, a: 83.43459}
+    - _WindDirection: {r: 31.844109, g: 21.22938, b: 0, a: 191.59055}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!21 &1378893185
@@ -6664,7 +6701,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 73737363413c40248b4a103f15ec02f3, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.038
+      value: 0.9
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 73737363413c40248b4a103f15ec02f3, type: 3}
       propertyPath: m_LocalPosition.z
@@ -7315,43 +7352,6 @@ Mesh:
       - serializedVersion: 1
         m_IndexStart: 0
         m_IndexCount: 0
---- !u!84 &1489927290
-RenderTexture:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 
-  m_ImageContentsHash:
-    serializedVersion: 2
-    Hash: 00000000000000000000000000000000
-  m_IsAlphaChannelOptional: 0
-  serializedVersion: 6
-  m_Width: 1024
-  m_Height: 1024
-  m_AntiAliasing: 1
-  m_MipCount: -1
-  m_DepthStencilFormat: 90
-  m_ColorFormat: 0
-  m_MipMap: 0
-  m_GenerateMips: 1
-  m_SRGB: 0
-  m_UseDynamicScale: 0
-  m_UseDynamicScaleExplicit: 0
-  m_BindMS: 0
-  m_EnableCompatibleFormat: 1
-  m_EnableRandomWrite: 0
-  m_TextureSettings:
-    serializedVersion: 2
-    m_FilterMode: 1
-    m_Aniso: 1
-    m_MipBias: 0
-    m_WrapU: 1
-    m_WrapV: 1
-    m_WrapW: 1
-  m_Dimension: 2
-  m_VolumeDepth: 1
-  m_ShadowSamplingMode: 2
 --- !u!1 &1545152400
 GameObject:
   m_ObjectHideFlags: 0
@@ -9490,7 +9490,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: -0.68426895, g: 0.01193656, b: 0.7291321, a: 0}
-    - _WindDirection: {r: 2.5934258, g: 1.728946, b: 0, a: 83.43459}
+    - _WindDirection: {r: 31.844109, g: 21.22938, b: 0, a: 191.59055}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!1001 &1962827012
@@ -9730,7 +9730,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: -0.68426895, g: 0.01193656, b: 0.7291321, a: 0}
-    - _WindDirection: {r: 2.5934258, g: 1.728946, b: 0, a: 83.43459}
+    - _WindDirection: {r: 31.844109, g: 21.22938, b: 0, a: 191.59055}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!114 &2036310978 stripped
@@ -10604,7 +10604,7 @@ PrefabInstance:
     - target: {fileID: 1711564546642188439, guid: 82d0c942e1dbf4b4c8b609b066bb3ffd, type: 3}
       propertyPath: m_TargetTexture
       value: 
-      objectReference: {fileID: 1489927290}
+      objectReference: {fileID: 1025046830}
     - target: {fileID: 1835954541223696292, guid: 82d0c942e1dbf4b4c8b609b066bb3ffd, type: 3}
       propertyPath: m_Mesh
       value: 
