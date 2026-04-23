@@ -560,7 +560,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: -0.68426895, g: 0.01193656, b: 0.7291321, a: 0}
-    - _WindDirection: {r: 0.0035636786, g: 0.0023757857, b: 0, a: 1.854102}
+    - _WindDirection: {r: 1.0263056, g: 0.68420386, b: 0, a: 183.5561}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!1 &40802305
@@ -2372,7 +2372,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: 0.02350844, g: 0.011936575, b: -0.9996524, a: 0}
-    - _WindDirection: {r: 0.0035636786, g: 0.0023757857, b: 0, a: 1.854102}
+    - _WindDirection: {r: 1.0263056, g: 0.68420386, b: 0, a: 183.5561}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!1 &485724150
@@ -3343,7 +3343,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: 0.02350844, g: 0.011936575, b: -0.9996524, a: 0}
-    - _WindDirection: {r: 0.0035636786, g: 0.0023757857, b: 0, a: 1.854102}
+    - _WindDirection: {r: 1.0263056, g: 0.68420386, b: 0, a: 183.5561}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!21 &663267895
@@ -4009,43 +4009,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 788951516}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
---- !u!84 &804503920
-RenderTexture:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 
-  m_ImageContentsHash:
-    serializedVersion: 2
-    Hash: 00000000000000000000000000000000
-  m_IsAlphaChannelOptional: 0
-  serializedVersion: 6
-  m_Width: 1024
-  m_Height: 1024
-  m_AntiAliasing: 1
-  m_MipCount: -1
-  m_DepthStencilFormat: 90
-  m_ColorFormat: 0
-  m_MipMap: 0
-  m_GenerateMips: 1
-  m_SRGB: 0
-  m_UseDynamicScale: 0
-  m_UseDynamicScaleExplicit: 0
-  m_BindMS: 0
-  m_EnableCompatibleFormat: 1
-  m_EnableRandomWrite: 0
-  m_TextureSettings:
-    serializedVersion: 2
-    m_FilterMode: 1
-    m_Aniso: 0
-    m_MipBias: 0
-    m_WrapU: 1
-    m_WrapV: 1
-    m_WrapW: 1
-  m_Dimension: 2
-  m_VolumeDepth: 1
-  m_ShadowSamplingMode: 2
 --- !u!43 &812941310
 Mesh:
   m_ObjectHideFlags: 0
@@ -4306,7 +4269,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0.7, g: 0.3, b: 0, a: 0}
     - _ToLightDir: {r: -0.16794418, g: 0.33544862, b: -0.9269676, a: 0.75}
-    - _WindDirection: {r: 0.0035636786, g: 0.0023757857, b: 0, a: 1.854102}
+    - _WindDirection: {r: 1.0263056, g: 0.68420386, b: 0, a: 183.5561}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!21 &823016110
@@ -5532,8 +5495,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.050148264, y: 0.19801463, z: 0.05243228}
-  m_Center: {x: -0.013191573, y: 0.029356085, z: -0.017318694}
+  m_Size: {x: 0.028516572, y: 0.19801462, z: 0.027220171}
+  m_Center: {x: 0.004884634, y: 0.02935638, z: -0.004712647}
 --- !u!21 &1121976534
 Material:
   serializedVersion: 8
@@ -6736,7 +6699,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: -0.68426895, g: 0.01193656, b: 0.7291321, a: 0}
-    - _WindDirection: {r: 0.0035636786, g: 0.0023757857, b: 0, a: 1.854102}
+    - _WindDirection: {r: 1.0263056, g: 0.68420386, b: 0, a: 183.5561}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!21 &1378893185
@@ -8670,8 +8633,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.038032744, y: 0.1892686, z: 0.06892114}
-  m_Center: {x: 0.0024057352, y: 0.018626299, z: 0.0010567416}
+  m_Size: {x: 0.038032744, y: 0.18926862, z: 0.046172928}
+  m_Center: {x: 0.002405736, y: 0.018626297, z: 0.00048886135}
 --- !u!43 &1850447331
 Mesh:
   m_ObjectHideFlags: 0
@@ -9565,7 +9528,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: -0.68426895, g: 0.01193656, b: 0.7291321, a: 0}
-    - _WindDirection: {r: 0.0035636786, g: 0.0023757857, b: 0, a: 1.854102}
+    - _WindDirection: {r: 1.0263056, g: 0.68420386, b: 0, a: 183.5561}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!1001 &1962827012
@@ -9918,7 +9881,7 @@ Material:
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowIntensity: {r: 0, g: 1, b: 0, a: 0}
     - _ToLightDir: {r: -0.68426895, g: 0.01193656, b: 0.7291321, a: 0}
-    - _WindDirection: {r: 0.0035636786, g: 0.0023757857, b: 0, a: 1.854102}
+    - _WindDirection: {r: 1.0263056, g: 0.68420386, b: 0, a: 183.5561}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!114 &2036310978 stripped
@@ -10792,7 +10755,7 @@ PrefabInstance:
     - target: {fileID: 1711564546642188439, guid: 82d0c942e1dbf4b4c8b609b066bb3ffd, type: 3}
       propertyPath: m_TargetTexture
       value: 
-      objectReference: {fileID: 804503920}
+      objectReference: {fileID: 771658449}
     - target: {fileID: 1835954541223696292, guid: 82d0c942e1dbf4b4c8b609b066bb3ffd, type: 3}
       propertyPath: m_Mesh
       value: 
