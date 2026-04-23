@@ -2057,7 +2057,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -6689036041284674117, guid: 1ad79a1c1f1bc7c4dbd6cb6c9b647b12, type: 3}
       propertyPath: m_Name
-      value: BlackBoots
+      value: Saappaat
       objectReference: {fileID: 0}
     - target: {fileID: 2774220344278030320, guid: 1ad79a1c1f1bc7c4dbd6cb6c9b647b12, type: 3}
       propertyPath: m_LocalScale.x
@@ -6181,7 +6181,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -387962618274736237, guid: 36cf38660e85d864ea1b8865af8d0645, type: 3}
       propertyPath: m_Name
-      value: RedScarf
+      value: "L\xE4mmin Huivi"
       objectReference: {fileID: 0}
     - target: {fileID: 2774220344278030320, guid: 36cf38660e85d864ea1b8865af8d0645, type: 3}
       propertyPath: m_LocalScale.x
@@ -7874,7 +7874,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5151858790438104546, guid: 3b87c7cbcf7e0a540af19be2e4ae133e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.7917
+      value: 0.739
       objectReference: {fileID: 0}
     - target: {fileID: 5151858790438104546, guid: 3b87c7cbcf7e0a540af19be2e4ae133e, type: 3}
       propertyPath: m_LocalPosition.y
@@ -7882,7 +7882,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5151858790438104546, guid: 3b87c7cbcf7e0a540af19be2e4ae133e, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1.3413
+      value: 1.471
       objectReference: {fileID: 0}
     - target: {fileID: 5151858790438104546, guid: 3b87c7cbcf7e0a540af19be2e4ae133e, type: 3}
       propertyPath: m_LocalRotation.w
@@ -14648,11 +14648,11 @@ PrefabInstance:
     - target: {fileID: 5575702154641916810, guid: a2888cf8c7a57ef419cb9bb9fba08037, type: 3}
       propertyPath: 'items.Array.data[1]'
       value: 
-      objectReference: {fileID: 235185009}
+      objectReference: {fileID: 2024505925}
     - target: {fileID: 5575702154641916810, guid: a2888cf8c7a57ef419cb9bb9fba08037, type: 3}
       propertyPath: 'items.Array.data[2]'
       value: 
-      objectReference: {fileID: 2024505925}
+      objectReference: {fileID: 235185009}
     - target: {fileID: 5575702154641916810, guid: a2888cf8c7a57ef419cb9bb9fba08037, type: 3}
       propertyPath: 'items.Array.data[3]'
       value: 
@@ -14660,7 +14660,7 @@ PrefabInstance:
     - target: {fileID: 5575702154641916810, guid: a2888cf8c7a57ef419cb9bb9fba08037, type: 3}
       propertyPath: 'items.Array.data[4]'
       value: 
-      objectReference: {fileID: 141986017}
+      objectReference: {fileID: 666599101}
     - target: {fileID: 5575702154641916810, guid: a2888cf8c7a57ef419cb9bb9fba08037, type: 3}
       propertyPath: 'items.Array.data[5]'
       value: 
@@ -14676,6 +14676,34 @@ PrefabInstance:
     - target: {fileID: 6264635293726137878, guid: a2888cf8c7a57ef419cb9bb9fba08037, type: 3}
       propertyPath: m_CastDistance
       value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6651812279235813165, guid: a2888cf8c7a57ef419cb9bb9fba08037, type: 3}
+      propertyPath: m_fontSize
+      value: 70
+      objectReference: {fileID: 0}
+    - target: {fileID: 6651812279235813165, guid: a2888cf8c7a57ef419cb9bb9fba08037, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 6651812279235813165, guid: a2888cf8c7a57ef419cb9bb9fba08037, type: 3}
+      propertyPath: m_lineSpacing
+      value: 0.61
+      objectReference: {fileID: 0}
+    - target: {fileID: 6651812279235813165, guid: a2888cf8c7a57ef419cb9bb9fba08037, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 70
+      objectReference: {fileID: 0}
+    - target: {fileID: 6651812279235813165, guid: a2888cf8c7a57ef419cb9bb9fba08037, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 6651812279235813165, guid: a2888cf8c7a57ef419cb9bb9fba08037, type: 3}
+      propertyPath: m_enableAutoSizing
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6651812279235813165, guid: a2888cf8c7a57ef419cb9bb9fba08037, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7054721832516151783, guid: a2888cf8c7a57ef419cb9bb9fba08037, type: 3}
       propertyPath: m_Layer
@@ -14837,7 +14865,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -6689036041284674117, guid: 5ebb6c970adc1df42acbb753965a0e88, type: 3}
       propertyPath: m_Name
-      value: WinterJacket
+      value: 'Talvi Takki '
       objectReference: {fileID: 0}
     - target: {fileID: 2774220344278030320, guid: 5ebb6c970adc1df42acbb753965a0e88, type: 3}
       propertyPath: m_LocalScale.x
@@ -16055,7 +16083,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -6689036041284674117, guid: 8baf57b9437dad144b79dee74dfa38aa, type: 3}
       propertyPath: m_Name
-      value: WinterGloves
+      value: 'Hanskat '
       objectReference: {fileID: 0}
     - target: {fileID: 2774220344278030320, guid: 8baf57b9437dad144b79dee74dfa38aa, type: 3}
       propertyPath: m_LocalPosition.x
