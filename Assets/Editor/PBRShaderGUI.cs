@@ -30,6 +30,7 @@ public class PBRShaderGUI : ShaderGUI
     MaterialProperty specularTex, specularStrength;
     MaterialProperty transUseColorTex, transTex, transMix;
     MaterialProperty fresnelStrength, fresnelColorInf, fresnelIOR;
+    MaterialProperty useCubicMapping, cubicTiling; 
     MaterialProperty tiling, offset;
 
     public override void OnGUI(MaterialEditor materialEditor, MaterialProperty[] properties)
@@ -103,6 +104,8 @@ public class PBRShaderGUI : ShaderGUI
         fresnelStrength = FindProperty("_Fresnel_Strength", props, false);
         fresnelColorInf = FindProperty("_Fresnel_ColorInfluenceAmount", props, false);
         fresnelIOR = FindProperty("_Fresnel_IOR", props, false);
+        useCubicMapping = FindProperty("_UseCubicMapping", props, false); // <-- ADDED
+        cubicTiling = FindProperty("_CubicTiling", props, false);
         tiling = FindProperty("_Tiling_Amount", props, false);
         offset = FindProperty("_Tiling_Offset", props, false);
 
@@ -205,15 +208,29 @@ public class PBRShaderGUI : ShaderGUI
                 break;
 
             case 6: // Settings
-                foldoutSettings = DrawHeaderFoldout("Tiling & Rendering", foldoutSettings);
+                foldoutSettings = DrawHeaderFoldout("Tiling & Rendering", foldoutSettings);
                 if (foldoutSettings)
                 {
                     EditorGUI.indentLevel++;
-                    DrawProp(editor, tiling, "Tiling");
+
+                    DrawProp(editor, useCubicMapping, "Use Cubic Mapping");
+
+                    // Swap between Cubic and UV tiling based on the toggle state
+                    if (useCubicMapping.floatValue > 0.5f)
+                    {
+                        DrawProp(editor, cubicTiling, "Cubic Tiling");
+                    }
+                    else
+                    {
+                        DrawProp(editor, tiling, "UV Tiling");
+                    }
+
                     DrawProp(editor, offset, "Offset");
+
                     EditorGUI.indentLevel--;
                 }
                 break;
+
         }
     }
 

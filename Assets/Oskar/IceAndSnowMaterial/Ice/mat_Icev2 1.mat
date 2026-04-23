@@ -119,6 +119,8 @@ Material:
     - _BumpScale: 1
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
+    - _CubicMapping: 0
+    - _CubicTiling: 0.008
     - _Cull: 2
     - _Cutoff: 0.5
     - _DetailAlbedoMapScale: 1
@@ -152,6 +154,7 @@ Material:
     - _Surface: 0
     - _Transparency_MixStrength: 0.67
     - _Transparency_UseTextureFromColor: 0
+    - _UseCubicMapping: 1
     - _WorkflowMode: 1
     - _XRMotionVectorsPass: 1
     - _ZWrite: 1
