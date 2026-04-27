@@ -13,9 +13,10 @@ public class ChatNodeEditor : NodeEditor
     private SerializedProperty textsProp;
     private SerializedProperty audiosProp;
     private SerializedProperty editingLangProp;
-    private SerializedProperty autoAdvanceModeProp; // Updated name
+    private SerializedProperty autoAdvanceModeProp;
     private SerializedProperty displayDurationProp;
-    private SerializedProperty onNodeTriggeredProp;
+    private SerializedProperty onEnterProp;
+    private SerializedProperty onExitProp;
 
     public override void OnCreate()
     {
@@ -34,16 +35,18 @@ public class ChatNodeEditor : NodeEditor
         editingLangProp = serializedObject.FindProperty("editingLanguage");
         autoAdvanceModeProp = serializedObject.FindProperty("autoAdvanceMode");
         displayDurationProp = serializedObject.FindProperty("displayDuration");
-        onNodeTriggeredProp = serializedObject.FindProperty("onNodeTriggered");
+        onEnterProp = serializedObject.FindProperty("onEnter");
+        onExitProp = serializedObject.FindProperty("onExit");
     }
 
-    public override int GetWidth() { return 380; } // Increased width for better button fit
+    public override int GetWidth() { return 380; }
 
     public override void OnBodyGUI()
     {
         if (target == null) return;
 
-        if (cachedSerializedObject != serializedObject || editingLangProp == null)
+        // FIXED: Now specifically checks if the new properties are null to force a recache!
+        if (cachedSerializedObject != serializedObject || editingLangProp == null || onEnterProp == null)
         {
             CacheProperties();
         }
@@ -58,16 +61,14 @@ public class ChatNodeEditor : NodeEditor
         NodeEditorGUILayout.PortField(node.GetPort("exit"));
         EditorGUILayout.Space(5);
 
-        // Safety array resizing
         if (namesProp != null && namesProp.arraySize != langCount) { namesProp.arraySize = langCount; forceSave = true; }
         if (textsProp != null && textsProp.arraySize != langCount) { textsProp.arraySize = langCount; forceSave = true; }
         if (audiosProp != null && audiosProp.arraySize != langCount) { audiosProp.arraySize = langCount; forceSave = true; }
 
         DialogueGraphEditor graphEditor = NodeEditorWindow.current.graphEditor as DialogueGraphEditor;
         bool showRef = graphEditor != null && graphEditor.showReferenceView;
-        int currentIdx = editingLangProp.enumValueIndex;
+        int currentIdx = editingLangProp != null ? editingLangProp.enumValueIndex : 0;
 
-        // --- REFERENCE VIEW ---
         if (showRef && graphEditor != null)
         {
             int refIdx = (int)graphEditor.referenceLanguage;
@@ -88,8 +89,7 @@ public class ChatNodeEditor : NodeEditor
             }
         }
 
-        // --- ACTIVE EDITING VIEW ---
-        if (currentIdx >= 0 && currentIdx < namesProp.arraySize)
+        if (currentIdx >= 0 && namesProp != null && currentIdx < namesProp.arraySize)
         {
             string langName = ((GameLanguage)currentIdx).ToString();
 
@@ -100,7 +100,6 @@ public class ChatNodeEditor : NodeEditor
             NodeEditorGUILayout.PropertyField(namesProp.GetArrayElementAtIndex(currentIdx), new GUIContent("Speaker Name"));
             EditorGUILayout.Space(2);
 
-            // Localized Text Area
             SerializedProperty textElement = textsProp.GetArrayElementAtIndex(currentIdx);
             textElement.stringValue = EditorGUILayout.TextArea(textElement.stringValue, EditorStyles.textArea, GUILayout.MinHeight(60));
 
@@ -109,15 +108,14 @@ public class ChatNodeEditor : NodeEditor
             EditorGUILayout.EndVertical();
         }
 
-        // --- TIMING & PACING ---
         EditorGUILayout.Space(5);
         EditorGUILayout.LabelField("Timing & Pacing", EditorStyles.boldLabel);
-        NodeEditorGUILayout.PropertyField(autoAdvanceModeProp, new GUIContent("Advance Mode"));
+        if (autoAdvanceModeProp != null) NodeEditorGUILayout.PropertyField(autoAdvanceModeProp, new GUIContent("Advance Mode"));
 
         if (node.autoAdvanceMode == AutoAdvanceMode.Timer)
         {
             EditorGUILayout.BeginHorizontal();
-            NodeEditorGUILayout.PropertyField(displayDurationProp, new GUIContent("Wait Time (s)"));
+            if (displayDurationProp != null) NodeEditorGUILayout.PropertyField(displayDurationProp, new GUIContent("Wait Time (s)"));
 
             AudioClip currentClip = node.GetAudio((GameLanguage)currentIdx);
             if (currentClip != null)
@@ -135,7 +133,10 @@ public class ChatNodeEditor : NodeEditor
         }
 
         EditorGUILayout.Space(5);
-        NodeEditorGUILayout.PropertyField(onNodeTriggeredProp);
+
+        // FIXED: Safe drawing logic
+        if (onEnterProp != null) NodeEditorGUILayout.PropertyField(onEnterProp);
+        if (onExitProp != null) NodeEditorGUILayout.PropertyField(onExitProp);
 
         if (EditorGUI.EndChangeCheck() || forceSave)
         {

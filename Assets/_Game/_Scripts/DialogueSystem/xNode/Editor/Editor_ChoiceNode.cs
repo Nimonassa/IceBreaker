@@ -9,14 +9,14 @@ public class ChoiceNodeEditor : NodeEditor
     private static readonly int langCount = System.Enum.GetValues(typeof(GameLanguage)).Length;
     private int lastChoiceCount = -1;
 
-    // Cached properties
     private SerializedObject cachedSerializedObject;
     private SerializedProperty editingLangProp;
     private SerializedProperty namesProp;
     private SerializedProperty textsProp;
     private SerializedProperty audiosProp;
     private SerializedProperty choicesProp;
-    private SerializedProperty onNodeTriggeredProp;
+    private SerializedProperty onEnterProp;
+    private SerializedProperty onExitProp;
 
     public override void OnCreate()
     {
@@ -34,7 +34,8 @@ public class ChoiceNodeEditor : NodeEditor
         textsProp = serializedObject.FindProperty("localizedPromptTexts");
         audiosProp = serializedObject.FindProperty("localizedPromptAudios");
         choicesProp = serializedObject.FindProperty("choices");
-        onNodeTriggeredProp = serializedObject.FindProperty("onNodeTriggered");
+        onEnterProp = serializedObject.FindProperty("onEnter");
+        onExitProp = serializedObject.FindProperty("onExit");
     }
 
     public override int GetWidth() => 380;
@@ -43,7 +44,8 @@ public class ChoiceNodeEditor : NodeEditor
     {
         if (target == null) return;
 
-        if (cachedSerializedObject != serializedObject || editingLangProp == null)
+        // FIXED: Added null safety for caching
+        if (cachedSerializedObject != serializedObject || editingLangProp == null || onEnterProp == null)
         {
             CacheProperties();
         }
@@ -51,13 +53,12 @@ public class ChoiceNodeEditor : NodeEditor
         serializedObject.Update();
         ChoiceNode node = target as ChoiceNode;
 
-        // START CHANGE CHECK
         bool forceSave = false;
         EditorGUI.BeginChangeCheck();
 
         NodeEditorGUILayout.PortField(node.GetPort("enter"));
 
-        int currentIdx = editingLangProp.enumValueIndex;
+        int currentIdx = editingLangProp != null ? editingLangProp.enumValueIndex : 0;
 
         if (namesProp != null && namesProp.arraySize != langCount) { namesProp.arraySize = langCount; forceSave = true; }
         if (textsProp != null && textsProp.arraySize != langCount) { textsProp.arraySize = langCount; forceSave = true; }
@@ -69,7 +70,7 @@ public class ChoiceNodeEditor : NodeEditor
         if (showRef && graphEditor != null)
         {
             int refIdx = (int)graphEditor.referenceLanguage;
-            if (refIdx >= 0 && refIdx < textsProp.arraySize)
+            if (refIdx >= 0 && textsProp != null && refIdx < textsProp.arraySize)
             {
                 string refLangName = ((GameLanguage)refIdx).ToString();
                 EditorGUILayout.BeginVertical("HelpBox");
@@ -86,7 +87,6 @@ public class ChoiceNodeEditor : NodeEditor
             }
         }
 
-        // --- ACTIVE EDITING VIEW ---
         EditorGUILayout.BeginVertical(GUI.skin.box);
         string langName = currentIdx >= 0 ? ((GameLanguage)currentIdx).ToString() : "Unknown";
         EditorGUILayout.LabelField($"✏️ Editing Prompt: {langName.ToUpper()}", EditorStyles.miniLabel);
@@ -121,16 +121,17 @@ public class ChoiceNodeEditor : NodeEditor
         }
 
         EditorGUILayout.Space(10);
-        NodeEditorGUILayout.DynamicPortList(node.choicesFieldName, typeof(DialogueChoice), serializedObject, NodePort.IO.Output, Node.ConnectionType.Override);
+        if (choicesProp != null) NodeEditorGUILayout.DynamicPortList(node.choicesFieldName, typeof(DialogueChoice), serializedObject, NodePort.IO.Output, Node.ConnectionType.Override);
 
         EditorGUILayout.Space(5);
-        NodeEditorGUILayout.PropertyField(onNodeTriggeredProp);
 
-        // END CHANGE CHECK
+        // FIXED: Safe drawing logic
+        if (onEnterProp != null) NodeEditorGUILayout.PropertyField(onEnterProp);
+        if (onExitProp != null) NodeEditorGUILayout.PropertyField(onExitProp);
+
         if (EditorGUI.EndChangeCheck() || forceSave)
         {
             serializedObject.ApplyModifiedProperties();
         }
     }
 }
-

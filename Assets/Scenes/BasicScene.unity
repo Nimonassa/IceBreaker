@@ -350,6 +350,12 @@ MonoBehaviour:
       _dynamic: 0
   enter: 0
   editingLanguage: 0
+  onEnter:
+    m_PersistentCalls:
+      m_Calls: []
+  onExit:
+    m_PersistentCalls:
+      m_Calls: []
   localizedSpeakerNames:
   - Mummo
   - 
@@ -364,9 +370,6 @@ MonoBehaviour:
   - {fileID: 0}
   autoAdvanceMode: 2
   displayDuration: 5.88
-  onNodeTriggered:
-    m_PersistentCalls:
-      m_Calls: []
   exit: 0
 --- !u!1 &38632956
 GameObject:
@@ -513,6 +516,12 @@ MonoBehaviour:
       _dynamic: 0
   enter: 0
   editingLanguage: 0
+  onEnter:
+    m_PersistentCalls:
+      m_Calls: []
+  onExit:
+    m_PersistentCalls:
+      m_Calls: []
   localizedSpeakerNames:
   - Mummo
   - 
@@ -528,9 +537,6 @@ MonoBehaviour:
   - {fileID: 0}
   autoAdvanceMode: 2
   displayDuration: 3
-  onNodeTriggered:
-    m_PersistentCalls:
-      m_Calls: []
   exit: 0
 --- !u!1 &49839440
 GameObject:
@@ -542,7 +548,6 @@ GameObject:
   m_Component:
   - component: {fileID: 49839442}
   - component: {fileID: 49839441}
-  - component: {fileID: 49839443}
   m_Layer: 0
   m_Name: PostProcess
   m_TagString: Untagged
@@ -582,23 +587,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &49839443
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 49839440}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fdde8295fb6aad14991fc98b53d98861, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::FreezingScreen
-  vignetteMaterial: {fileID: 0}
-  fadeScreen: {fileID: 0}
-  freezeEasing: 0
-  freezeDuration: 60
-  fadeToBlackDuration: 3
 --- !u!1 &71020380
 GameObject:
   m_ObjectHideFlags: 0
@@ -852,66 +840,6 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
---- !u!114 &98545880
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a4e82e5d0ffba324b86da09eb2d1f656, type: 3}
-  m_Name: Prompt
-  m_EditorClassIdentifier: Assembly-CSharp::PromptNode
-  graph: {fileID: 1185013474}
-  position: {x: -840, y: 1544}
-  ports:
-    keys:
-    - exit
-    - enter
-    values:
-    - _fieldName: exit
-      _node: {fileID: 98545880}
-      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections: []
-      _direction: 1
-      _connectionType: 1
-      _typeConstraint: 0
-      _dynamic: 0
-    - _fieldName: enter
-      _node: {fileID: 98545880}
-      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections:
-      - fieldName: choices 0
-        node: {fileID: 510334122}
-        reroutePoints: []
-      - fieldName: choices 0
-        node: {fileID: 411358403}
-        reroutePoints: []
-      _direction: 0
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
-  enter: 0
-  editingLanguage: 0
-  promptType: 1
-  localizedTexts:
-  - Exactly. Remember that
-  - 
-  - 
-  localizedAudios:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  autoAdvanceMode: 1
-  displayDuration: 3
-  onNodeTriggered:
-    m_PersistentCalls:
-      m_Calls: []
-  exit: 0
 --- !u!1 &108799719 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4200099227636364594, guid: aafb9765462eec04f8f1b4737a73610b, type: 3}
@@ -1731,6 +1659,12 @@ MonoBehaviour:
       _dynamic: 0
   enter: 0
   editingLanguage: 0
+  onEnter:
+    m_PersistentCalls:
+      m_Calls: []
+  onExit:
+    m_PersistentCalls:
+      m_Calls: []
   localizedSpeakerNames:
   - Mummo
   - 
@@ -1745,9 +1679,6 @@ MonoBehaviour:
   - {fileID: 0}
   autoAdvanceMode: 1
   displayDuration: 6.984
-  onNodeTriggered:
-    m_PersistentCalls:
-      m_Calls: []
   exit: 0
 --- !u!1 &216165335
 GameObject:
@@ -2370,6 +2301,36 @@ MonoBehaviour:
       _dynamic: 0
   enter: 0
   editingLanguage: 0
+  onEnter:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1323791717}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: Load
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 11400000, guid: 84344be935b95034eaaef73881166157, type: 2}
+          m_ObjectArgumentAssemblyTypeName: PlayerConfig, Assembly-CSharp
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1008471799}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 1008471797}
+          m_ObjectArgumentAssemblyTypeName: PlayerConfig, Assembly-CSharp
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onExit:
+    m_PersistentCalls:
+      m_Calls: []
   localizedSpeakerNames:
   - Mummo
   - 
@@ -2385,9 +2346,6 @@ MonoBehaviour:
   - {fileID: 0}
   autoAdvanceMode: 1
   displayDuration: 14.592
-  onNodeTriggered:
-    m_PersistentCalls:
-      m_Calls: []
   exit: 0
 --- !u!1 &242309509
 GameObject:
@@ -2824,6 +2782,12 @@ MonoBehaviour:
       _dynamic: 0
   enter: 0
   editingLanguage: 0
+  onEnter:
+    m_PersistentCalls:
+      m_Calls: []
+  onExit:
+    m_PersistentCalls:
+      m_Calls: []
   localizedSpeakerNames:
   - Mummo
   - 
@@ -2840,9 +2804,6 @@ MonoBehaviour:
   - {fileID: 0}
   autoAdvanceMode: 1
   displayDuration: 16.368
-  onNodeTriggered:
-    m_PersistentCalls:
-      m_Calls: []
   exit: 0
 --- !u!1 &288943606
 GameObject:
@@ -3164,6 +3125,12 @@ MonoBehaviour:
       _dynamic: 0
   enter: 0
   editingLanguage: 0
+  onEnter:
+    m_PersistentCalls:
+      m_Calls: []
+  onExit:
+    m_PersistentCalls:
+      m_Calls: []
   localizedSpeakerNames:
   - Mummo
   - 
@@ -3180,9 +3147,6 @@ MonoBehaviour:
   - {fileID: 0}
   autoAdvanceMode: 2
   displayDuration: 3
-  onNodeTriggered:
-    m_PersistentCalls:
-      m_Calls: []
   exit: 0
 --- !u!1 &307784571 stripped
 GameObject:
@@ -3335,6 +3299,12 @@ MonoBehaviour:
       _dynamic: 0
   enter: 0
   editingLanguage: 0
+  onEnter:
+    m_PersistentCalls:
+      m_Calls: []
+  onExit:
+    m_PersistentCalls:
+      m_Calls: []
   promptType: 3
   localizedTexts:
   - "Tuolla asenteella et kyll\xE4 p\xE4rj\xE4\xE4. Kokeile uudestaan"
@@ -3346,9 +3316,6 @@ MonoBehaviour:
   - {fileID: 0}
   autoAdvanceMode: 1
   displayDuration: 6.576
-  onNodeTriggered:
-    m_PersistentCalls:
-      m_Calls: []
   exit: 0
 --- !u!114 &348920365
 MonoBehaviour:
@@ -3395,6 +3362,12 @@ MonoBehaviour:
       _dynamic: 0
   enter: 0
   editingLanguage: 0
+  onEnter:
+    m_PersistentCalls:
+      m_Calls: []
+  onExit:
+    m_PersistentCalls:
+      m_Calls: []
   localizedSpeakerNames:
   - Mummo
   - 
@@ -3411,9 +3384,6 @@ MonoBehaviour:
   - {fileID: 0}
   autoAdvanceMode: 2
   displayDuration: 3
-  onNodeTriggered:
-    m_PersistentCalls:
-      m_Calls: []
   exit: 0
 --- !u!1 &351852639
 GameObject:
@@ -3915,6 +3885,12 @@ MonoBehaviour:
       _dynamic: 0
   enter: 0
   editingLanguage: 0
+  onEnter:
+    m_PersistentCalls:
+      m_Calls: []
+  onExit:
+    m_PersistentCalls:
+      m_Calls: []
   localizedSpeakerNames:
   - Mummo
   - 
@@ -3929,9 +3905,6 @@ MonoBehaviour:
   - {fileID: 0}
   autoAdvanceMode: 2
   displayDuration: 3
-  onNodeTriggered:
-    m_PersistentCalls:
-      m_Calls: []
   exit: 0
 --- !u!1 &408327597
 GameObject:
@@ -4058,103 +4031,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 411219814}
   m_Mesh: {fileID: 6217673487165757016, guid: 8baf57b9437dad144b79dee74dfa38aa, type: 3}
---- !u!114 &411358403
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 66c5221dd1a366647901088605b8a524, type: 3}
-  m_Name: 03
-  m_EditorClassIdentifier: Assembly-CSharp::ChoiceNode
-  graph: {fileID: 1185013474}
-  position: {x: -296, y: 1912}
-  ports:
-    keys:
-    - choices
-    - enter
-    - choices 0
-    - choices 1
-    values:
-    - _fieldName: choices
-      _node: {fileID: 411358403}
-      _typeQualifiedName: System.Collections.Generic.List`1[[DialogueChoice, Assembly-CSharp,
-        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]], mscorlib, Version=4.0.0.0,
-        Culture=neutral, PublicKeyToken=b77a5c561934e089
-      connections: []
-      _direction: 1
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
-    - _fieldName: enter
-      _node: {fileID: 411358403}
-      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections:
-      - fieldName: exit
-        node: {fileID: 476299733}
-        reroutePoints: []
-      _direction: 0
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
-    - _fieldName: choices 0
-      _node: {fileID: 411358403}
-      _typeQualifiedName: DialogueChoice, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-      connections:
-      - fieldName: enter
-        node: {fileID: 98545880}
-        reroutePoints: []
-      _direction: 1
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 1
-    - _fieldName: choices 1
-      _node: {fileID: 411358403}
-      _typeQualifiedName: DialogueChoice, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-      connections: []
-      _direction: 1
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 1
-  enter: 0
-  editingLanguage: 0
-  localizedSpeakerNames:
-  - Grandma
-  - 
-  - 
-  localizedPromptTexts:
-  - "Now\u2014how thick should the ice be before you walk on it?\r"
-  - 
-  - 
-  localizedPromptAudios:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  choices:
-  - localizedChoiceTexts:
-    - At least 10 cm
-    - 
-    - 
-    onChoicePicked:
-      m_PersistentCalls:
-        m_Calls: []
-  - localizedChoiceTexts:
-    - Any ice is fine
-    - 
-    - 
-    onChoicePicked:
-      m_PersistentCalls:
-        m_Calls: []
-  onNodeTriggered:
-    m_PersistentCalls:
-      m_Calls: []
-  choicesFieldName: choices
 --- !u!1 &421514170
 GameObject:
   m_ObjectHideFlags: 0
@@ -4623,66 +4499,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4356340528695317332, guid: 5cc65fb1f5d199c4283c223b1e1c303b, type: 3}
   m_PrefabInstance: {fileID: 940159888}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &476299733
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a4e82e5d0ffba324b86da09eb2d1f656, type: 3}
-  m_Name: Prompt
-  m_EditorClassIdentifier: Assembly-CSharp::PromptNode
-  graph: {fileID: 1185013474}
-  position: {x: -840, y: 2040}
-  ports:
-    keys:
-    - exit
-    - enter
-    values:
-    - _fieldName: exit
-      _node: {fileID: 476299733}
-      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections:
-      - fieldName: enter
-        node: {fileID: 411358403}
-        reroutePoints: []
-      _direction: 1
-      _connectionType: 1
-      _typeConstraint: 0
-      _dynamic: 0
-    - _fieldName: enter
-      _node: {fileID: 476299733}
-      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections:
-      - fieldName: choices 1
-        node: {fileID: 510334122}
-        reroutePoints: []
-      _direction: 0
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
-  enter: 0
-  editingLanguage: 0
-  promptType: 3
-  localizedTexts:
-  - "No, that\u2019s dangerous. Thin ice won\u2019t hold you"
-  - 
-  - 
-  localizedAudios:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  autoAdvanceMode: 1
-  displayDuration: 3
-  onNodeTriggered:
-    m_PersistentCalls:
-      m_Calls: []
-  exit: 0
 --- !u!1 &477532337
 GameObject:
   m_ObjectHideFlags: 0
@@ -4728,103 +4544,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &510334122
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 66c5221dd1a366647901088605b8a524, type: 3}
-  m_Name: 03
-  m_EditorClassIdentifier: Assembly-CSharp::ChoiceNode
-  graph: {fileID: 1185013474}
-  position: {x: -1304, y: 1480}
-  ports:
-    keys:
-    - choices
-    - enter
-    - choices 0
-    - choices 1
-    values:
-    - _fieldName: choices
-      _node: {fileID: 510334122}
-      _typeQualifiedName: System.Collections.Generic.List`1[[DialogueChoice, Assembly-CSharp,
-        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]], mscorlib, Version=4.0.0.0,
-        Culture=neutral, PublicKeyToken=b77a5c561934e089
-      connections: []
-      _direction: 1
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
-    - _fieldName: enter
-      _node: {fileID: 510334122}
-      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections: []
-      _direction: 0
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
-    - _fieldName: choices 0
-      _node: {fileID: 510334122}
-      _typeQualifiedName: DialogueChoice, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-      connections:
-      - fieldName: enter
-        node: {fileID: 98545880}
-        reroutePoints: []
-      _direction: 1
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 1
-    - _fieldName: choices 1
-      _node: {fileID: 510334122}
-      _typeQualifiedName: DialogueChoice, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-      connections:
-      - fieldName: enter
-        node: {fileID: 476299733}
-        reroutePoints: []
-      _direction: 1
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 1
-  enter: 0
-  editingLanguage: 0
-  localizedSpeakerNames:
-  - Grandma
-  - 
-  - 
-  localizedPromptTexts:
-  - "Now\u2014how thick should the ice be before you walk on it?\r"
-  - 
-  - 
-  localizedPromptAudios:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  choices:
-  - localizedChoiceTexts:
-    - At least 10 cm
-    - 
-    - 
-    onChoicePicked:
-      m_PersistentCalls:
-        m_Calls: []
-  - localizedChoiceTexts:
-    - Any ice is fine
-    - 
-    - 
-    onChoicePicked:
-      m_PersistentCalls:
-        m_Calls: []
-  onNodeTriggered:
-    m_PersistentCalls:
-      m_Calls: []
-  choicesFieldName: choices
 --- !u!1 &518282603
 GameObject:
   m_ObjectHideFlags: 0
@@ -5312,6 +5031,24 @@ MonoBehaviour:
       _dynamic: 0
   enter: 0
   editingLanguage: 0
+  onEnter:
+    m_PersistentCalls:
+      m_Calls: []
+  onExit:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1323791717}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: Load
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 11400000, guid: c21fa01681e99954f8e5bbcdb42d7869, type: 2}
+          m_ObjectArgumentAssemblyTypeName: PlayerConfig, Assembly-CSharp
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   promptType: 1
   localizedTexts:
   - "Hyv\xE4, tuosta asenteesta min\xE4 pid\xE4n"
@@ -5323,9 +5060,6 @@ MonoBehaviour:
   - {fileID: 0}
   autoAdvanceMode: 1
   displayDuration: 4.848
-  onNodeTriggered:
-    m_PersistentCalls:
-      m_Calls: []
   exit: 0
 --- !u!4 &553371382 stripped
 Transform:
@@ -6047,6 +5781,12 @@ MonoBehaviour:
       _dynamic: 0
   enter: 0
   editingLanguage: 0
+  onEnter:
+    m_PersistentCalls:
+      m_Calls: []
+  onExit:
+    m_PersistentCalls:
+      m_Calls: []
   promptType: 1
   localizedTexts:
   - "Hyv\xE4, tuosta asenteesta min\xE4 pid\xE4n"
@@ -6058,9 +5798,6 @@ MonoBehaviour:
   - {fileID: 0}
   autoAdvanceMode: 2
   displayDuration: 3
-  onNodeTriggered:
-    m_PersistentCalls:
-      m_Calls: []
   exit: 0
 --- !u!1 &682994844 stripped
 GameObject:
@@ -9895,10 +9632,6 @@ MonoBehaviour:
   - {fileID: 276331885}
   - {fileID: 315887489}
   - {fileID: 552062359}
-  - {fileID: 510334122}
-  - {fileID: 476299733}
-  - {fileID: 98545880}
-  - {fileID: 411358403}
   - {fileID: 216109916}
   - {fileID: 1503067197}
 --- !u!1 &1187209445
@@ -12485,6 +12218,12 @@ MonoBehaviour:
       _dynamic: 1
   enter: 0
   editingLanguage: 0
+  onEnter:
+    m_PersistentCalls:
+      m_Calls: []
+  onExit:
+    m_PersistentCalls:
+      m_Calls: []
   localizedSpeakerNames:
   - 
   - 
@@ -12512,9 +12251,6 @@ MonoBehaviour:
     onChoicePicked:
       m_PersistentCalls:
         m_Calls: []
-  onNodeTriggered:
-    m_PersistentCalls:
-      m_Calls: []
   choicesFieldName: choices
 --- !u!1 &1503903540 stripped
 GameObject:
@@ -14092,6 +13828,12 @@ MonoBehaviour:
       _dynamic: 1
   enter: 0
   editingLanguage: 0
+  onEnter:
+    m_PersistentCalls:
+      m_Calls: []
+  onExit:
+    m_PersistentCalls:
+      m_Calls: []
   localizedSpeakerNames:
   - 
   - 
@@ -14121,9 +13863,6 @@ MonoBehaviour:
     onChoicePicked:
       m_PersistentCalls:
         m_Calls: []
-  onNodeTriggered:
-    m_PersistentCalls:
-      m_Calls: []
   choicesFieldName: choices
 --- !u!1 &1674816881
 GameObject:
@@ -16948,6 +16687,12 @@ MonoBehaviour:
       _dynamic: 0
   enter: 0
   editingLanguage: 0
+  onEnter:
+    m_PersistentCalls:
+      m_Calls: []
+  onExit:
+    m_PersistentCalls:
+      m_Calls: []
   promptType: 3
   localizedTexts:
   - "tuolla asenteella et kyll\xE4 p\xE4rj\xE4\xE4. Kokeile uudestaan"
@@ -16959,9 +16704,6 @@ MonoBehaviour:
   - {fileID: 0}
   autoAdvanceMode: 2
   displayDuration: 3
-  onNodeTriggered:
-    m_PersistentCalls:
-      m_Calls: []
   exit: 0
 --- !u!4 &2080343190 stripped
 Transform:
