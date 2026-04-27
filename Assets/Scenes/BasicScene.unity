@@ -311,66 +311,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2774220344278030320, guid: 913626f3987e7ba47bdab92db6893013, type: 3}
   m_PrefabInstance: {fileID: 8441472}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &15634381
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 20893672527160248ae348f29466b8bd, type: 3}
-  m_Name: Before Leaving
-  m_EditorClassIdentifier: Assembly-CSharp::ChatNode
-  graph: {fileID: 1519467288}
-  position: {x: -936, y: 680}
-  ports:
-    keys:
-    - exit
-    - enter
-    values:
-    - _fieldName: exit
-      _node: {fileID: 15634381}
-      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections: []
-      _direction: 1
-      _connectionType: 1
-      _typeConstraint: 0
-      _dynamic: 0
-    - _fieldName: enter
-      _node: {fileID: 15634381}
-      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections: []
-      _direction: 0
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
-  enter: 0
-  editingLanguage: 0
-  onEnter:
-    m_PersistentCalls:
-      m_Calls: []
-  onExit:
-    m_PersistentCalls:
-      m_Calls: []
-  localizedSpeakerNames:
-  - Mummo
-  - 
-  - 
-  localizedTexts:
-  - "Pysy valppaana. Min\xE4 ohjaan sinua joka vaiheessa"
-  - 
-  - 
-  localizedAudios:
-  - {fileID: 8300000, guid: 0dfbe57a57f720348a66a38d98f06db8, type: 3}
-  - {fileID: 0}
-  - {fileID: 0}
-  autoAdvanceMode: 2
-  displayDuration: 5.88
-  exit: 0
 --- !u!1 &38632956
 GameObject:
   m_ObjectHideFlags: 0
@@ -477,67 +417,6 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
---- !u!114 &49504056
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 20893672527160248ae348f29466b8bd, type: 3}
-  m_Name: Items Collected
-  m_EditorClassIdentifier: Assembly-CSharp::ChatNode
-  graph: {fileID: 1519467288}
-  position: {x: -936, y: 184}
-  ports:
-    keys:
-    - exit
-    - enter
-    values:
-    - _fieldName: exit
-      _node: {fileID: 49504056}
-      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections: []
-      _direction: 1
-      _connectionType: 1
-      _typeConstraint: 0
-      _dynamic: 0
-    - _fieldName: enter
-      _node: {fileID: 49504056}
-      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections: []
-      _direction: 0
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
-  enter: 0
-  editingLanguage: 0
-  onEnter:
-    m_PersistentCalls:
-      m_Calls: []
-  onExit:
-    m_PersistentCalls:
-      m_Calls: []
-  localizedSpeakerNames:
-  - Mummo
-  - 
-  - 
-  localizedTexts:
-  - "Loistavaa, olet nyt t\xE4ysin varustautunut. \r\nMuista, ett\xE4 hyvin valmistautuminen
-    voi pelastaa henkesi \r\nNyt olet valmis menem\xE4\xE4n ulos j\xE4\xE4lle.\" "
-  - 
-  - 
-  localizedAudios:
-  - {fileID: 8300000, guid: 09e656ce3f20ed344901752e8e7c11fa, type: 3}
-  - {fileID: 0}
-  - {fileID: 0}
-  autoAdvanceMode: 2
-  displayDuration: 3
-  exit: 0
 --- !u!1 &49839440
 GameObject:
   m_ObjectHideFlags: 0
@@ -3083,71 +2962,6 @@ MonoBehaviour:
   m_ShadowLayerMask: 1
   m_RenderingLayers: 1
   m_ShadowRenderingLayers: 1
---- !u!114 &301635739
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 20893672527160248ae348f29466b8bd, type: 3}
-  m_Name: Beginning
-  m_EditorClassIdentifier: Assembly-CSharp::ChatNode
-  graph: {fileID: 1519467288}
-  position: {x: -952, y: -280}
-  ports:
-    keys:
-    - exit
-    - enter
-    values:
-    - _fieldName: exit
-      _node: {fileID: 301635739}
-      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections:
-      - fieldName: enter
-        node: {fileID: 348920365}
-        reroutePoints: []
-      _direction: 1
-      _connectionType: 1
-      _typeConstraint: 0
-      _dynamic: 0
-    - _fieldName: enter
-      _node: {fileID: 301635739}
-      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections: []
-      _direction: 0
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
-  enter: 0
-  editingLanguage: 0
-  onEnter:
-    m_PersistentCalls:
-      m_Calls: []
-  onExit:
-    m_PersistentCalls:
-      m_Calls: []
-  localizedSpeakerNames:
-  - Mummo
-  - 
-  - 
-  localizedTexts:
-  - "Tervetuloa m\xF6kkiini. Olet menossa ulos j\xE4\xE4lle k\xE4velem\xE4\xE4n. 
-    \r\n\rJ\xE4\xE4lle meneminen voi kuitenkin olla vaarallista ilman oikeanlaista
-    valmistautumista"
-  - 
-  - 
-  localizedAudios:
-  - {fileID: 8300000, guid: b1f67fff5f8740c4f8cff27f426f0f1e, type: 3}
-  - {fileID: 0}
-  - {fileID: 0}
-  autoAdvanceMode: 2
-  displayDuration: 3
-  exit: 0
 --- !u!1 &307784571 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -6689036041284674117, guid: 95c5817899d32434da0dcfc6842826ce, type: 3}
@@ -3316,74 +3130,6 @@ MonoBehaviour:
   - {fileID: 0}
   autoAdvanceMode: 1
   displayDuration: 6.576
-  exit: 0
---- !u!114 &348920365
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 20893672527160248ae348f29466b8bd, type: 3}
-  m_Name: Chat
-  m_EditorClassIdentifier: Assembly-CSharp::ChatNode
-  graph: {fileID: 1519467288}
-  position: {x: -488, y: -280}
-  ports:
-    keys:
-    - exit
-    - enter
-    values:
-    - _fieldName: exit
-      _node: {fileID: 348920365}
-      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections:
-      - fieldName: enter
-        node: {fileID: 391721491}
-        reroutePoints: []
-      _direction: 1
-      _connectionType: 1
-      _typeConstraint: 0
-      _dynamic: 0
-    - _fieldName: enter
-      _node: {fileID: 348920365}
-      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections:
-      - fieldName: exit
-        node: {fileID: 301635739}
-        reroutePoints: []
-      _direction: 0
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
-  enter: 0
-  editingLanguage: 0
-  onEnter:
-    m_PersistentCalls:
-      m_Calls: []
-  onExit:
-    m_PersistentCalls:
-      m_Calls: []
-  localizedSpeakerNames:
-  - Mummo
-  - 
-  - 
-  localizedTexts:
-  - "Ennen l\xE4ht\xF6\xE4si sinun tulee ottaa mukaan oikeat turvavarusteet.Katsele
-    ymp\xE4rillesi. Ota vain v\xE4ltt\xE4m\xE4tt\xF6m\xE4t varusteet jotka auttavat
-    sinua jos j\xE4\xE4 pett\xE4\xE4 altasi"
-  - 
-  - 
-  localizedAudios:
-  - {fileID: 8300000, guid: c29cc694657480f45be1d271940d6f2a, type: 3}
-  - {fileID: 0}
-  - {fileID: 0}
-  autoAdvanceMode: 2
-  displayDuration: 3
   exit: 0
 --- !u!1 &351852639
 GameObject:
@@ -3840,72 +3586,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3035566827504204508, guid: 5cc65fb1f5d199c4283c223b1e1c303b, type: 3}
   m_PrefabInstance: {fileID: 940159888}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &391721491
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 20893672527160248ae348f29466b8bd, type: 3}
-  m_Name: Chat
-  m_EditorClassIdentifier: Assembly-CSharp::ChatNode
-  graph: {fileID: 1519467288}
-  position: {x: -56, y: -264}
-  ports:
-    keys:
-    - exit
-    - enter
-    values:
-    - _fieldName: exit
-      _node: {fileID: 391721491}
-      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections:
-      - fieldName: enter
-        node: {fileID: 1673353550}
-        reroutePoints: []
-      _direction: 1
-      _connectionType: 1
-      _typeConstraint: 0
-      _dynamic: 0
-    - _fieldName: enter
-      _node: {fileID: 391721491}
-      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections:
-      - fieldName: exit
-        node: {fileID: 348920365}
-        reroutePoints: []
-      _direction: 0
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
-  enter: 0
-  editingLanguage: 0
-  onEnter:
-    m_PersistentCalls:
-      m_Calls: []
-  onExit:
-    m_PersistentCalls:
-      m_Calls: []
-  localizedSpeakerNames:
-  - Mummo
-  - 
-  - 
-  localizedTexts:
-  - "Min\xE4 autan sinua. t\xE4ss\xE4 on lista varusteista mit\xE4 tarvitset mukaasi"
-  - 
-  - 
-  localizedAudios:
-  - {fileID: 8300000, guid: a461d2483be260a4eba0b706d97b172c, type: 3}
-  - {fileID: 0}
-  - {fileID: 0}
-  autoAdvanceMode: 2
-  displayDuration: 3
-  exit: 0
 --- !u!1 &408327597
 GameObject:
   m_ObjectHideFlags: 0
@@ -4499,51 +4179,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4356340528695317332, guid: 5cc65fb1f5d199c4283c223b1e1c303b, type: 3}
   m_PrefabInstance: {fileID: 940159888}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &477532337
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 477532339}
-  - component: {fileID: 477532338}
-  m_Layer: 0
-  m_Name: Dialogue - Beginning
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &477532338
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 477532337}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 873b233f6275fc1418e61e9c5ebb9ab9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DialogueSceneGraph
-  graph: {fileID: 1519467288}
---- !u!4 &477532339
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 477532337}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.43518, y: 1.59993, z: -4.91368}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &518282603
 GameObject:
   m_ObjectHideFlags: 0
@@ -5739,66 +5374,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 682455821}
   m_CullTransparentMesh: 1
---- !u!114 &682976377
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a4e82e5d0ffba324b86da09eb2d1f656, type: 3}
-  m_Name: Prompt
-  m_EditorClassIdentifier: Assembly-CSharp::PromptNode
-  graph: {fileID: 1519467288}
-  position: {x: 872, y: -248}
-  ports:
-    keys:
-    - exit
-    - enter
-    values:
-    - _fieldName: exit
-      _node: {fileID: 682976377}
-      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections: []
-      _direction: 1
-      _connectionType: 1
-      _typeConstraint: 0
-      _dynamic: 0
-    - _fieldName: enter
-      _node: {fileID: 682976377}
-      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections:
-      - fieldName: choices 0
-        node: {fileID: 1673353550}
-        reroutePoints: []
-      _direction: 0
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
-  enter: 0
-  editingLanguage: 0
-  onEnter:
-    m_PersistentCalls:
-      m_Calls: []
-  onExit:
-    m_PersistentCalls:
-      m_Calls: []
-  promptType: 1
-  localizedTexts:
-  - "Hyv\xE4, tuosta asenteesta min\xE4 pid\xE4n"
-  - 
-  - 
-  localizedAudios:
-  - {fileID: 8300000, guid: eef3ef2763b4a7b4880f52b0d7ed9d71, type: 3}
-  - {fileID: 0}
-  - {fileID: 0}
-  autoAdvanceMode: 2
-  displayDuration: 3
-  exit: 0
 --- !u!1 &682994844 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6988607460504345157, guid: 5cc65fb1f5d199c4283c223b1e1c303b, type: 3}
@@ -8609,12 +8184,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1008471797}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.098, y: 1.18792, z: -3.235}
-  m_LocalScale: {x: 2.4989, y: 2.2866, z: 2.5908}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 12.339999, z: 0}
+  m_LocalScale: {x: 10.894769, y: 27.894047, z: 9.023097}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1697665505}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &1008471801
 BoxCollider:
@@ -12450,27 +12025,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &1519467288
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 75933c928534b164da45ff0280c6e9b7, type: 3}
-  m_Name: Dialogue - Beginning-graph
-  m_EditorClassIdentifier: Assembly-CSharp::DialogueGraph
-  nodes:
-  - {fileID: 301635739}
-  - {fileID: 348920365}
-  - {fileID: 391721491}
-  - {fileID: 1673353550}
-  - {fileID: 2066727820}
-  - {fileID: 682976377}
-  - {fileID: 15634381}
-  - {fileID: 49504056}
 --- !u!1 &1535771830
 GameObject:
   m_ObjectHideFlags: 0
@@ -13756,114 +13310,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7950548304326530371, guid: 5cc65fb1f5d199c4283c223b1e1c303b, type: 3}
   m_PrefabInstance: {fileID: 940159888}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1673353550
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 66c5221dd1a366647901088605b8a524, type: 3}
-  m_Name: Choice
-  m_EditorClassIdentifier: Assembly-CSharp::ChoiceNode
-  graph: {fileID: 1519467288}
-  position: {x: 424, y: -248}
-  ports:
-    keys:
-    - choices
-    - enter
-    - choices 0
-    - choices 1
-    values:
-    - _fieldName: choices
-      _node: {fileID: 1673353550}
-      _typeQualifiedName: System.Collections.Generic.List`1[[DialogueChoice, Assembly-CSharp,
-        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]], mscorlib, Version=4.0.0.0,
-        Culture=neutral, PublicKeyToken=b77a5c561934e089
-      connections: []
-      _direction: 1
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
-    - _fieldName: enter
-      _node: {fileID: 1673353550}
-      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections:
-      - fieldName: exit
-        node: {fileID: 391721491}
-        reroutePoints: []
-      - fieldName: exit
-        node: {fileID: 2066727820}
-        reroutePoints: []
-      _direction: 0
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
-    - _fieldName: choices 0
-      _node: {fileID: 1673353550}
-      _typeQualifiedName: DialogueChoice, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-      connections:
-      - fieldName: enter
-        node: {fileID: 682976377}
-        reroutePoints: []
-      _direction: 1
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 1
-    - _fieldName: choices 1
-      _node: {fileID: 1673353550}
-      _typeQualifiedName: DialogueChoice, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-      connections:
-      - fieldName: enter
-        node: {fileID: 2066727820}
-        reroutePoints: []
-      _direction: 1
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 1
-  enter: 0
-  editingLanguage: 0
-  onEnter:
-    m_PersistentCalls:
-      m_Calls: []
-  onExit:
-    m_PersistentCalls:
-      m_Calls: []
-  localizedSpeakerNames:
-  - 
-  - 
-  - 
-  localizedPromptTexts:
-  - 
-  - 
-  - 
-  localizedPromptAudios:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  choices:
-  - localizedChoiceTexts:
-    - "Olet oikeassa. J\xE4\xE4n kanssa ei pid\xE4 leikki\xE4, n\xE4yt\xE4 mit\xE4
-      tarvitsen."
-    - 
-    - 
-    onChoicePicked:
-      m_PersistentCalls:
-        m_Calls: []
-  - localizedChoiceTexts:
-    - "\xC4h, turhaa h\xF6ss\xF6tyst\xE4. Olen k\xE4vellyt j\xE4\xE4ll\xE4 sata kertaa
-      ennenkin"
-    - 
-    - 
-    onChoicePicked:
-      m_PersistentCalls:
-        m_Calls: []
-  choicesFieldName: choices
 --- !u!1 &1674816881
 GameObject:
   m_ObjectHideFlags: 0
@@ -13975,6 +13421,203 @@ MonoBehaviour:
   minAngleVariation: 3
   maxAngleVariation: 3
   variationSpeed: 0.5
+--- !u!1 &1697665500
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1697665505}
+  - component: {fileID: 1697665504}
+  - component: {fileID: 1697665503}
+  - component: {fileID: 1697665502}
+  - component: {fileID: 1697665501}
+  m_Layer: 0
+  m_Name: Plane (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1697665501
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1697665500}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38f6bf3d943ac7945842268c9ef1dca6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.Locomotion.Teleportation.TeleportationArea
+  m_InteractionManager: {fileID: 0}
+  m_Colliders: []
+  m_InteractionLayers:
+    m_Bits: 1
+  m_DistanceCalculationMode: 1
+  m_SelectMode: 1
+  m_FocusMode: 1
+  m_CustomReticle: {fileID: 0}
+  m_AllowGazeInteraction: 0
+  m_AllowGazeSelect: 0
+  m_OverrideGazeTimeToSelect: 0
+  m_GazeTimeToSelect: 0.5
+  m_OverrideTimeToAutoDeselectGaze: 0
+  m_TimeToAutoDeselectGaze: 3
+  m_AllowGazeAssistance: 0
+  m_FirstHoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastHoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_HoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_HoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FirstSelectEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastSelectExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_SelectEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_SelectExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FirstFocusEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastFocusExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FocusEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FocusExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Activated:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Deactivated:
+    m_PersistentCalls:
+      m_Calls: []
+  m_StartingHoverFilters: []
+  m_StartingSelectFilters: []
+  m_StartingInteractionStrengthFilters: []
+  m_AutoFindParentInteractableInHierarchy: 0
+  m_ParentInteractableObject: {fileID: 0}
+  m_TeleportationProvider: {fileID: 0}
+  m_MatchOrientation: 0
+  m_MatchDirectionalInput: 0
+  m_TeleportTrigger: 0
+  m_FilterSelectionByHitNormal: 0
+  m_UpNormalToleranceDegrees: 30
+  m_Teleporting:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!64 &1697665502
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1697665500}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!23 &1697665503
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1697665500}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: badfb29b4c50cc241b16c73f270ecff5, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &1697665504
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1697665500}
+  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &1697665505
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1697665500}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1, y: 0.423, z: -3.27}
+  m_LocalScale: {x: 0.081974484, y: 0.081974484, z: 0.081974484}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1008471800}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1699339946
 GameObject:
   m_ObjectHideFlags: 0
@@ -16642,69 +16285,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3675643659491572294, guid: aafb9765462eec04f8f1b4737a73610b, type: 3}
   m_PrefabInstance: {fileID: 529204288}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &2066727820
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a4e82e5d0ffba324b86da09eb2d1f656, type: 3}
-  m_Name: Prompt
-  m_EditorClassIdentifier: Assembly-CSharp::PromptNode
-  graph: {fileID: 1519467288}
-  position: {x: 872, y: 264}
-  ports:
-    keys:
-    - exit
-    - enter
-    values:
-    - _fieldName: exit
-      _node: {fileID: 2066727820}
-      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections:
-      - fieldName: enter
-        node: {fileID: 1673353550}
-        reroutePoints: []
-      _direction: 1
-      _connectionType: 1
-      _typeConstraint: 0
-      _dynamic: 0
-    - _fieldName: enter
-      _node: {fileID: 2066727820}
-      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections:
-      - fieldName: choices 1
-        node: {fileID: 1673353550}
-        reroutePoints: []
-      _direction: 0
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
-  enter: 0
-  editingLanguage: 0
-  onEnter:
-    m_PersistentCalls:
-      m_Calls: []
-  onExit:
-    m_PersistentCalls:
-      m_Calls: []
-  promptType: 3
-  localizedTexts:
-  - "tuolla asenteella et kyll\xE4 p\xE4rj\xE4\xE4. Kokeile uudestaan"
-  - 
-  - 
-  localizedAudios:
-  - {fileID: 8300000, guid: e8bc20b75a398db4eb9df8b536e07a97, type: 3}
-  - {fileID: 0}
-  - {fileID: 0}
-  autoAdvanceMode: 2
-  displayDuration: 3
-  exit: 0
 --- !u!4 &2080343190 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2403160414673674758, guid: 5cc65fb1f5d199c4283c223b1e1c303b, type: 3}
@@ -17866,8 +17446,8 @@ SceneRoots:
   - {fileID: 233520464}
   - {fileID: 224449968}
   - {fileID: 1265488176}
-  - {fileID: 1008471800}
   - {fileID: 1249617921}
+  - {fileID: 1697665505}
   - {fileID: 575866414}
   - {fileID: 1869401188}
   - {fileID: 1187209448}
@@ -17894,4 +17474,3 @@ SceneRoots:
   - {fileID: 626181120}
   - {fileID: 1463320755}
   - {fileID: 2053736505}
-  - {fileID: 477532339}
