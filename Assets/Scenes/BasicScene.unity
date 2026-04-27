@@ -1000,66 +1000,6 @@ MonoBehaviour:
   m_Teleporting:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &116253254
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a4e82e5d0ffba324b86da09eb2d1f656, type: 3}
-  m_Name: Prompt
-  m_EditorClassIdentifier: Assembly-CSharp::PromptNode
-  graph: {fileID: 1185013474}
-  position: {x: 968, y: 536}
-  ports:
-    keys:
-    - exit
-    - enter
-    values:
-    - _fieldName: exit
-      _node: {fileID: 116253254}
-      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections:
-      - fieldName: enter
-        node: {fileID: 1972518351}
-        reroutePoints: []
-      _direction: 1
-      _connectionType: 1
-      _typeConstraint: 0
-      _dynamic: 0
-    - _fieldName: enter
-      _node: {fileID: 116253254}
-      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections:
-      - fieldName: choices 0
-        node: {fileID: 2013079489}
-        reroutePoints: []
-      _direction: 0
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
-  enter: 0
-  editingLanguage: 0
-  promptType: 1
-  localizedTexts:
-  - "That\u2019s better"
-  - 
-  - 
-  localizedAudios:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  autoAdvanceMode: 1
-  displayDuration: 3
-  onNodeTriggered:
-    m_PersistentCalls:
-      m_Calls: []
-  exit: 0
 --- !u!1 &120725052
 GameObject:
   m_ObjectHideFlags: 0
@@ -1379,11 +1319,6 @@ Transform:
   - {fileID: 1353084433}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!224 &133092862 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 9067076784194889784, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
-  m_PrefabInstance: {fileID: 1805421391334022516}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &133554065
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1751,7 +1686,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 147324964}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &191072187
+--- !u!114 &216109916
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1760,32 +1695,35 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a4e82e5d0ffba324b86da09eb2d1f656, type: 3}
-  m_Name: Prompt
-  m_EditorClassIdentifier: Assembly-CSharp::PromptNode
+  m_Script: {fileID: 11500000, guid: 20893672527160248ae348f29466b8bd, type: 3}
+  m_Name: Chat
+  m_EditorClassIdentifier: Assembly-CSharp::ChatNode
   graph: {fileID: 1185013474}
-  position: {x: -184, y: -40}
+  position: {x: -360, y: -1192}
   ports:
     keys:
     - exit
     - enter
     values:
     - _fieldName: exit
-      _node: {fileID: 191072187}
+      _node: {fileID: 216109916}
       _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
         PublicKeyToken=b77a5c561934e089
-      connections: []
+      connections:
+      - fieldName: enter
+        node: {fileID: 1503067197}
+        reroutePoints: []
       _direction: 1
       _connectionType: 1
       _typeConstraint: 0
       _dynamic: 0
     - _fieldName: enter
-      _node: {fileID: 191072187}
+      _node: {fileID: 216109916}
       _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
         PublicKeyToken=b77a5c561934e089
       connections:
-      - fieldName: choices 0
-        node: {fileID: 1906728540}
+      - fieldName: exit
+        node: {fileID: 276331885}
         reroutePoints: []
       _direction: 0
       _connectionType: 0
@@ -1793,17 +1731,20 @@ MonoBehaviour:
       _dynamic: 0
   enter: 0
   editingLanguage: 0
-  promptType: 1
+  localizedSpeakerNames:
+  - Mummo
+  - 
+  - 
   localizedTexts:
-  - "They help you climb back onto the ice if you fall in. You\u2019ll want those"
+  - "Min\xE4 autan sinua. t\xE4ss\xE4 on lista varusteista mit\xE4 tarvitset mukaasi"
   - 
   - 
   localizedAudios:
-  - {fileID: 0}
+  - {fileID: 8300000, guid: a461d2483be260a4eba0b706d97b172c, type: 3}
   - {fileID: 0}
   - {fileID: 0}
   autoAdvanceMode: 1
-  displayDuration: 3
+  displayDuration: 6.984
   onNodeTriggered:
     m_PersistentCalls:
       m_Calls: []
@@ -1841,66 +1782,6 @@ Transform:
   - {fileID: 147324964}
   m_Father: {fileID: 429034738}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &221451713
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a4e82e5d0ffba324b86da09eb2d1f656, type: 3}
-  m_Name: Prompt
-  m_EditorClassIdentifier: Assembly-CSharp::PromptNode
-  graph: {fileID: 1185013474}
-  position: {x: 968, y: 1064}
-  ports:
-    keys:
-    - exit
-    - enter
-    values:
-    - _fieldName: exit
-      _node: {fileID: 221451713}
-      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections:
-      - fieldName: enter
-        node: {fileID: 2013079489}
-        reroutePoints: []
-      _direction: 1
-      _connectionType: 1
-      _typeConstraint: 0
-      _dynamic: 0
-    - _fieldName: enter
-      _node: {fileID: 221451713}
-      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections:
-      - fieldName: choices 1
-        node: {fileID: 2013079489}
-        reroutePoints: []
-      _direction: 0
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
-  enter: 0
-  editingLanguage: 0
-  promptType: 3
-  localizedTexts:
-  - "Oh no you don\u2019t. You\u2019re not going anywhere without them."
-  - 
-  - 
-  localizedAudios:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  autoAdvanceMode: 1
-  displayDuration: 3
-  onNodeTriggered:
-    m_PersistentCalls:
-      m_Calls: []
-  exit: 0
 --- !u!1 &224449966
 GameObject:
   m_ObjectHideFlags: 0
@@ -2457,7 +2338,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 20893672527160248ae348f29466b8bd, type: 3}
-  m_Name: 01
+  m_Name: Beginning
   m_EditorClassIdentifier: Assembly-CSharp::ChatNode
   graph: {fileID: 1185013474}
   position: {x: -1320, y: -1208}
@@ -2490,19 +2371,20 @@ MonoBehaviour:
   enter: 0
   editingLanguage: 0
   localizedSpeakerNames:
-  - Grandma
+  - Mummo
   - 
   - 
   localizedTexts:
-  - "Hold on there! You\u2019re not stepping onto that ice unprepared."
+  - "Tervetuloa m\xF6kkiini. Olet menossa ulos j\xE4\xE4lle k\xE4velem\xE4\xE4n.
+    J\xE4\xE4lle meneminen voi kuitenkin olla vaarallista ilman oikeanlaista valmistautumista."
   - 
   - 
   localizedAudios:
-  - {fileID: 0}
+  - {fileID: 8300000, guid: b1f67fff5f8740c4f8cff27f426f0f1e, type: 3}
   - {fileID: 0}
   - {fileID: 0}
   autoAdvanceMode: 1
-  displayDuration: 3
+  displayDuration: 14.592
   onNodeTriggered:
     m_PersistentCalls:
       m_Calls: []
@@ -2572,8 +2454,8 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 133092862}
   - {fileID: 2099410217}
+  - {fileID: 753305103}
   - {fileID: 1734530465}
   m_Father: {fileID: 38632957}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2922,7 +2804,7 @@ MonoBehaviour:
         PublicKeyToken=b77a5c561934e089
       connections:
       - fieldName: enter
-        node: {fileID: 1371793209}
+        node: {fileID: 216109916}
         reroutePoints: []
       _direction: 1
       _connectionType: 1
@@ -2943,19 +2825,21 @@ MonoBehaviour:
   enter: 0
   editingLanguage: 0
   localizedSpeakerNames:
-  - Grandma
+  - Mummo
   - 
   - 
   localizedTexts:
-  - "First\u2014grab a life vest from the hook.\r"
+  - "Ennen l\xE4ht\xF6\xE4si sinun tulee ottaa mukaan oikeat turvavarusteet. Katsele
+    ymp\xE4rillesi. Ota vain v\xE4ltt\xE4m\xE4tt\xF6m\xE4t varusteet jotka auttavat
+    sinua jos j\xE4\xE4 pett\xE4\xE4 altasi. "
   - 
   - 
   localizedAudios:
-  - {fileID: 0}
+  - {fileID: 8300000, guid: c29cc694657480f45be1d271940d6f2a, type: 3}
   - {fileID: 0}
   - {fileID: 0}
   autoAdvanceMode: 1
-  displayDuration: 3
+  displayDuration: 16.368
   onNodeTriggered:
     m_PersistentCalls:
       m_Calls: []
@@ -3419,7 +3303,7 @@ MonoBehaviour:
   m_Name: Prompt
   m_EditorClassIdentifier: Assembly-CSharp::PromptNode
   graph: {fileID: 1185013474}
-  position: {x: 136, y: -1192}
+  position: {x: 600, y: -776}
   ports:
     keys:
     - exit
@@ -3431,7 +3315,7 @@ MonoBehaviour:
         PublicKeyToken=b77a5c561934e089
       connections:
       - fieldName: enter
-        node: {fileID: 1371793209}
+        node: {fileID: 1503067197}
         reroutePoints: []
       _direction: 1
       _connectionType: 1
@@ -3442,8 +3326,8 @@ MonoBehaviour:
       _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
         PublicKeyToken=b77a5c561934e089
       connections:
-      - fieldName: choices 0
-        node: {fileID: 1371793209}
+      - fieldName: choices 1
+        node: {fileID: 1503067197}
         reroutePoints: []
       _direction: 0
       _connectionType: 0
@@ -3453,15 +3337,15 @@ MonoBehaviour:
   editingLanguage: 0
   promptType: 3
   localizedTexts:
-  - "Yes, you do. Ice can break without warning. Go on\u2014pick it up."
+  - "Tuolla asenteella et kyll\xE4 p\xE4rj\xE4\xE4. Kokeile uudestaan"
   - 
   - 
   localizedAudios:
-  - {fileID: 0}
+  - {fileID: 8300000, guid: e8bc20b75a398db4eb9df8b536e07a97, type: 3}
   - {fileID: 0}
   - {fileID: 0}
   autoAdvanceMode: 1
-  displayDuration: 3
+  displayDuration: 6.576
   onNodeTriggered:
     m_PersistentCalls:
       m_Calls: []
@@ -5399,7 +5283,7 @@ MonoBehaviour:
   m_Name: Prompt
   m_EditorClassIdentifier: Assembly-CSharp::PromptNode
   graph: {fileID: 1185013474}
-  position: {x: 136, y: -680}
+  position: {x: 600, y: -1272}
   ports:
     keys:
     - exit
@@ -5419,8 +5303,8 @@ MonoBehaviour:
       _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
         PublicKeyToken=b77a5c561934e089
       connections:
-      - fieldName: choices 1
-        node: {fileID: 1371793209}
+      - fieldName: choices 0
+        node: {fileID: 1503067197}
         reroutePoints: []
       _direction: 0
       _connectionType: 0
@@ -5430,15 +5314,15 @@ MonoBehaviour:
   editingLanguage: 0
   promptType: 1
   localizedTexts:
-  - Good. Keep it on at all times
+  - "Hyv\xE4, tuosta asenteesta min\xE4 pid\xE4n"
   - 
   - 
   localizedAudios:
-  - {fileID: 0}
+  - {fileID: 8300000, guid: eef3ef2763b4a7b4880f52b0d7ed9d71, type: 3}
   - {fileID: 0}
   - {fileID: 0}
   autoAdvanceMode: 1
-  displayDuration: 3
+  displayDuration: 4.848
   onNodeTriggered:
     m_PersistentCalls:
       m_Calls: []
@@ -6619,6 +6503,164 @@ MonoBehaviour:
   liftAmplitude: 0.007
   liftVariationSpeed: 0.4
   footDragMultiplier: 0.3
+--- !u!1001 &753305102
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 243559249}
+    m_Modifications:
+    - target: {fileID: 2201068031822031876, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2201068031822031876, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2201068031822031876, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2201068031822031876, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2201068031822031876, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2201068031822031876, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2882131783052179692, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2939335771374468604, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3733874830388968061, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
+      propertyPath: m_Name
+      value: ChouceBtn (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3733874830388968061, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4082200404797496049, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
+      propertyPath: m_Colors.m_DisabledColor.a
+      value: 0.49411765
+      objectReference: {fileID: 0}
+    - target: {fileID: 4082200404797496049, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
+      propertyPath: m_Colors.m_HighlightedColor.b
+      value: 0.6933962
+      objectReference: {fileID: 0}
+    - target: {fileID: 4082200404797496049, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
+      propertyPath: m_Colors.m_HighlightedColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4082200404797496049, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
+      propertyPath: m_Colors.m_HighlightedColor.r
+      value: 0.774972
+      objectReference: {fileID: 0}
+    - target: {fileID: 6059700767366872949, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
+      propertyPath: m_text
+      value: 2. Player choice
+      objectReference: {fileID: 0}
+    - target: {fileID: 9067076784194889784, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
+      propertyPath: m_Pivot.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 9067076784194889784, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
+      propertyPath: m_Pivot.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9067076784194889784, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9067076784194889784, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9067076784194889784, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9067076784194889784, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9067076784194889784, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 161.39001
+      objectReference: {fileID: 0}
+    - target: {fileID: 9067076784194889784, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9067076784194889784, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9067076784194889784, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9067076784194889784, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9067076784194889784, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9067076784194889784, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9067076784194889784, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9067076784194889784, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9067076784194889784, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 87.69501
+      objectReference: {fileID: 0}
+    - target: {fileID: 9067076784194889784, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -81.64
+      objectReference: {fileID: 0}
+    - target: {fileID: 9067076784194889784, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9067076784194889784, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9067076784194889784, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
+--- !u!224 &753305103 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 9067076784194889784, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
+  m_PrefabInstance: {fileID: 753305102}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &774025598
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7489,66 +7531,6 @@ RectTransform:
   m_AnchoredPosition: {x: -1.652, y: 1.279}
   m_SizeDelta: {x: 141.2996, y: 98.1317}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &934206086
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 20893672527160248ae348f29466b8bd, type: 3}
-  m_Name: 02
-  m_EditorClassIdentifier: Assembly-CSharp::ChatNode
-  graph: {fileID: 1185013474}
-  position: {x: -1336, y: 24}
-  ports:
-    keys:
-    - exit
-    - enter
-    values:
-    - _fieldName: exit
-      _node: {fileID: 934206086}
-      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections:
-      - fieldName: enter
-        node: {fileID: 1906728540}
-        reroutePoints: []
-      _direction: 1
-      _connectionType: 1
-      _typeConstraint: 0
-      _dynamic: 0
-    - _fieldName: enter
-      _node: {fileID: 934206086}
-      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections: []
-      _direction: 0
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
-  enter: 0
-  editingLanguage: 0
-  localizedSpeakerNames:
-  - Grandma
-  - 
-  - 
-  localizedTexts:
-  - "Next\u2014take those ice awls by the door"
-  - 
-  - 
-  localizedAudios:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  autoAdvanceMode: 1
-  displayDuration: 3
-  onNodeTriggered:
-    m_PersistentCalls:
-      m_Calls: []
-  exit: 0
 --- !u!1 &934570886
 GameObject:
   m_ObjectHideFlags: 0
@@ -9911,21 +9893,14 @@ MonoBehaviour:
   nodes:
   - {fileID: 242061696}
   - {fileID: 276331885}
-  - {fileID: 1371793209}
   - {fileID: 315887489}
   - {fileID: 552062359}
-  - {fileID: 934206086}
-  - {fileID: 1906728540}
-  - {fileID: 1870380893}
-  - {fileID: 191072187}
   - {fileID: 510334122}
-  - {fileID: 2013079489}
-  - {fileID: 1972518351}
-  - {fileID: 221451713}
-  - {fileID: 116253254}
   - {fileID: 476299733}
   - {fileID: 98545880}
   - {fileID: 411358403}
+  - {fileID: 216109916}
+  - {fileID: 1503067197}
 --- !u!1 &1187209445
 GameObject:
   m_ObjectHideFlags: 0
@@ -12144,109 +12119,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1371793209
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 66c5221dd1a366647901088605b8a524, type: 3}
-  m_Name: Choice
-  m_EditorClassIdentifier: Assembly-CSharp::ChoiceNode
-  graph: {fileID: 1185013474}
-  position: {x: -392, y: -1160}
-  ports:
-    keys:
-    - choices
-    - enter
-    - choices 0
-    - choices 1
-    values:
-    - _fieldName: choices
-      _node: {fileID: 1371793209}
-      _typeQualifiedName: System.Collections.Generic.List`1[[DialogueChoice, Assembly-CSharp,
-        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]], mscorlib, Version=4.0.0.0,
-        Culture=neutral, PublicKeyToken=b77a5c561934e089
-      connections: []
-      _direction: 1
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
-    - _fieldName: enter
-      _node: {fileID: 1371793209}
-      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections:
-      - fieldName: exit
-        node: {fileID: 276331885}
-        reroutePoints: []
-      - fieldName: exit
-        node: {fileID: 315887489}
-        reroutePoints: []
-      _direction: 0
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
-    - _fieldName: choices 0
-      _node: {fileID: 1371793209}
-      _typeQualifiedName: DialogueChoice, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-      connections:
-      - fieldName: enter
-        node: {fileID: 315887489}
-        reroutePoints: []
-      _direction: 1
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 1
-    - _fieldName: choices 1
-      _node: {fileID: 1371793209}
-      _typeQualifiedName: DialogueChoice, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-      connections:
-      - fieldName: enter
-        node: {fileID: 552062359}
-        reroutePoints: []
-      _direction: 1
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 1
-  enter: 0
-  editingLanguage: 0
-  localizedSpeakerNames:
-  - 
-  - 
-  - 
-  localizedPromptTexts:
-  - 
-  - 
-  - 
-  localizedPromptAudios:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  choices:
-  - localizedChoiceTexts:
-    - Do I need it?
-    - 
-    - 
-    onChoicePicked:
-      m_PersistentCalls:
-        m_Calls: []
-  - localizedChoiceTexts:
-    - Okay.
-    - 
-    - 
-    onChoicePicked:
-      m_PersistentCalls:
-        m_Calls: []
-  onNodeTriggered:
-    m_PersistentCalls:
-      m_Calls: []
-  choicesFieldName: choices
 --- !u!1 &1423088007 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2110572537441536511, guid: a2888cf8c7a57ef419cb9bb9fba08037, type: 3}
@@ -12541,6 +12413,109 @@ MonoBehaviour:
   neckAmplitude: -0.5
   phaseDelay: 1.5
   variationSpeed: 0.5
+--- !u!114 &1503067197
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66c5221dd1a366647901088605b8a524, type: 3}
+  m_Name: Choice
+  m_EditorClassIdentifier: Assembly-CSharp::ChoiceNode
+  graph: {fileID: 1185013474}
+  position: {x: 120, y: -1144}
+  ports:
+    keys:
+    - choices
+    - enter
+    - choices 0
+    - choices 1
+    values:
+    - _fieldName: choices
+      _node: {fileID: 1503067197}
+      _typeQualifiedName: System.Collections.Generic.List`1[[DialogueChoice, Assembly-CSharp,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]], mscorlib, Version=4.0.0.0,
+        Culture=neutral, PublicKeyToken=b77a5c561934e089
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: enter
+      _node: {fileID: 1503067197}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: exit
+        node: {fileID: 216109916}
+        reroutePoints: []
+      - fieldName: exit
+        node: {fileID: 315887489}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: choices 0
+      _node: {fileID: 1503067197}
+      _typeQualifiedName: DialogueChoice, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: enter
+        node: {fileID: 552062359}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 1
+    - _fieldName: choices 1
+      _node: {fileID: 1503067197}
+      _typeQualifiedName: DialogueChoice, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      connections:
+      - fieldName: enter
+        node: {fileID: 315887489}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 1
+  enter: 0
+  editingLanguage: 0
+  localizedSpeakerNames:
+  - 
+  - 
+  - 
+  localizedPromptTexts:
+  - 
+  - 
+  - 
+  localizedPromptAudios:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  choices:
+  - localizedChoiceTexts:
+    - "Kiitos, parempi pelata varman p\xE4\xE4lle."
+    - 
+    - 
+    onChoicePicked:
+      m_PersistentCalls:
+        m_Calls: []
+  - localizedChoiceTexts:
+    - "\xC4h, p\xE4rj\xE4\xE4n ihan hyvin ilmankin."
+    - 
+    - 
+    onChoicePicked:
+      m_PersistentCalls:
+        m_Calls: []
+  onNodeTriggered:
+    m_PersistentCalls:
+      m_Calls: []
+  choicesFieldName: choices
 --- !u!1 &1503903540 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7877476682386246375, guid: 3b87c7cbcf7e0a540af19be2e4ae133e, type: 3}
@@ -14418,6 +14393,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 243559249}
     m_Modifications:
+    - target: {fileID: 2201068031822031876, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2201068031822031876, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2201068031822031876, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2201068031822031876, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2201068031822031876, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2201068031822031876, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3733874830388968061, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
       propertyPath: m_Name
       value: ChouceBtn (2)
@@ -14456,7 +14455,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9067076784194889784, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9067076784194889784, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
       propertyPath: m_AnchorMin.x
@@ -14464,15 +14463,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9067076784194889784, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9067076784194889784, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 161.39001
       objectReference: {fileID: 0}
     - target: {fileID: 9067076784194889784, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 36
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9067076784194889784, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
       propertyPath: m_LocalPosition.x
@@ -14504,11 +14503,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9067076784194889784, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 87.69501
       objectReference: {fileID: 0}
     - target: {fileID: 9067076784194889784, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -118.96
       objectReference: {fileID: 0}
     - target: {fileID: 9067076784194889784, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -14595,25 +14594,6 @@ Transform:
   - {fileID: 96406760}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1773239847 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3733874830388968061, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
-  m_PrefabInstance: {fileID: 1805421391334022516}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1773239852
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1773239847}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bdf0d2fe542e7374b8e99ae8969857d6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::XRTooltipTrigger
-  prompt: Interact
-  targetButton: 1
 --- !u!1 &1790107201
 GameObject:
   m_ObjectHideFlags: 0
@@ -15452,66 +15432,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca2718412da17ad49b2bd3727ca98485, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SplineMovement
---- !u!114 &1870380893
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a4e82e5d0ffba324b86da09eb2d1f656, type: 3}
-  m_Name: Prompt
-  m_EditorClassIdentifier: Assembly-CSharp::PromptNode
-  graph: {fileID: 1185013474}
-  position: {x: -184, y: 520}
-  ports:
-    keys:
-    - exit
-    - enter
-    values:
-    - _fieldName: exit
-      _node: {fileID: 1870380893}
-      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections:
-      - fieldName: enter
-        node: {fileID: 2013079489}
-        reroutePoints: []
-      _direction: 1
-      _connectionType: 1
-      _typeConstraint: 0
-      _dynamic: 0
-    - _fieldName: enter
-      _node: {fileID: 1870380893}
-      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections:
-      - fieldName: choices 1
-        node: {fileID: 1906728540}
-        reroutePoints: []
-      _direction: 0
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
-  enter: 0
-  editingLanguage: 0
-  promptType: 3
-  localizedTexts:
-  - "Oh no you don\u2019t. You\u2019re not going anywhere without them."
-  - 
-  - 
-  localizedAudios:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  autoAdvanceMode: 1
-  displayDuration: 3
-  onNodeTriggered:
-    m_PersistentCalls:
-      m_Calls: []
-  exit: 0
 --- !u!1001 &1878456575
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15805,106 +15725,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &1906728540
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 66c5221dd1a366647901088605b8a524, type: 3}
-  m_Name: Choice
-  m_EditorClassIdentifier: Assembly-CSharp::ChoiceNode
-  graph: {fileID: 1185013474}
-  position: {x: -792, y: 8}
-  ports:
-    keys:
-    - choices
-    - enter
-    - choices 0
-    - choices 1
-    values:
-    - _fieldName: choices
-      _node: {fileID: 1906728540}
-      _typeQualifiedName: System.Collections.Generic.List`1[[DialogueChoice, Assembly-CSharp,
-        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]], mscorlib, Version=4.0.0.0,
-        Culture=neutral, PublicKeyToken=b77a5c561934e089
-      connections: []
-      _direction: 1
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
-    - _fieldName: enter
-      _node: {fileID: 1906728540}
-      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections:
-      - fieldName: exit
-        node: {fileID: 934206086}
-        reroutePoints: []
-      _direction: 0
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
-    - _fieldName: choices 0
-      _node: {fileID: 1906728540}
-      _typeQualifiedName: DialogueChoice, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-      connections:
-      - fieldName: enter
-        node: {fileID: 191072187}
-        reroutePoints: []
-      _direction: 1
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 1
-    - _fieldName: choices 1
-      _node: {fileID: 1906728540}
-      _typeQualifiedName: DialogueChoice, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-      connections:
-      - fieldName: enter
-        node: {fileID: 1870380893}
-        reroutePoints: []
-      _direction: 1
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 1
-  enter: 0
-  editingLanguage: 0
-  localizedSpeakerNames:
-  - Grandma
-  - 
-  - 
-  localizedPromptTexts:
-  - "Next\u2014take those ice awls by the door"
-  - 
-  - 
-  localizedPromptAudios:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  choices:
-  - localizedChoiceTexts:
-    - What are those?
-    - 
-    - 
-    onChoicePicked:
-      m_PersistentCalls:
-        m_Calls: []
-  - localizedChoiceTexts:
-    - Skip it
-    - 
-    - 
-    onChoicePicked:
-      m_PersistentCalls:
-        m_Calls: []
-  onNodeTriggered:
-    m_PersistentCalls:
-      m_Calls: []
-  choicesFieldName: choices
 --- !u!1 &1930953538
 GameObject:
   m_ObjectHideFlags: 0
@@ -16384,63 +16204,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 173.001, y: -90, z: 90}
---- !u!114 &1972518351
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a4e82e5d0ffba324b86da09eb2d1f656, type: 3}
-  m_Name: Prompt
-  m_EditorClassIdentifier: Assembly-CSharp::PromptNode
-  graph: {fileID: 1185013474}
-  position: {x: 1448, y: 552}
-  ports:
-    keys:
-    - exit
-    - enter
-    values:
-    - _fieldName: exit
-      _node: {fileID: 1972518351}
-      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections: []
-      _direction: 1
-      _connectionType: 1
-      _typeConstraint: 0
-      _dynamic: 0
-    - _fieldName: enter
-      _node: {fileID: 1972518351}
-      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections:
-      - fieldName: exit
-        node: {fileID: 116253254}
-        reroutePoints: []
-      _direction: 0
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
-  enter: 0
-  editingLanguage: 0
-  promptType: 1
-  localizedTexts:
-  - "They help you climb back onto the ice if you fall in. You\u2019ll want those"
-  - 
-  - 
-  localizedAudios:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  autoAdvanceMode: 1
-  displayDuration: 3
-  onNodeTriggered:
-    m_PersistentCalls:
-      m_Calls: []
-  exit: 0
 --- !u!1 &1974762845 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2181511624781230132, guid: 5cc65fb1f5d199c4283c223b1e1c303b, type: 3}
@@ -16627,109 +16390,6 @@ Light:
   m_LightUnit: 1
   m_LuxAtDistance: 1
   m_EnableSpotReflector: 1
---- !u!114 &2013079489
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 66c5221dd1a366647901088605b8a524, type: 3}
-  m_Name: Choice
-  m_EditorClassIdentifier: Assembly-CSharp::ChoiceNode
-  graph: {fileID: 1185013474}
-  position: {x: 456, y: 536}
-  ports:
-    keys:
-    - choices
-    - enter
-    - choices 0
-    - choices 1
-    values:
-    - _fieldName: choices
-      _node: {fileID: 2013079489}
-      _typeQualifiedName: System.Collections.Generic.List`1[[DialogueChoice, Assembly-CSharp,
-        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]], mscorlib, Version=4.0.0.0,
-        Culture=neutral, PublicKeyToken=b77a5c561934e089
-      connections: []
-      _direction: 1
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
-    - _fieldName: enter
-      _node: {fileID: 2013079489}
-      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
-        PublicKeyToken=b77a5c561934e089
-      connections:
-      - fieldName: exit
-        node: {fileID: 1870380893}
-        reroutePoints: []
-      - fieldName: exit
-        node: {fileID: 221451713}
-        reroutePoints: []
-      _direction: 0
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
-    - _fieldName: choices 0
-      _node: {fileID: 2013079489}
-      _typeQualifiedName: DialogueChoice, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-      connections:
-      - fieldName: enter
-        node: {fileID: 116253254}
-        reroutePoints: []
-      _direction: 1
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 1
-    - _fieldName: choices 1
-      _node: {fileID: 2013079489}
-      _typeQualifiedName: DialogueChoice, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null
-      connections:
-      - fieldName: enter
-        node: {fileID: 221451713}
-        reroutePoints: []
-      _direction: 1
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 1
-  enter: 0
-  editingLanguage: 0
-  localizedSpeakerNames:
-  - Grandma
-  - 
-  - 
-  localizedPromptTexts:
-  - "Next\u2014take those ice awls by the door"
-  - 
-  - 
-  localizedPromptAudios:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  choices:
-  - localizedChoiceTexts:
-    - What are those?
-    - 
-    - 
-    onChoicePicked:
-      m_PersistentCalls:
-        m_Calls: []
-  - localizedChoiceTexts:
-    - Skip it
-    - 
-    - 
-    onChoicePicked:
-      m_PersistentCalls:
-        m_Calls: []
-  onNodeTriggered:
-    m_PersistentCalls:
-      m_Calls: []
-  choicesFieldName: choices
 --- !u!1001 &2024505922
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17316,6 +16976,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 243559249}
     m_Modifications:
+    - target: {fileID: 2201068031822031876, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2201068031822031876, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2201068031822031876, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2201068031822031876, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2201068031822031876, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2201068031822031876, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2882131783052179692, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
       propertyPath: m_Enabled
       value: 1
@@ -17350,7 +17034,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6059700767366872949, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
       propertyPath: m_text
-      value: 2. Player choice
+      value: 1. Player choice
       objectReference: {fileID: 0}
     - target: {fileID: 9067076784194889784, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
       propertyPath: m_Pivot.x
@@ -17366,7 +17050,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9067076784194889784, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9067076784194889784, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
       propertyPath: m_AnchorMin.x
@@ -17374,15 +17058,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9067076784194889784, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9067076784194889784, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 161.39001
       objectReference: {fileID: 0}
     - target: {fileID: 9067076784194889784, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 36
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9067076784194889784, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
       propertyPath: m_LocalPosition.x
@@ -17414,11 +17098,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9067076784194889784, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 87.69501
       objectReference: {fileID: 0}
     - target: {fileID: 9067076784194889784, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -44.32
       objectReference: {fileID: 0}
     - target: {fileID: 9067076784194889784, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -17930,122 +17614,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::XRTooltipTrigger
   prompt: Press to pick up
   targetButton: 2
---- !u!1001 &1805421391334022516
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 243559249}
-    m_Modifications:
-    - target: {fileID: 3733874830388968061, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
-      propertyPath: m_Name
-      value: ChouceBtn
-      objectReference: {fileID: 0}
-    - target: {fileID: 3733874830388968061, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4082200404797496049, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
-      propertyPath: m_Colors.m_HighlightedColor.b
-      value: 0.6933962
-      objectReference: {fileID: 0}
-    - target: {fileID: 4082200404797496049, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
-      propertyPath: m_Colors.m_HighlightedColor.g
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4082200404797496049, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
-      propertyPath: m_Colors.m_HighlightedColor.r
-      value: 0.774972
-      objectReference: {fileID: 0}
-    - target: {fileID: 9067076784194889784, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
-      propertyPath: m_Pivot.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 9067076784194889784, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
-      propertyPath: m_Pivot.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9067076784194889784, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9067076784194889784, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9067076784194889784, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
-      propertyPath: m_AnchorMin.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9067076784194889784, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9067076784194889784, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9067076784194889784, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 36
-      objectReference: {fileID: 0}
-    - target: {fileID: 9067076784194889784, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9067076784194889784, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9067076784194889784, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9067076784194889784, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 9067076784194889784, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9067076784194889784, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9067076784194889784, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9067076784194889784, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9067076784194889784, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9067076784194889784, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9067076784194889784, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9067076784194889784, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 3733874830388968061, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1773239852}
-  m_SourcePrefab: {fileID: 100100000, guid: cb3543ac08d9fc54eb2e64ff01cc2054, type: 3}
 --- !u!4 &1843888839881029931
 Transform:
   m_ObjectHideFlags: 0
