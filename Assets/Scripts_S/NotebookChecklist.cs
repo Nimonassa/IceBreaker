@@ -8,9 +8,11 @@ public class NotebookChecklist : MonoBehaviour
 {
     [Header("UI References")]
     [SerializeField] private TMP_Text listText;
-    [SerializeField] private CanvasGroup notebookCanvasGroup; // 1. Added CanvasGroup reference
+    [SerializeField] private CanvasGroup notebookCanvasGroup;
 
     [Header("Settings")]
+    [Tooltip("Should the notebook be visible when the game starts?")]
+    [SerializeField] private bool startVisible = true; // Added toggle for initial state
     [SerializeField] private GameObject[] items;
 
     [Header("Events")]
@@ -33,6 +35,16 @@ public class NotebookChecklist : MonoBehaviour
     private void Start()
     {
         RefreshList();
+
+        // Apply the initial visibility setting
+        if (startVisible)
+        {
+            ShowNotebook();
+        }
+        else
+        {
+            HideNotebook();
+        }
     }
 
     private void OnEnable()
@@ -53,7 +65,7 @@ public class NotebookChecklist : MonoBehaviour
                 itemGrabs[i].selectEntered.RemoveListener(OnItemSelected);
     }
 
-    // --- NEW CANVAS GROUP METHODS ---
+    // --- CANVAS GROUP METHODS ---
 
     public void ToggleNotebook()
     {
