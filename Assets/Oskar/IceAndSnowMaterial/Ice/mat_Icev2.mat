@@ -11,7 +11,8 @@ Material:
   m_Shader: {fileID: -6465566751694194690, guid: d5ad2abf9b51c9542980ad8dede91be4, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
+  m_ValidKeywords:
+  - _CUBICSPACE_WORLD
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -117,8 +118,10 @@ Material:
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
     - _BumpScale: 1
+    - _CUBICSPACE: 0
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
+    - _CubicTiling: 1
     - _Cull: 2
     - _Cutoff: 0.5
     - _DetailAlbedoMapScale: 1
@@ -152,6 +155,7 @@ Material:
     - _Surface: 0
     - _Transparency_MixStrength: 0.67
     - _Transparency_UseTextureFromColor: 0
+    - _UseCubicMapping: 0
     - _WorkflowMode: 1
     - _XRMotionVectorsPass: 1
     - _ZWrite: 1
