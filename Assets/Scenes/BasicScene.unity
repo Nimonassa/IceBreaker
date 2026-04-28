@@ -13682,7 +13682,7 @@ MonoBehaviour:
   settingsPanel: {fileID: 2034767127}
   volumeButton: {fileID: 1045256854}
   volumeOnSprite: {fileID: 21300000, guid: 71f4c3c157ebf1a4c8df5c579d5274ce, type: 3}
-  volumeOffSprite: {fileID: 21300000, guid: 9e3edb43abff58b4e84380493b884c26, type: 3}
+  volumeOffSprite: {fileID: 21300000, guid: 48d5bdcf463f53b4a8c50f971ac76d58, type: 3}
 --- !u!4 &1534267988
 Transform:
   m_ObjectHideFlags: 0
