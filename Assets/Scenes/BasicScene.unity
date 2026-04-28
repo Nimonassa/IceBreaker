@@ -10170,7 +10170,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 48df411a77163ce44b67fbe675c22f78, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -5.225
+      value: -5.215
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 48df411a77163ce44b67fbe675c22f78, type: 3}
       propertyPath: m_LocalRotation.w
@@ -11862,6 +11862,79 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2774220344278030320, guid: 913626f3987e7ba47bdab92db6893013, type: 3}
   m_PrefabInstance: {fileID: 1285771806}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1292974523
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4144177526941437996, guid: f7504965b82f2334ea7d281a6a611e17, type: 3}
+      propertyPath: m_Name
+      value: Snowstorm
+      objectReference: {fileID: 0}
+    - target: {fileID: 4144177526941437996, guid: f7504965b82f2334ea7d281a6a611e17, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5522734478262569271, guid: f7504965b82f2334ea7d281a6a611e17, type: 3}
+      propertyPath: InitialModule.startSize.scalar
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8641123807213037702, guid: f7504965b82f2334ea7d281a6a611e17, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8641123807213037702, guid: f7504965b82f2334ea7d281a6a611e17, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8641123807213037702, guid: f7504965b82f2334ea7d281a6a611e17, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8641123807213037702, guid: f7504965b82f2334ea7d281a6a611e17, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 18.84382
+      objectReference: {fileID: 0}
+    - target: {fileID: 8641123807213037702, guid: f7504965b82f2334ea7d281a6a611e17, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8641123807213037702, guid: f7504965b82f2334ea7d281a6a611e17, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8641123807213037702, guid: f7504965b82f2334ea7d281a6a611e17, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8641123807213037702, guid: f7504965b82f2334ea7d281a6a611e17, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8641123807213037702, guid: f7504965b82f2334ea7d281a6a611e17, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8641123807213037702, guid: f7504965b82f2334ea7d281a6a611e17, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8641123807213037702, guid: f7504965b82f2334ea7d281a6a611e17, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8641123807213037702, guid: f7504965b82f2334ea7d281a6a611e17, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: f7504965b82f2334ea7d281a6a611e17, type: 3}
 --- !u!1 &1297047617
 GameObject:
   m_ObjectHideFlags: 0
@@ -18619,7 +18692,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 80956492441269242, guid: e587c2efe37eb53428006e6600c9553e, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.5
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 80956492441269242, guid: e587c2efe37eb53428006e6600c9553e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -18672,6 +18745,10 @@ PrefabInstance:
     - target: {fileID: 6911155064025794030, guid: e587c2efe37eb53428006e6600c9553e, type: 3}
       propertyPath: m_Name
       value: Snow light ExrernalForces
+      objectReference: {fileID: 0}
+    - target: {fileID: 6911155064025794030, guid: e587c2efe37eb53428006e6600c9553e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -20109,6 +20186,7 @@ SceneRoots:
   - {fileID: 1463320755}
   - {fileID: 2053736505}
   - {fileID: 1373582709}
+  - {fileID: 1292974523}
   - {fileID: 2127263187}
   - {fileID: 1519630367}
   - {fileID: 1534267988}
