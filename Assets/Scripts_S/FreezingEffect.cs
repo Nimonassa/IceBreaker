@@ -4,6 +4,7 @@ using UnityEngine.UIElements.Experimental;
 public class FreezingEffect : MonoBehaviour
 {
     [Header("References")]
+    public GameObject freezeUI;
     public Material vignetteMaterial;
     public FadeScreen fadeScreen;
 
@@ -29,6 +30,7 @@ public class FreezingEffect : MonoBehaviour
         Color color = new Color(0, 0, 0, 0.0f);
         vignetteMaterial.SetFloat("_Radius", 1f);
         vignetteMaterial.SetColor("_BgColor", color);
+        freezeUI.SetActive(true);
     }
 
     private void OnDisable()

@@ -14723,7 +14723,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4026487595331010697, guid: a2888cf8c7a57ef419cb9bb9fba08037, type: 3}
       propertyPath: m_CastDistance
-      value: 4
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4170065440890070814, guid: a2888cf8c7a57ef419cb9bb9fba08037, type: 3}
       propertyPath: m_Enabled
@@ -14899,7 +14899,7 @@ PrefabInstance:
       objectReference: {fileID: 235185009}
     - target: {fileID: 6264635293726137878, guid: a2888cf8c7a57ef419cb9bb9fba08037, type: 3}
       propertyPath: m_CastDistance
-      value: 4
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6651812279235813165, guid: a2888cf8c7a57ef419cb9bb9fba08037, type: 3}
       propertyPath: m_fontSize
