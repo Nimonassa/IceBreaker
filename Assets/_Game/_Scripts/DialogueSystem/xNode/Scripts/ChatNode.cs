@@ -15,9 +15,6 @@ public class ChatNode : BaseNode
     [xNodeEnum] public AutoAdvanceMode autoAdvanceMode = AutoAdvanceMode.Timer;
     public float displayDuration = 3f;
 
-    [Header("Game Logic")]
-    [xNodeUnityEvent] public UnityEvent onNodeTriggered;
-
     [Output(ShowBackingValue.Never, ConnectionType.Override)]
     public int exit;
 

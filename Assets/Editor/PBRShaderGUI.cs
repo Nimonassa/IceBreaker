@@ -16,6 +16,10 @@ public class PBRShaderGUI : ShaderGUI
     private bool foldoutTransparency = true;
     private bool foldoutSettings = true;
 
+    // --- UPDATED: Dropdown options and matching keywords ---
+    private readonly string[] cubicSpaceOptions = { "World", "Object" };
+    private readonly string[] cubicSpaceKeywords = { "_CUBICSPACE_WORLD", "_CUBICSPACE_OBJECT" };
+
     private readonly string[] tabs = {
         "Color / Albedo", "Ambient Occlusion", "Normal", "Height",
         "Reflectance", "Transparency", "Settings"
@@ -30,7 +34,9 @@ public class PBRShaderGUI : ShaderGUI
     MaterialProperty specularTex, specularStrength;
     MaterialProperty transUseColorTex, transTex, transMix;
     MaterialProperty fresnelStrength, fresnelColorInf, fresnelIOR;
+    MaterialProperty useCubicMapping, cubicTiling; 
     MaterialProperty tiling, offset;
+    MaterialProperty cubicSpace;
 
     public override void OnGUI(MaterialEditor materialEditor, MaterialProperty[] properties)
     {
@@ -103,6 +109,9 @@ public class PBRShaderGUI : ShaderGUI
         fresnelStrength = FindProperty("_Fresnel_Strength", props, false);
         fresnelColorInf = FindProperty("_Fresnel_ColorInfluenceAmount", props, false);
         fresnelIOR = FindProperty("_Fresnel_IOR", props, false);
+        useCubicMapping = FindProperty("_UseCubicMapping", props, false); // <-- ADDED
+        cubicTiling = FindProperty("_CubicTiling", props, false);
+        cubicSpace = FindProperty("_CUBICSPACE", props, false);
         tiling = FindProperty("_Tiling_Amount", props, false);
         offset = FindProperty("_Tiling_Offset", props, false);
 
@@ -205,15 +214,32 @@ public class PBRShaderGUI : ShaderGUI
                 break;
 
             case 6: // Settings
-                foldoutSettings = DrawHeaderFoldout("Tiling & Rendering", foldoutSettings);
+                foldoutSettings = DrawHeaderFoldout("Tiling & Rendering", foldoutSettings);
                 if (foldoutSettings)
                 {
                     EditorGUI.indentLevel++;
-                    DrawProp(editor, tiling, "Tiling");
+
+                    DrawProp(editor, useCubicMapping, "Use Cubic Mapping");
+
+                    // Swap between Cubic and UV tiling based on the toggle state
+                    if (useCubicMapping != null && useCubicMapping.floatValue > 0.5f)
+                    {
+                        // --- UPDATED: Pass the keywords array into the method ---
+                        DrawDropdown(editor, cubicSpace, "Cubic Space", cubicSpaceOptions, cubicSpaceKeywords);
+                        DrawProp(editor, cubicTiling, "Cubic Tiling");
+                    }
+
+                    else
+                    {
+                        DrawProp(editor, tiling, "UV Tiling");
+                    }
+
                     DrawProp(editor, offset, "Offset");
+
                     EditorGUI.indentLevel--;
                 }
                 break;
+
         }
     }
 
@@ -231,4 +257,40 @@ public class PBRShaderGUI : ShaderGUI
             editor.ShaderProperty(prop, new GUIContent(label));
         }
     }
+
+    private void DrawDropdown(MaterialEditor editor, MaterialProperty prop, string label, string[] options, string[] keywords)
+    {
+        // Safety check to ensure arrays match and property exists
+        if (prop == null || options.Length != keywords.Length) return;
+
+        EditorGUI.BeginChangeCheck();
+
+        // Draw the popup
+        int selectedIndex = EditorGUILayout.Popup(label, (int)prop.floatValue, options);
+
+        if (EditorGUI.EndChangeCheck())
+        {
+            // Register undo state in Editor
+            editor.RegisterPropertyChangeUndo(label);
+            prop.floatValue = selectedIndex;
+
+            // Loop through targets and dynamically enable/disable the correct keywords
+            foreach (Material mat in editor.targets)
+            {
+                for (int i = 0; i < keywords.Length; i++)
+                {
+                    if (i == selectedIndex)
+                    {
+                        mat.EnableKeyword(keywords[i]);
+                    }
+                    else
+                    {
+                        mat.DisableKeyword(keywords[i]);
+                    }
+                }
+            }
+        }
+    }
+
+
 }

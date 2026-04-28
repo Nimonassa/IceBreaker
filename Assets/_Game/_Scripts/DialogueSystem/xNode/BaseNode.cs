@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 using XNode;
 
 public abstract class BaseNode : Node
@@ -8,6 +9,10 @@ public abstract class BaseNode : Node
 
     // This is visible in the Unity Inspector, but hidden in our xNode custom editors
     public GameLanguage editingLanguage;
+
+    [Header("Game Logic")]
+    [xNodeUnityEvent] public UnityEvent onEnter;
+    [xNodeUnityEvent] public UnityEvent onExit;
 
     public override object GetValue(NodePort port)
     {

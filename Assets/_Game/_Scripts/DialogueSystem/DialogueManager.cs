@@ -11,7 +11,6 @@ public enum AdvanceInputType
     InputAction
 }
 
-
 public class DialogueManager : MonoBehaviour
 {
     public static DialogueManager Instance { get; private set; } = null; 
@@ -34,10 +33,12 @@ public class DialogueManager : MonoBehaviour
     private System.Action onCurrentDialogueComplete = null;
     private int lastDialogueEndFrame = -1;
     public bool IsDialogueActive => currentNode != null || Time.frameCount == lastDialogueEndFrame;
+    
     private void Awake()
     {
         Instance = this;
     }
+    
     private void OnEnable()
     {
         if (advanceAction != null)
@@ -105,6 +106,8 @@ public class DialogueManager : MonoBehaviour
             return;
         }
 
+        currentNode.onEnter?.Invoke();
+
         if (node is ChatNode chat)
             HandleChat(chat);
         else if (node is ChoiceNode choice)
@@ -115,8 +118,6 @@ public class DialogueManager : MonoBehaviour
 
     private void HandleChat(ChatNode node)
     {
-        node.onNodeTriggered?.Invoke();
-
         if (IsNodeEmpty(node))
         {
             Debug.Log($"Skipping empty ChatNode: {node.name}");
@@ -160,16 +161,13 @@ public class DialogueManager : MonoBehaviour
         {
             autoAdvanceCoroutine = StartCoroutine(AutoAdvance(delay));
         }
-    
     }
 
     private void HandlePrompt(PromptNode node)
     {
-        node.onNodeTriggered?.Invoke();
-
         if (IsNodeEmpty(node))
         {
-            Debug.Log($"Skipping empty ChatNode: {node.name}");
+            Debug.Log($"Skipping empty PromptNode: {node.name}");
             AdvanceFromChat();
             return;
         }
@@ -187,10 +185,8 @@ public class DialogueManager : MonoBehaviour
             dialogueAudio.StopVoice();
         }
 
-
         if (autoAdvanceCoroutine != null) 
             StopCoroutine(autoAdvanceCoroutine);
-
 
         float delay = 0;
         bool shouldStartTimer = false;
@@ -207,12 +203,10 @@ public class DialogueManager : MonoBehaviour
                 break;
         }
     
-
         if (shouldStartTimer)
         {
             autoAdvanceCoroutine = StartCoroutine(AutoAdvance(delay));
         }
-    
     }
 
     private IEnumerator AutoAdvance(float delay)
@@ -231,13 +225,21 @@ public class DialogueManager : MonoBehaviour
 
         OnDialogueAdvanced?.Invoke();
 
+        BaseNode nextNode = null;
+
         if (currentNode is ChatNode chat && chat.GetOutputPort("exit").IsConnected)
         {
-            EnterNode(chat.GetOutputPort("exit").Connection.node as BaseNode);
+            nextNode = chat.GetOutputPort("exit").Connection.node as BaseNode;
         }
         else if (currentNode is PromptNode prompt && prompt.GetOutputPort("exit").IsConnected)
         {
-            EnterNode(prompt.GetOutputPort("exit").Connection.node as BaseNode);
+            nextNode = prompt.GetOutputPort("exit").Connection.node as BaseNode;
+        }
+
+        if (nextNode != null)
+        {
+            currentNode?.onExit?.Invoke();
+            EnterNode(nextNode);
         }
         else
         {
@@ -253,7 +255,6 @@ public class DialogueManager : MonoBehaviour
             autoAdvanceCoroutine = null;
         }
 
-        node.onNodeTriggered?.Invoke();
         dialogueUI.ShowChat(node.GetSpeakerName(currentLanguage), node.GetPromptText(currentLanguage));
         AudioClip clip = node.GetAudio(currentLanguage);
         if (clip != null)
@@ -265,15 +266,25 @@ public class DialogueManager : MonoBehaviour
             dialogueAudio.StopVoice();
         }
 
-
         dialogueUI.ShowChoices(node.choices, currentLanguage, (index) =>
         {
             OnDialogueAdvanced?.Invoke();
 
             node.choices[index].onChoicePicked?.Invoke();
-            EnterNode(node.GetNextNode(index));
+
+            BaseNode nextNode = node.GetNextNode(index);
+            if (nextNode != null)
+            {
+                node.onExit?.Invoke();
+                EnterNode(nextNode);
+            }
+            else
+            {
+                EndDialogue();
+            }
         });
     }
+
 
     public void EndDialogue()
     {
@@ -286,9 +297,10 @@ public class DialogueManager : MonoBehaviour
         dialogueUI.SetVisible(false);
         dialogueUI.ClearChoices();
         dialogueAudio.StopVoice();
+
+        currentNode?.onExit?.Invoke();
         currentNode = null;
 
-        // MODIFIED: Record the frame we ended on before firing the event
         lastDialogueEndFrame = Time.frameCount;
         OnDialogueEnded?.Invoke();
         onCurrentDialogueComplete?.Invoke();
@@ -308,5 +320,4 @@ public class DialogueManager : MonoBehaviour
         // It's empty if there is no text AND no audio
         return string.IsNullOrWhiteSpace(text) && audio == null;
     }
-
 }

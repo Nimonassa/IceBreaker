@@ -12,6 +12,8 @@ public class HapticOnGrab : MonoBehaviour
     void Awake()
     {
         grab = GetComponent<XRGrabInteractable>();
+        if (grab == null)
+            grab = this.gameObject.AddComponent<XRGrabInteractable>();
     }
 
     void OnEnable()

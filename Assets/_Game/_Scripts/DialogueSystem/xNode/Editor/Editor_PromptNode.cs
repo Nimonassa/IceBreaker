@@ -15,7 +15,8 @@ public class PromptNodeEditor : NodeEditor
     private SerializedProperty editingLangProp;
     private SerializedProperty autoAdvanceModeProp;
     private SerializedProperty displayDurationProp;
-    private SerializedProperty onNodeTriggeredProp;
+    private SerializedProperty onEnterProp;
+    private SerializedProperty onExitProp;
 
     public override void OnCreate()
     {
@@ -34,12 +35,12 @@ public class PromptNodeEditor : NodeEditor
         editingLangProp = serializedObject.FindProperty("editingLanguage");
         autoAdvanceModeProp = serializedObject.FindProperty("autoAdvanceMode");
         displayDurationProp = serializedObject.FindProperty("displayDuration");
-        onNodeTriggeredProp = serializedObject.FindProperty("onNodeTriggered");
+        onEnterProp = serializedObject.FindProperty("onEnter");
+        onExitProp = serializedObject.FindProperty("onExit");
     }
 
     public override int GetWidth() { return 350; }
 
-    // This handles the background tint based on the prompt type
     public override Color GetTint()
     {
         PromptNode node = target as PromptNode;
@@ -58,7 +59,8 @@ public class PromptNodeEditor : NodeEditor
     {
         if (target == null) return;
 
-        if (cachedSerializedObject != serializedObject || editingLangProp == null)
+        // FIXED: Added null safety for caching
+        if (cachedSerializedObject != serializedObject || editingLangProp == null || onEnterProp == null)
         {
             CacheProperties();
         }
@@ -73,7 +75,7 @@ public class PromptNodeEditor : NodeEditor
         NodeEditorGUILayout.PortField(node.GetPort("exit"));
 
         EditorGUILayout.Space(5);
-        NodeEditorGUILayout.PropertyField(promptTypeProp);
+        if (promptTypeProp != null) NodeEditorGUILayout.PropertyField(promptTypeProp);
         EditorGUILayout.Space(5);
 
         if (textsProp != null && textsProp.arraySize != langCount) { textsProp.arraySize = langCount; forceSave = true; }
@@ -81,13 +83,12 @@ public class PromptNodeEditor : NodeEditor
 
         DialogueGraphEditor graphEditor = NodeEditorWindow.current.graphEditor as DialogueGraphEditor;
         bool showRef = graphEditor != null && graphEditor.showReferenceView;
-        int currentIdx = editingLangProp.enumValueIndex;
+        int currentIdx = editingLangProp != null ? editingLangProp.enumValueIndex : 0;
 
-        // --- REFERENCE VIEW ---
         if (showRef && graphEditor != null)
         {
             int refIdx = (int)graphEditor.referenceLanguage;
-            if (refIdx >= 0 && refIdx < textsProp.arraySize)
+            if (refIdx >= 0 && textsProp != null && refIdx < textsProp.arraySize)
             {
                 string refLangName = ((GameLanguage)refIdx).ToString();
                 EditorGUILayout.BeginVertical("HelpBox");
@@ -103,8 +104,7 @@ public class PromptNodeEditor : NodeEditor
             }
         }
 
-        // --- ACTIVE EDITING VIEW ---
-        if (currentIdx >= 0 && currentIdx < textsProp.arraySize)
+        if (currentIdx >= 0 && textsProp != null && currentIdx < textsProp.arraySize)
         {
             string langName = ((GameLanguage)currentIdx).ToString();
 
@@ -120,15 +120,14 @@ public class PromptNodeEditor : NodeEditor
             EditorGUILayout.EndVertical();
         }
 
-        // --- TIMING & PACING ---
         EditorGUILayout.Space(5);
         EditorGUILayout.LabelField("Timing & Pacing", EditorStyles.boldLabel);
-        NodeEditorGUILayout.PropertyField(autoAdvanceModeProp, new GUIContent("Advance Mode"));
+        if (autoAdvanceModeProp != null) NodeEditorGUILayout.PropertyField(autoAdvanceModeProp, new GUIContent("Advance Mode"));
 
         if (node.autoAdvanceMode == AutoAdvanceMode.Timer)
         {
             EditorGUILayout.BeginHorizontal();
-            NodeEditorGUILayout.PropertyField(displayDurationProp, new GUIContent("Wait Time (s)"));
+            if (displayDurationProp != null) NodeEditorGUILayout.PropertyField(displayDurationProp, new GUIContent("Wait Time (s)"));
 
             AudioClip currentClip = node.GetAudio((GameLanguage)currentIdx);
             if (currentClip != null)
@@ -142,7 +141,10 @@ public class PromptNodeEditor : NodeEditor
         }
 
         EditorGUILayout.Space(5);
-        NodeEditorGUILayout.PropertyField(onNodeTriggeredProp);
+        
+        // FIXED: Safe drawing logic
+        if (onEnterProp != null) NodeEditorGUILayout.PropertyField(onEnterProp);
+        if (onExitProp != null) NodeEditorGUILayout.PropertyField(onExitProp);
 
         if (EditorGUI.EndChangeCheck() || forceSave)
         {

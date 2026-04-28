@@ -16,9 +16,6 @@ public class ChoiceNode : BaseNode
     [Output(dynamicPortList = true, backingValue = ShowBackingValue.Never)] 
     public List<DialogueChoice> choices = new List<DialogueChoice>();
 
-    [Header("Game Logic")]
-    [xNodeUnityEvent] public UnityEvent onNodeTriggered;
-
     [HideInInspector] public string choicesFieldName = "choices"; 
 
     // --- NPC Prompt Helpers ---

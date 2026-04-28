@@ -37,7 +37,8 @@ public class DialogueTrigger : MonoBehaviour
     [HideInInspector] public bool autoAddedCollider = false;
 
     private bool isDialogueActive = false;
-    private bool isPlayerInRange = false;
+    private int collidersInRange = 0;
+    private bool isPlayerInRange => collidersInRange > 0;
 
     private void Reset()
     {
@@ -132,11 +133,13 @@ public class DialogueTrigger : MonoBehaviour
 
     // --- PHYSICS / COLLIDER HANDLING ---
 
+    
+
     private void OnTriggerEnter(Collider other)
     {
         if (EvaluateFilter(other.gameObject))
         {
-            isPlayerInRange = true;
+            collidersInRange++;
             if (!isDialogueActive && triggerMode == TriggerMode.OnEnter && inputType == InputType.None) 
                 TriggerDialogue();
         }
@@ -146,11 +149,14 @@ public class DialogueTrigger : MonoBehaviour
     {
         if (EvaluateFilter(other.gameObject))
         {
-            isPlayerInRange = false;
-            if (!isDialogueActive && triggerMode == TriggerMode.OnExit && inputType == InputType.None) 
+            collidersInRange--;
+            if (collidersInRange < 0) collidersInRange = 0; // Safety catch
+
+            if (!isDialogueActive && triggerMode == TriggerMode.OnExit && inputType == InputType.None)
                 TriggerDialogue();
         }
     }
+
 
     private bool EvaluateFilter(GameObject obj)
     {
