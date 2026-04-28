@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class SpeechBubbleAnimation : MonoBehaviour
 {
+    public enum ScaleAnchor { Left, Center, Right }
+
     [Header("Line Transforms")]
     public Transform line1;
     public Transform line2;
@@ -12,8 +14,19 @@ public class SpeechBubbleAnimation : MonoBehaviour
     public Transform glowBackground;
 
     [Header("Line Animation Settings")]
-    [Tooltip("How far forward the lines move.")]
-    public float moveDistance = 0.5f; 
+    [Tooltip("Where the scaling should anchor from horizontally.")]
+    public ScaleAnchor horizontalAnchor = ScaleAnchor.Center;
+    
+    [Tooltip("Minimum position offset (the line's resting state).")]
+    public Vector3 minPositionOffset = Vector3.zero;
+    [Tooltip("Maximum position offset (the peak of the animation).")]
+    public Vector3 maxPositionOffset = new Vector3(0, 0, 0.5f);
+    
+    [Tooltip("Minimum scale offset (the line's resting state).")]
+    public Vector3 minScaleOffset = Vector3.zero;
+    [Tooltip("Maximum scale offset (the peak of the animation).")]
+    public Vector3 maxScaleOffset = Vector3.zero;
+    
     [Tooltip("How fast the looping animation plays.")]
     public float speed = 3f;          
     [Tooltip("The time delay before the next line starts moving.")]
@@ -31,49 +44,65 @@ public class SpeechBubbleAnimation : MonoBehaviour
     private Vector3 line1StartPos;
     private Vector3 line2StartPos;
     private Vector3 line3StartPos;
+    
+    private Vector3 line1StartScale;
+    private Vector3 line2StartScale;
+    private Vector3 line3StartScale;
+    
     private Vector3 glowStartScale;
 
     void Start()
     {
-        if (line1 != null) line1StartPos = line1.localPosition;
-        if (line2 != null) line2StartPos = line2.localPosition;
-        if (line3 != null) line3StartPos = line3.localPosition;
+        if (line1 != null) { line1StartPos = line1.localPosition; line1StartScale = line1.localScale; }
+        if (line2 != null) { line2StartPos = line2.localPosition; line2StartScale = line2.localScale; }
+        if (line3 != null) { line3StartPos = line3.localPosition; line3StartScale = line3.localScale; }
         
-        // Save the initial scale of the glow so we pulse relative to its original size
         if (glowBackground != null) glowStartScale = glowBackground.localScale;
     }
 
     void Update()
     {
-        // Animate the lines
-        AnimateLine(line1, line1StartPos, 0f);
-        AnimateLine(line2, line2StartPos, delayBetweenLines);
-        AnimateLine(line3, line3StartPos, delayBetweenLines * 2f);
+        AnimateLine(line1, line1StartPos, line1StartScale, 0f);
+        AnimateLine(line2, line2StartPos, line2StartScale, delayBetweenLines);
+        AnimateLine(line3, line3StartPos, line3StartScale, delayBetweenLines * 2f);
 
-        // Animate the background glow
         AnimateGlow();
     }
 
-    private void AnimateLine(Transform line, Vector3 startPos, float offset)
+    private void AnimateLine(Transform line, Vector3 startPos, Vector3 startScale, float offset)
     {
         if (line == null) return;
 
         float timeValue = (Time.time * speed) - offset;
-        float wave = (Mathf.Sin(timeValue) + 1f) / 2f;
-        line.localPosition = startPos + (Vector3.forward * wave * moveDistance);
+        float wave = (Mathf.Sin(timeValue) + 1f) / 2f; 
+
+        // Smoothly blend between Min and Max scale offsets
+        Vector3 currentScaleOffset = Vector3.Lerp(minScaleOffset, maxScaleOffset, wave);
+        line.localScale = startScale + currentScaleOffset;
+
+        // Smoothly blend between Min and Max position offsets
+        Vector3 currentPosOffset = Vector3.Lerp(minPositionOffset, maxPositionOffset, wave);
+        Vector3 currentPos = startPos + currentPosOffset;
+
+        // Adjust the X position based on the chosen anchor
+        if (horizontalAnchor == ScaleAnchor.Left)
+        {
+            currentPos.x += currentScaleOffset.x / 2f;
+        }
+        else if (horizontalAnchor == ScaleAnchor.Right)
+        {
+            currentPos.x -= currentScaleOffset.x / 2f;
+        }
+
+        line.localPosition = currentPos;
     }
 
     private void AnimateGlow()
     {
         if (glowBackground == null) return;
 
-        // Generate a continuous wave between 0 and 1
         float wave = (Mathf.Sin(Time.time * pulseSpeed) + 1f) / 2f;
-
-        // Mathf.Lerp smoothly blends between minScale and maxScale based on the wave value
         float scaleMultiplier = Mathf.Lerp(minScale, maxScale, wave);
-
-        // Apply the scale multiplier to the original starting scale
         glowBackground.localScale = glowStartScale * scaleMultiplier;
     }
 }

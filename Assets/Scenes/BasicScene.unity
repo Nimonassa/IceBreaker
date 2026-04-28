@@ -14969,6 +14969,10 @@ PrefabInstance:
       propertyPath: m_RenderPostProcessing
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8490397985029785789, guid: a2888cf8c7a57ef419cb9bb9fba08037, type: 3}
+      propertyPath: m_TaaSettings.m_FrameInfluence
+      value: 0.100000024
+      objectReference: {fileID: 0}
     - target: {fileID: 8625741112099043767, guid: a2888cf8c7a57ef419cb9bb9fba08037, type: 3}
       propertyPath: attachMode
       value: 0
@@ -17245,7 +17249,11 @@ MonoBehaviour:
   line2: {fileID: 4046014554774095030}
   line3: {fileID: 5652811692801734925}
   glowBackground: {fileID: 1388341767}
-  moveDistance: 0.15
+  horizontalAnchor: 2
+  minPositionOffset: {x: 0, y: 0, z: 0}
+  maxPositionOffset: {x: 0, y: 0, z: 0.15}
+  minScaleOffset: {x: 0, y: 0, z: 0}
+  maxScaleOffset: {x: 0, y: 0, z: 0}
   speed: 3
   delayBetweenLines: 0.5
   pulseSpeed: 1.5
