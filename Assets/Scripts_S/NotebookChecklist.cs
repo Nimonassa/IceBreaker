@@ -16,7 +16,7 @@ public class NotebookChecklist : MonoBehaviour
     [SerializeField] private GameObject[] items;
 
     [Header("Events")]
-    [SerializeField] private UnityEvent OnCompleted;
+    public UnityEvent OnCompleted;
 
     private bool[] collected;
     private XRGrabInteractable[] itemGrabs;
@@ -39,11 +39,11 @@ public class NotebookChecklist : MonoBehaviour
         // Apply the initial visibility setting
         if (startVisible)
         {
-            ShowNotebook();
+            Show();
         }
         else
         {
-            HideNotebook();
+            Hide();
         }
     }
 
@@ -75,12 +75,12 @@ public class NotebookChecklist : MonoBehaviour
         bool isVisible = notebookCanvasGroup.alpha > 0f;
 
         if (isVisible)
-            HideNotebook();
+            Hide();
         else
-            ShowNotebook();
+            Show();
     }
 
-    public void ShowNotebook()
+    public void Show()
     {
         if (notebookCanvasGroup == null) return;
 
@@ -89,7 +89,7 @@ public class NotebookChecklist : MonoBehaviour
         notebookCanvasGroup.blocksRaycasts = true;
     }
 
-    public void HideNotebook()
+    public void Hide()
     {
         if (notebookCanvasGroup == null) return;
 

@@ -1,19 +1,12 @@
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
-using XNode;
 
-public enum TriggerMode { None, OnEnter, OnExit }
-public enum InputType { None, Keyboard, InputAction, XRHand }
-public enum XRHandButton { Trigger, Grip, Primary, Secondary, Thumbstick }
-
-public class DialogueTrigger : MonoBehaviour
+public class InteractionTrigger : MonoBehaviour
 {
-    [Header("Setup")]
-    public DialogueManager dialogueManager;
-    public DialogueSceneGraph dialogueSceneGraph;
-
-    [HideInInspector]
-    public BaseNode startingNode;
+    [Header("Events")]
+    [Tooltip("What happens when this trigger is activated?")]
+    public UnityEvent onTriggered;
 
     [Header("Trigger Settings")]
     public TriggerMode triggerMode = TriggerMode.None;
@@ -22,42 +15,25 @@ public class DialogueTrigger : MonoBehaviour
     public Key startKey = Key.E;
     public InputActionReference startAction;
     
-    // --- THE FIX: Drag your separate XRButtonTarget GameObject here ---
     public XRButtonTarget xrTarget; 
     public XRHandButton xrButton = XRHandButton.Primary; 
 
-    [Tooltip("Which layers can trigger this dialogue? (Select 'Nothing' to ignore layer filtering)")]
+    [Tooltip("Which layers can trigger this? (Select 'Nothing' to ignore layer filtering)")]
     public LayerMask triggerLayerMask;
 
-    [Tooltip("Which tag can trigger this dialogue? (Select 'Nothing' to ignore tag filtering)")]
+    [Tooltip("Which tag can trigger this? (Select 'Nothing' to ignore tag filtering)")]
     public string triggerTag = "Nothing";
     public bool triggerOnce = false; 
 
-    [HideInInspector] public bool displayOnlyRootNodes = true;
     [HideInInspector] public bool autoAddedCollider = false;
 
-    private bool isDialogueActive = false;
     private int collidersInRange = 0;
     private bool isPlayerInRange => collidersInRange > 0;
-
-    private void Reset()
-    {
-        gameObject.name = "Dialogue Trigger";
-        if (dialogueManager == null) dialogueManager = FindFirstObjectByType<DialogueManager>();
-        if (dialogueSceneGraph == null) dialogueSceneGraph = FindFirstObjectByType<DialogueSceneGraph>();
-    }
 
     private void OnEnable()
     {
         if (startAction != null) startAction.action.performed += OnActionPerformed;
         
-        if (dialogueManager != null)
-        {
-            dialogueManager.OnDialogueStarted += HandleDialogueStarted;
-            dialogueManager.OnDialogueEnded += HandleDialogueEnded;
-        }
-
-        // --- SUBSCRIBE TO XR EVENTS ---
         if (xrTarget != null)
         {
             xrTarget.OnTriggerPressed += HandleXRTrigger;
@@ -72,13 +48,6 @@ public class DialogueTrigger : MonoBehaviour
     {
         if (startAction != null) startAction.action.performed -= OnActionPerformed;
         
-        if (dialogueManager != null)
-        {
-            dialogueManager.OnDialogueStarted -= HandleDialogueStarted;
-            dialogueManager.OnDialogueEnded -= HandleDialogueEnded;
-        }
-
-        // --- UNSUBSCRIBE FROM XR EVENTS ---
         if (xrTarget != null)
         {
             xrTarget.OnTriggerPressed -= HandleXRTrigger;
@@ -89,21 +58,18 @@ public class DialogueTrigger : MonoBehaviour
         }
     }
 
-    private void HandleDialogueStarted() => isDialogueActive = true;
-    private void HandleDialogueEnded() => isDialogueActive = false;
-
     // --- INPUT HANDLING ---
 
     private void TryTriggerFromInput()
     {
-        if (isDialogueActive) return;
+        // If it requires a trigger zone (OnEnter/OnExit), make sure the player is actually in it.
         if (triggerMode != TriggerMode.None && !isPlayerInRange) return;
-        TriggerDialogue();
+        ExecuteTrigger();
     }
 
     private void Update()
     {
-        if (Keyboard.current == null || isDialogueActive) return;
+        if (Keyboard.current == null) return;
         if (inputType == InputType.Keyboard && Keyboard.current[startKey].wasPressedThisFrame)
         {
             TryTriggerFromInput();
@@ -126,22 +92,19 @@ public class DialogueTrigger : MonoBehaviour
     {
         if (inputType == InputType.XRHand && xrButton == pressedButton)
         {
-            Debug.Log("Input pressed!");
             TryTriggerFromInput();
         }
     }
 
     // --- PHYSICS / COLLIDER HANDLING ---
 
-    
-
     private void OnTriggerEnter(Collider other)
     {
         if (EvaluateFilter(other.gameObject))
         {
             collidersInRange++;
-            if (!isDialogueActive && triggerMode == TriggerMode.OnEnter && inputType == InputType.None) 
-                TriggerDialogue();
+            if (triggerMode == TriggerMode.OnEnter && inputType == InputType.None) 
+                ExecuteTrigger();
         }
     }
 
@@ -152,11 +115,10 @@ public class DialogueTrigger : MonoBehaviour
             collidersInRange--;
             if (collidersInRange < 0) collidersInRange = 0; // Safety catch
 
-            if (!isDialogueActive && triggerMode == TriggerMode.OnExit && inputType == InputType.None)
-                TriggerDialogue();
+            if (triggerMode == TriggerMode.OnExit && inputType == InputType.None)
+                ExecuteTrigger();
         }
     }
-
 
     private bool EvaluateFilter(GameObject obj)
     {
@@ -169,16 +131,11 @@ public class DialogueTrigger : MonoBehaviour
         return layerPass && tagPass;
     }
 
-    public void TriggerDialogue()
-    {
-        if (isDialogueActive) return;
+    // --- EXECUTION ---
 
-        if (dialogueManager != null && startingNode != null)
-        {
-            dialogueManager.LoadDialogue(startingNode);
-            dialogueManager.PlayDialogue();
-            
-            if (triggerOnce) this.enabled = false;
-        }
+    public void ExecuteTrigger()
+    {
+        onTriggered?.Invoke();
+        if (triggerOnce) this.enabled = false;
     }
 }

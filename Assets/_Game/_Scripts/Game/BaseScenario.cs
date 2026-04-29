@@ -7,14 +7,10 @@ public abstract class BaseScenario : MonoBehaviour
     public abstract GameStage Stage { get; }
 
     [Header("Configuration")]
-    public PlayerConfig config;
-    public SpawnPoint spawnPoint;
+     public ResetMode resetMode = ResetMode.World;
     public bool isCheckpoint;
 
-    [Header("Reset Settings")]
-    public ResetMode resetMode = ResetMode.World;
-    
-    
+
     [HideInInspector]
     public List<Resettable> manualResetList = new List<Resettable>();
 
@@ -27,25 +23,6 @@ public abstract class BaseScenario : MonoBehaviour
             ScenarioManager.Instance.SetCheckpoint(Stage);
         }
 
-        if (spawnPoint != null)
-        {
-            PlayerManager player = PlayerManager.Instance;
-            
-            if (player != null)
-            {
-                player.Teleport(spawnPoint.transform);
-            }
-        }
-
-        if (config != null)
-        {
-            PlayerManager player = PlayerManager.Instance;
-            
-            if (player != null)
-            {
-                player.Load(config);
-            }
-        }
     }
 
     public virtual void OnExit()

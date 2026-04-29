@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.Events;
 
-public class QuestMarkerAnimation : MonoBehaviour
+public class QuestMarker : MonoBehaviour
 {
     public static UnityEvent OnShow = new();
     public static UnityEvent OnHide = new();

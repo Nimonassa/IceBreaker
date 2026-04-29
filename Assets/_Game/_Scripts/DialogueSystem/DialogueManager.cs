@@ -13,7 +13,8 @@ public enum AdvanceInputType
 
 public class DialogueManager : MonoBehaviour
 {
-    public static DialogueManager Instance { get; private set; } = null; 
+    public static DialogueManager Instance { get; private set; } = null;
+
     [Header("Base Settings")]
     public GameLanguage currentLanguage;
     public DialogueUI dialogueUI;
@@ -30,15 +31,20 @@ public class DialogueManager : MonoBehaviour
 
     private BaseNode currentNode;
     private Coroutine autoAdvanceCoroutine;
-    private System.Action onCurrentDialogueComplete = null;
     private int lastDialogueEndFrame = -1;
     public bool IsDialogueActive => currentNode != null || Time.frameCount == lastDialogueEndFrame;
-    
+
+    // --- NEW ARCHITECTURE: The "Chamber" ---
+    private BaseNode currentlyLoadedNode = null;
+    private System.Action currentlyLoadedStartedCallback = null;
+    private System.Action currentlyLoadedCompletedCallback = null;
+    private System.Action onCurrentDialogueComplete = null;
+
     private void Awake()
     {
         Instance = this;
     }
-    
+
     private void OnEnable()
     {
         if (advanceAction != null)
@@ -82,20 +88,38 @@ public class DialogueManager : MonoBehaviour
         AdvanceFromChat();
     }
 
-    public void StartDialogue(BaseNode startNode, System.Action onComplete = null)
-    {
-        onCurrentDialogueComplete = onComplete;
+    // --- LOAD AND PLAY LOGIC ---
 
-        if (startNode == null)
+    public void LoadDialogue(BaseNode node, System.Action onStarted = null, System.Action onCompleted = null)
+    {
+        currentlyLoadedNode = node;
+        currentlyLoadedStartedCallback = onStarted;
+        currentlyLoadedCompletedCallback = onCompleted;
+    }
+
+    public void PlayDialogue()
+    {
+        if (currentlyLoadedNode == null)
         {
-            Debug.LogWarning("DialogueManager: StartDialogue called with null node.");
-            EndDialogue();
+            Debug.LogWarning("DialogueManager: PlayDialogue called but no dialogue is loaded.");
             return;
         }
-    
+
+        // 1. Transfer the completed callback to the active execution state
+        onCurrentDialogueComplete = currentlyLoadedCompletedCallback;
+
+        // 2. Cache the started callback locally for this specific execution
+        System.Action startedCallback = currentlyLoadedStartedCallback;
+
         dialogueUI.SetVisible(true);
+
+        // Fire global event for UI/Audio listeners
         OnDialogueStarted?.Invoke();
-        EnterNode(startNode);
+
+        // Fire the specific callback passed into LoadDialogue
+        startedCallback?.Invoke();
+
+        EnterNode(currentlyLoadedNode);
     }
 
     private void EnterNode(BaseNode node)
@@ -140,7 +164,6 @@ public class DialogueManager : MonoBehaviour
 
         if (autoAdvanceCoroutine != null) StopCoroutine(autoAdvanceCoroutine);
 
-        // EXACT TIMING LOGIC
         float delay = 0;
         bool shouldStartTimer = false;
 
@@ -151,7 +174,6 @@ public class DialogueManager : MonoBehaviour
                 shouldStartTimer = true;
                 break;
             case AutoAdvanceMode.Audio:
-                // Use clip length if it exists, otherwise 1.5s fallback so it doesn't get stuck
                 delay = (clip != null) ? clip.length : 1.5f;
                 shouldStartTimer = true;
                 break;
@@ -185,7 +207,7 @@ public class DialogueManager : MonoBehaviour
             dialogueAudio.StopVoice();
         }
 
-        if (autoAdvanceCoroutine != null) 
+        if (autoAdvanceCoroutine != null)
             StopCoroutine(autoAdvanceCoroutine);
 
         float delay = 0;
@@ -202,7 +224,7 @@ public class DialogueManager : MonoBehaviour
                 shouldStartTimer = true;
                 break;
         }
-    
+
         if (shouldStartTimer)
         {
             autoAdvanceCoroutine = StartCoroutine(AutoAdvance(delay));
@@ -285,7 +307,6 @@ public class DialogueManager : MonoBehaviour
         });
     }
 
-
     public void EndDialogue()
     {
         if (autoAdvanceCoroutine != null)
@@ -302,7 +323,11 @@ public class DialogueManager : MonoBehaviour
         currentNode = null;
 
         lastDialogueEndFrame = Time.frameCount;
+
+        // Fire global event
         OnDialogueEnded?.Invoke();
+
+        // Fire the specific callback passed into LoadDialogue
         onCurrentDialogueComplete?.Invoke();
         onCurrentDialogueComplete = null;
     }
@@ -317,7 +342,6 @@ public class DialogueManager : MonoBehaviour
         if (node is ChatNode chatNode) audio = chatNode.GetAudio(currentLanguage);
         else if (node is PromptNode promptNode) audio = promptNode.GetAudio(currentLanguage);
 
-        // It's empty if there is no text AND no audio
         return string.IsNullOrWhiteSpace(text) && audio == null;
     }
 }

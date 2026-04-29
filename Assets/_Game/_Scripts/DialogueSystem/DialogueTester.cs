@@ -28,7 +28,8 @@ public class DialogueTester : MonoBehaviour
             if (dialogueManager != null && startingNode != null)
             {
                 Debug.Log($"Starting Dialogue at node: {startingNode.name}");
-                dialogueManager.StartDialogue(startingNode);
+                dialogueManager.LoadDialogue(startingNode);
+                dialogueManager.PlayDialogue();
             }
             else
             {
