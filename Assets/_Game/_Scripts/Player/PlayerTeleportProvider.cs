@@ -89,6 +89,18 @@ public class PlayerTeleportProvider : TeleportationProvider
 
         if (characterController != null)
         {
+            // 1. Calculate the maximum physically allowed step offset based on current scale
+            float scaledHeight = characterController.height * characterController.transform.lossyScale.y;
+            float scaledRadius = characterController.radius * Mathf.Max(characterController.transform.lossyScale.x, characterController.transform.lossyScale.z);
+            float maxValidStepOffset = scaledHeight + (scaledRadius * 2f);
+
+            // 2. Clamp the step offset slightly below the absolute maximum to be safe
+            if (characterController.stepOffset > maxValidStepOffset)
+            {
+                characterController.stepOffset = Mathf.Max(0f, maxValidStepOffset - 0.01f);
+            }
+
+            // 3. Now it is safe to enable
             characterController.enabled = true;
         }
 

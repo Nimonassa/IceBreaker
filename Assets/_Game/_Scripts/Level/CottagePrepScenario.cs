@@ -18,9 +18,12 @@ public class CottagePrepScenario : BaseScenario
     public InteractionTrigger part1Trigger;
     public InteractionTrigger part4Trigger;
 
-    [Header("Components")]
+    [Header("UI")]
     public NotebookChecklist checklist;
     public QuestMarker questMarker;
+    public GameObject lockedUI;
+    public GameObject unlockedUI;
+
 
     [Header("Player Configs")]
     public PlayerConfig noMovementConfig;
@@ -34,7 +37,9 @@ public class CottagePrepScenario : BaseScenario
         base.OnEnter();
         checklist.Hide();
         questMarker.Show();
-        
+
+        lockedUI.SetActive(true);
+        unlockedUI.SetActive(false);
         part1Trigger.gameObject.SetActive(true);
         part4Trigger.gameObject.SetActive(false);
 
@@ -97,6 +102,8 @@ public class CottagePrepScenario : BaseScenario
     {
         var completed = new TaskCompletionSource<bool>(false);
 
+        lockedUI.SetActive(false);
+        unlockedUI.SetActive(true);
         part4Trigger.gameObject.SetActive(true);
         DialogueManager.Instance.LoadDialogue(part4Dialogue.node, null, () => completed.SetResult(true));
 
