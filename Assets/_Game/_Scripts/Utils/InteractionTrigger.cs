@@ -103,6 +103,7 @@ public class InteractionTrigger : MonoBehaviour
         if (EvaluateFilter(other.gameObject))
         {
             collidersInRange++;
+            Debug.Log("Player entered!");
             if (triggerMode == TriggerMode.OnEnter && inputType == InputType.None) 
                 ExecuteTrigger();
         }
@@ -113,7 +114,10 @@ public class InteractionTrigger : MonoBehaviour
         if (EvaluateFilter(other.gameObject))
         {
             collidersInRange--;
-            if (collidersInRange < 0) collidersInRange = 0; // Safety catch
+            if (collidersInRange < 0)
+                collidersInRange = 0; // Safety catch
+                
+            Debug.Log("Player exited!");
 
             if (triggerMode == TriggerMode.OnExit && inputType == InputType.None)
                 ExecuteTrigger();
@@ -135,6 +139,7 @@ public class InteractionTrigger : MonoBehaviour
 
     public void ExecuteTrigger()
     {
+        Debug.Log("Player triggered!");
         onTriggered?.Invoke();
         if (triggerOnce) this.enabled = false;
     }

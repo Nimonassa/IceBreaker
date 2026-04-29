@@ -60,7 +60,6 @@ public class CottagePrepScenario : BaseScenario
 
         Action OnStarted = () => { PlayerManager.Instance.Load(noMovementConfig); };
         Action OnCompleted = () => { PlayerManager.Instance.Load(defaultConfig); completed.SetResult(true); };
-
         DialogueManager.Instance.LoadDialogue(part1Dialogue.node, OnStarted, OnCompleted);
 
         await completed.Task;
@@ -71,7 +70,10 @@ public class CottagePrepScenario : BaseScenario
     {
         var completed = new TaskCompletionSource<bool>(false);
 
+        questMarker.Hide();
         part1Trigger.gameObject.SetActive(false);
+        
+
         checklist.Show();
         checklist.OnCompleted.AddListener(() => completed.SetResult(true));
 
