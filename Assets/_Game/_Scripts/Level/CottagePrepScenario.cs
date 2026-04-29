@@ -27,8 +27,7 @@ public class CottagePrepScenario : BaseScenario
     public PlayerConfig defaultConfig;
 
 
-    private bool dialogueFinished = false;
-    private bool checklistFinished = false;
+
 
     public override async void OnEnter()
     {
@@ -39,59 +38,60 @@ public class CottagePrepScenario : BaseScenario
         part1Trigger.gameObject.SetActive(true);
         part4Trigger.gameObject.SetActive(false);
 
-        await Part1();
-        await Part2();
-        await Part3();
-        await Part4();
-
+        await Part1(); // Granny dialogue
+        await Part2(); // Items collection
+        await Part3(); // Collection feedback
+        await Part4(); // Safety tips
+ 
         SceneManager.LoadScene(1);
     }
 
     // Part 1 - Speaking to granny
     private async Task Part1()
     {
-        dialogueFinished = false;
+        var completed = new TaskCompletionSource<bool>(false);
+
         Action OnStarted = () => { PlayerManager.Instance.Load(noMovementConfig); };
-        Action OnCompleted = () => { PlayerManager.Instance.Load(defaultConfig); dialogueFinished = true; };
+        Action OnCompleted = () => { PlayerManager.Instance.Load(defaultConfig); completed.SetResult(true); };
 
         DialogueManager.Instance.LoadDialogue(part1Dialogue.node, OnStarted, OnCompleted);
 
-        while (!dialogueFinished) { await Task.Yield(); }
+        await completed.Task;
     }
 
     // Part 2 - Collecting items
     private async Task Part2()
     {
+        var completed = new TaskCompletionSource<bool>(false);
+
         part1Trigger.gameObject.SetActive(false);
-
-        checklistFinished = false;
         checklist.Show();
-        checklist.OnCompleted.AddListener(() => checklistFinished = true);
+        checklist.OnCompleted.AddListener(() => completed.SetResult(true));
 
-        while (!checklistFinished) { await Task.Yield(); }
+        await completed.Task;
     }
 
     // Part 3 - Collecting items feedback
     private async Task Part3()
     {
+        var completed = new TaskCompletionSource<bool>(false);
 
-        dialogueFinished = false;
         checklist.OnCompleted.RemoveAllListeners();
-        DialogueManager.Instance.LoadDialogue(part3Dialogue.node, null, () => dialogueFinished = true);
+        DialogueManager.Instance.LoadDialogue(part3Dialogue.node, null, () => completed.SetResult(true));
         DialogueManager.Instance.PlayDialogue();
 
-        while (!dialogueFinished) { await Task.Yield(); }
+        await completed.Task;
     }
 
     // Part 4 - Before leaving safety tips
     private async Task Part4()
     {
+        var completed = new TaskCompletionSource<bool>(false);
+
         part4Trigger.gameObject.SetActive(true);
+        DialogueManager.Instance.LoadDialogue(part4Dialogue.node, null, () => completed.SetResult(true));
 
-        dialogueFinished = false;
-        DialogueManager.Instance.LoadDialogue(part4Dialogue.node, null, () => dialogueFinished = true);
-
-        while (!dialogueFinished) { await Task.Yield(); }
+        await completed.Task;
     }
     
 }
