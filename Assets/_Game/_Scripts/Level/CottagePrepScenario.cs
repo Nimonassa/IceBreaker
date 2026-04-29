@@ -39,9 +39,16 @@ public class CottagePrepScenario : BaseScenario
         part4Trigger.gameObject.SetActive(false);
 
         await Part1(); // Granny dialogue
+        Debug.Log("Part 1 Completed");
+
         await Part2(); // Items collection
+        Debug.Log("Part 2 Completed");
+
         await Part3(); // Collection feedback
+        Debug.Log("Part 3 Completed");
+
         await Part4(); // Safety tips
+        Debug.Log("Part 4 Completed");
  
         SceneManager.LoadScene(1);
     }
